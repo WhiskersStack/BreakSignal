@@ -38,6 +38,7 @@ const DEFAULT_SETTINGS = {
   intervalMinutes: 30,
   snoozeMinutes: 5,
   soundEnabled: true,
+  soundTone: "signal",
   notificationsEnabled: false,
   enabledBreakTypes: ["eye", "stretch", "walk", "posture"],
   dailyBreakCount: 0,
@@ -69,6 +70,7 @@ const elements = {
   intervalInput: document.getElementById("intervalInput"),
   snoozeInput: document.getElementById("snoozeInput"),
   soundToggle: document.getElementById("soundToggle"),
+  soundToneSelect: document.getElementById("soundToneSelect"),
   notificationToggle: document.getElementById("notificationToggle"),
   breakTypeList: document.getElementById("breakTypeList"),
   dailyCount: document.getElementById("dailyCount"),
@@ -110,6 +112,7 @@ function bindEvents() {
   elements.intervalInput.addEventListener("change", handleIntervalChange);
   elements.snoozeInput.addEventListener("change", handleSnoozeChange);
   elements.soundToggle.addEventListener("change", handleSoundToggle);
+  elements.soundToneSelect.addEventListener("change", handleSoundToneChange);
   elements.notificationToggle.addEventListener("change", handleNotificationToggle);
   elements.modalOverlay.addEventListener("keydown", handleModalKeydown);
 }
@@ -125,6 +128,10 @@ function loadSettings() {
         enabledBreakTypes: Array.isArray(saved.enabledBreakTypes) ? saved.enabledBreakTypes : DEFAULT_SETTINGS.enabledBreakTypes
       };
       delete settings.customMessages;
+
+      if (!["signal", "chime", "pulse", "sweep"].includes(settings.soundTone)) {
+        settings.soundTone = DEFAULT_SETTINGS.soundTone;
+      }
     }
   } catch (error) {
     settings = { ...DEFAULT_SETTINGS };
@@ -261,25 +268,58 @@ function playSound() {
     if (!AudioContext) return;
 
     const audioContext = new AudioContext();
-    const oscillator = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(660, audioContext.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(440, audioContext.currentTime + 0.22);
-    gain.gain.setValueAtTime(0.001, audioContext.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.09, audioContext.currentTime + 0.03);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.45);
-
-    oscillator.connect(gain);
-    gain.connect(audioContext.destination);
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 0.46);
-
-    oscillator.addEventListener("ended", () => audioContext.close());
+    const finishAt = playSelectedTone(audioContext, settings.soundTone);
+    window.setTimeout(() => audioContext.close(), finishAt * 1000 + 120);
   } catch (error) {
     showMessage("Sound could not play in this browser session.", "warning");
   }
+}
+
+function playSelectedTone(audioContext, tone) {
+  const tones = {
+    signal: [
+      { frequency: 660, endFrequency: 440, start: 0, duration: 0.46, volume: 0.09, type: "sine" }
+    ],
+    chime: [
+      { frequency: 523.25, start: 0, duration: 0.42, volume: 0.07, type: "sine" },
+      { frequency: 783.99, start: 0.12, duration: 0.5, volume: 0.055, type: "triangle" }
+    ],
+    pulse: [
+      { frequency: 392, start: 0, duration: 0.18, volume: 0.07, type: "sine" },
+      { frequency: 523.25, start: 0.24, duration: 0.18, volume: 0.065, type: "sine" },
+      { frequency: 659.25, start: 0.48, duration: 0.24, volume: 0.055, type: "sine" }
+    ],
+    sweep: [
+      { frequency: 330, endFrequency: 880, start: 0, duration: 0.58, volume: 0.065, type: "triangle" },
+      { frequency: 220, endFrequency: 440, start: 0.08, duration: 0.5, volume: 0.035, type: "sine" }
+    ]
+  };
+
+  const selectedTone = tones[tone] || tones.signal;
+  selectedTone.forEach((note) => playTone(audioContext, note));
+  return selectedTone.reduce((latestEnd, note) => Math.max(latestEnd, note.start + note.duration), 0);
+}
+
+function playTone(audioContext, note) {
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  const startAt = audioContext.currentTime + note.start;
+  const endAt = startAt + note.duration;
+
+  oscillator.type = note.type;
+  oscillator.frequency.setValueAtTime(note.frequency, startAt);
+  if (note.endFrequency) {
+    oscillator.frequency.exponentialRampToValueAtTime(note.endFrequency, endAt);
+  }
+
+  gain.gain.setValueAtTime(0.001, startAt);
+  gain.gain.exponentialRampToValueAtTime(note.volume, startAt + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.001, endAt);
+
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+  oscillator.start(startAt);
+  oscillator.stop(endAt + 0.02);
 }
 
 function requestNotificationPermission() {
@@ -454,6 +494,7 @@ function syncSettingsToInputs() {
   elements.intervalInput.value = settings.intervalMinutes;
   elements.snoozeInput.value = settings.snoozeMinutes;
   elements.soundToggle.checked = settings.soundEnabled;
+  elements.soundToneSelect.value = settings.soundTone;
   elements.notificationToggle.checked = settings.notificationsEnabled;
 }
 
@@ -491,6 +532,12 @@ function handleSoundToggle() {
   settings.soundEnabled = elements.soundToggle.checked;
   saveSettings();
   showMessage(settings.soundEnabled ? "Sound alert enabled." : "Sound alert disabled.", "success");
+}
+
+function handleSoundToneChange() {
+  settings.soundTone = elements.soundToneSelect.value;
+  saveSettings();
+  showMessage("Alert tone saved. Use Test Reminder to hear it.", "success");
 }
 
 function handleNotificationToggle() {

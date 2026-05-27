@@ -5,20 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="BreakSignal is a minimal break reminder for eye breaks, stretching, walking, posture, and focus.">
   <title>BreakSignal | Break Reminder</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="app-shell">
     <header class="site-header" aria-label="BreakSignal header">
       <div class="brand-mark" aria-hidden="true">
-        <svg class="logo" viewBox="0 0 64 64" role="img">
-          <circle cx="32" cy="32" r="23" class="logo-ring"></circle>
-          <path d="M49 20a23 23 0 0 1 3 12" class="logo-arc"></path>
-          <path d="M13 43a23 23 0 0 1-3-11" class="logo-pulse"></path>
-          <rect x="25" y="23" width="5" height="18" rx="2.5" class="logo-bar"></rect>
-          <rect x="34" y="23" width="5" height="18" rx="2.5" class="logo-bar"></rect>
-          <circle cx="32" cy="32" r="29" class="logo-glow"></circle>
-        </svg>
+        <img class="logo-image" src="logo.svg" alt="">
       </div>
       <div>
         <p class="eyebrow">BreakSignal</p>
@@ -75,6 +69,17 @@
                 <span>Snooze duration</span>
                 <input id="snoozeInput" type="number" min="1" step="1" inputmode="numeric">
                 <small>Minutes before a snoozed reminder returns.</small>
+              </label>
+
+              <label class="field">
+                <span>Alert tone</span>
+                <select id="soundToneSelect">
+                  <option value="signal">Soft Signal</option>
+                  <option value="chime">Calm Chime</option>
+                  <option value="pulse">Focus Pulse</option>
+                  <option value="sweep">Reset Sweep</option>
+                </select>
+                <small>Generated in-browser. No audio files are used.</small>
               </label>
             </div>
 
