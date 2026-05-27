@@ -205,8 +205,7 @@ function triggerBreak(isTest) {
   sendNotification(activeBreak);
 
   if (isTest) {
-    addHistoryItem(activeBreak, "Test");
-    showMessage("Test reminder opened.", "success");
+    showMessage("Test reminder opened. This preview is not added to history.", "success");
   } else {
     showMessage("Break time. Take the reset.", "success");
   }
