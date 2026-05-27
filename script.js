@@ -55,7 +55,7 @@ let targetEndTime = null;
 let currentStatus = "Stopped";
 let activeBreak = null;
 let lastFocusedElement = null;
-let soundLoopTimeout = null;
+let soundLoopInterval = null;
 let activeAudioContext = null;
 
 const elements = {
@@ -277,21 +277,27 @@ function playSoundLoop() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
 
-    activeAudioContext = new AudioContext();
-    const finishAt = playSelectedTone(activeAudioContext, settings.soundTone);
-    soundLoopTimeout = window.setTimeout(() => {
-      closeAudioContext();
-      playSoundLoop();
-    }, finishAt * 1000 + 1200);
+    activeAudioContext = activeAudioContext || new AudioContext();
+    if (activeAudioContext.state === "suspended") {
+      activeAudioContext.resume();
+    }
+
+    const repeatTone = () => {
+      if (!settings.soundEnabled || elements.modalOverlay.hidden || !activeAudioContext) return;
+      playSelectedTone(activeAudioContext, settings.soundTone);
+    };
+
+    repeatTone();
+    soundLoopInterval = window.setInterval(repeatTone, 1800);
   } catch (error) {
     showMessage("Sound could not play in this browser session.", "warning");
   }
 }
 
 function stopSoundLoop() {
-  if (soundLoopTimeout) {
-    window.clearTimeout(soundLoopTimeout);
-    soundLoopTimeout = null;
+  if (soundLoopInterval) {
+    window.clearInterval(soundLoopInterval);
+    soundLoopInterval = null;
   }
   closeAudioContext();
 }
