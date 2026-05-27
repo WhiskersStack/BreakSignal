@@ -363,7 +363,6 @@ h2 {
 }
 
 .field span,
-.message-label,
 .break-type-title {
   display: block;
   margin-bottom: 8px;
@@ -482,19 +481,6 @@ h2 {
   color: var(--muted);
   font-size: 0.9rem;
   line-height: 1.35;
-}
-
-.message-fields {
-  display: grid;
-  gap: 14px;
-  margin-top: 18px;
-}
-
-.message-card {
-  padding: 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: rgba(7, 11, 20, 0.28);
 }
 
 .stat-number {
