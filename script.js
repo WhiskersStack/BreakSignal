@@ -40,7 +40,6 @@ const DEFAULT_SETTINGS = {
   soundEnabled: true,
   notificationsEnabled: false,
   enabledBreakTypes: ["eye", "stretch", "walk", "posture"],
-  customMessages: {},
   dailyBreakCount: 0,
   history: [],
   lastSavedDate: getTodayKey(),
@@ -51,6 +50,7 @@ let settings = { ...DEFAULT_SETTINGS };
 let timerId = null;
 let remainingSeconds = DEFAULT_SETTINGS.intervalMinutes * 60;
 let totalSeconds = DEFAULT_SETTINGS.intervalMinutes * 60;
+let targetEndTime = null;
 let currentStatus = "Stopped";
 let activeBreak = null;
 let lastFocusedElement = null;
@@ -71,8 +71,6 @@ const elements = {
   soundToggle: document.getElementById("soundToggle"),
   notificationToggle: document.getElementById("notificationToggle"),
   breakTypeList: document.getElementById("breakTypeList"),
-  messageFields: document.getElementById("messageFields"),
-  resetMessagesBtn: document.getElementById("resetMessagesBtn"),
   dailyCount: document.getElementById("dailyCount"),
   historyList: document.getElementById("historyList"),
   clearHistoryBtn: document.getElementById("clearHistoryBtn"),
@@ -94,7 +92,6 @@ function initApp() {
   totalSeconds = settings.intervalMinutes * 60;
 
   renderBreakTypes();
-  renderMessageFields();
   bindEvents();
   syncSettingsToInputs();
   renderHistory();
@@ -109,7 +106,6 @@ function bindEvents() {
   elements.doneBtn.addEventListener("click", completeBreak);
   elements.snoozeBtn.addEventListener("click", snoozeBreak);
   elements.skipBtn.addEventListener("click", skipBreak);
-  elements.resetMessagesBtn.addEventListener("click", resetDefaultMessages);
   elements.clearHistoryBtn.addEventListener("click", clearHistory);
   elements.intervalInput.addEventListener("change", handleIntervalChange);
   elements.snoozeInput.addEventListener("change", handleSnoozeChange);
@@ -125,10 +121,10 @@ function loadSettings() {
       settings = {
         ...DEFAULT_SETTINGS,
         ...saved,
-        customMessages: { ...DEFAULT_SETTINGS.customMessages, ...(saved.customMessages || {}) },
         history: Array.isArray(saved.history) ? saved.history : [],
         enabledBreakTypes: Array.isArray(saved.enabledBreakTypes) ? saved.enabledBreakTypes : DEFAULT_SETTINGS.enabledBreakTypes
       };
+      delete settings.customMessages;
     }
   } catch (error) {
     settings = { ...DEFAULT_SETTINGS };
@@ -147,7 +143,7 @@ function startTimer() {
 
   closeModal(false);
   currentStatus = "Running";
-  timerId = window.setInterval(tickTimer, 1000);
+  startIntervalOnly();
   showMessage("Timer running. A reset signal is on the way.", "success");
   updateDisplay();
 }
@@ -158,6 +154,7 @@ function pauseTimer() {
     return;
   }
 
+  syncRemainingSeconds();
   clearActiveTimer();
   currentStatus = "Paused";
   showMessage("Paused. Resume when you are ready.", "warning");
@@ -175,7 +172,7 @@ function resetTimer() {
 
 function tickTimer() {
   resetDailyCounterIfNeeded();
-  remainingSeconds -= 1;
+  syncRemainingSeconds();
 
   if (remainingSeconds <= 0) {
     clearActiveTimer();
@@ -244,11 +241,13 @@ function showModal(breakItem) {
   elements.modalMessage.textContent = getBreakMessage(breakItem.id);
   elements.modalDuration.textContent = breakItem.duration;
   elements.modalOverlay.hidden = false;
+  document.addEventListener("keydown", trapModalFocus);
   elements.doneBtn.focus();
 }
 
 function closeModal(restoreFocus) {
   elements.modalOverlay.hidden = true;
+  document.removeEventListener("keydown", trapModalFocus);
   if (restoreFocus && lastFocusedElement && typeof lastFocusedElement.focus === "function") {
     lastFocusedElement.focus();
   }
@@ -289,6 +288,22 @@ function requestNotificationPermission() {
     elements.notificationToggle.checked = false;
     saveSettings();
     showMessage("This browser does not support notifications.", "warning");
+    return;
+  }
+
+  if (Notification.permission === "granted") {
+    settings.notificationsEnabled = true;
+    elements.notificationToggle.checked = true;
+    saveSettings();
+    showMessage("Browser notifications enabled.", "success");
+    return;
+  }
+
+  if (Notification.permission === "denied") {
+    settings.notificationsEnabled = false;
+    elements.notificationToggle.checked = false;
+    saveSettings();
+    showMessage("Notification permission is blocked in this browser. You can re-enable it from site settings.", "warning");
     return;
   }
 
@@ -430,28 +445,12 @@ function renderBreakTypes() {
   });
 }
 
-function renderMessageFields() {
-  elements.messageFields.innerHTML = "";
-
-  DEFAULT_BREAKS.forEach((breakItem) => {
-    const wrapper = document.createElement("label");
-    wrapper.className = "message-card";
-    wrapper.innerHTML = `
-      <span class="message-label">${breakItem.title}</span>
-      <textarea data-message-id="${breakItem.id}">${getBreakMessage(breakItem.id)}</textarea>
-    `;
-
-    const textarea = wrapper.querySelector("textarea");
-    textarea.addEventListener("input", () => {
-      settings.customMessages[breakItem.id] = textarea.value.trim() || breakItem.message;
-      saveSettings();
-    });
-
-    elements.messageFields.appendChild(wrapper);
-  });
-}
-
 function syncSettingsToInputs() {
+  if (settings.notificationsEnabled && (!("Notification" in window) || Notification.permission !== "granted")) {
+    settings.notificationsEnabled = false;
+    saveSettings();
+  }
+
   elements.intervalInput.value = settings.intervalMinutes;
   elements.snoozeInput.value = settings.snoozeMinutes;
   elements.soundToggle.checked = settings.soundEnabled;
@@ -510,18 +509,29 @@ function handleModalKeydown(event) {
   }
 }
 
+function trapModalFocus(event) {
+  if (elements.modalOverlay.hidden || event.key !== "Tab") return;
+
+  const focusableElements = elements.modalOverlay.querySelectorAll("button");
+  if (!focusableElements.length) return;
+
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+
+  if (event.shiftKey && document.activeElement === firstElement) {
+    event.preventDefault();
+    lastElement.focus();
+  } else if (!event.shiftKey && document.activeElement === lastElement) {
+    event.preventDefault();
+    firstElement.focus();
+  }
+}
+
 function clearHistory() {
   settings.history = [];
   saveSettings();
   renderHistory();
   showMessage("Break history cleared.", "success");
-}
-
-function resetDefaultMessages() {
-  settings.customMessages = {};
-  saveSettings();
-  renderMessageFields();
-  showMessage("Default break messages restored.", "success");
 }
 
 function restartNormalInterval(message) {
@@ -535,6 +545,7 @@ function restartNormalInterval(message) {
 
 function startIntervalOnly() {
   clearActiveTimer();
+  targetEndTime = Date.now() + remainingSeconds * 1000;
   timerId = window.setInterval(tickTimer, 1000);
 }
 
@@ -543,11 +554,21 @@ function clearActiveTimer() {
     window.clearInterval(timerId);
     timerId = null;
   }
+  targetEndTime = null;
+}
+
+function syncRemainingSeconds() {
+  if (targetEndTime) {
+    remainingSeconds = Math.max(Math.ceil((targetEndTime - Date.now()) / 1000), 0);
+  } else {
+    remainingSeconds = Math.max(remainingSeconds - 1, 0);
+  }
 }
 
 function setTimerDuration(seconds) {
   totalSeconds = Math.max(seconds, 0);
   remainingSeconds = Math.max(seconds, 0);
+  targetEndTime = currentStatus === "Running" && remainingSeconds > 0 ? Date.now() + remainingSeconds * 1000 : null;
 }
 
 function validateSettings() {
@@ -590,8 +611,7 @@ function advanceBreakIndex() {
 }
 
 function getBreakMessage(id) {
-  const fallback = DEFAULT_BREAKS.find((breakItem) => breakItem.id === id)?.message || "";
-  return settings.customMessages[id] || fallback;
+  return DEFAULT_BREAKS.find((breakItem) => breakItem.id === id)?.message || "";
 }
 
 function parseWholeMinutes(value) {
