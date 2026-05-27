@@ -339,6 +339,10 @@ h2 {
   padding: 22px;
 }
 
+.stats-panel {
+  min-height: 257px;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -611,6 +615,10 @@ h2 {
 
   .status-badge {
     align-self: flex-start;
+  }
+
+  .stats-panel {
+    min-height: 0;
   }
 }
 

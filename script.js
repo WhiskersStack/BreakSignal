@@ -54,6 +54,7 @@ let totalSeconds = DEFAULT_SETTINGS.intervalMinutes * 60;
 let targetEndTime = null;
 let currentStatus = "Stopped";
 let activeBreak = null;
+let isPreviewBreak = false;
 let lastFocusedElement = null;
 let soundLoopInterval = null;
 let activeAudioContext = null;
@@ -173,6 +174,7 @@ function pauseTimer() {
 function resetTimer() {
   clearActiveTimer();
   currentStatus = "Stopped";
+  isPreviewBreak = false;
   closeModal(false);
   setTimerDuration(settings.intervalMinutes * 60);
   showMessage("Timer reset to your normal interval.", "success");
@@ -197,6 +199,7 @@ function triggerBreak(isTest) {
 
   clearActiveTimer();
   activeBreak = getNextBreak();
+  isPreviewBreak = isTest;
   currentStatus = "Break Time";
   setTimerDuration(0);
   updateDisplay();
@@ -214,6 +217,11 @@ function triggerBreak(isTest) {
 function completeBreak() {
   if (!activeBreak) return;
 
+  if (isPreviewBreak) {
+    closePreviewBreak("Test reminder closed. No history was added.");
+    return;
+  }
+
   settings.dailyBreakCount += 1;
   addHistoryItem(activeBreak, "Done");
   advanceBreakIndex();
@@ -224,6 +232,11 @@ function completeBreak() {
 
 function snoozeBreak() {
   if (!activeBreak) return;
+
+  if (isPreviewBreak) {
+    closePreviewBreak("Test reminder closed. No snooze was logged.");
+    return;
+  }
 
   addHistoryItem(activeBreak, "Snoozed");
   closeModal(true);
@@ -236,6 +249,11 @@ function snoozeBreak() {
 
 function skipBreak() {
   if (!activeBreak) return;
+
+  if (isPreviewBreak) {
+    closePreviewBreak("Test reminder closed. No history was added.");
+    return;
+  }
 
   addHistoryItem(activeBreak, "Skipped");
   advanceBreakIndex();
@@ -267,6 +285,16 @@ function playSound() {
 
   stopSoundLoop();
   playSoundLoop();
+}
+
+function closePreviewBreak(message) {
+  activeBreak = null;
+  isPreviewBreak = false;
+  currentStatus = "Stopped";
+  closeModal(true);
+  setTimerDuration(settings.intervalMinutes * 60);
+  showMessage(message, "success");
+  updateDisplay();
 }
 
 function playSoundLoop() {
@@ -633,6 +661,7 @@ function clearHistory() {
 
 function restartNormalInterval(message) {
   activeBreak = null;
+  isPreviewBreak = false;
   setTimerDuration(settings.intervalMinutes * 60);
   currentStatus = "Running";
   startIntervalOnly();
