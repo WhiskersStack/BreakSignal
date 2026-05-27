@@ -131,7 +131,7 @@ function loadSettings() {
       };
       delete settings.customMessages;
 
-      if (!["signal", "chime", "pulse", "sweep"].includes(settings.soundTone)) {
+      if (!["signal", "chime", "pulse", "sweep", "deep", "air", "rise", "double"].includes(settings.soundTone)) {
         settings.soundTone = DEFAULT_SETTINGS.soundTone;
       }
     }
@@ -326,6 +326,23 @@ function playSelectedTone(audioContext, tone) {
     sweep: [
       { frequency: 330, endFrequency: 880, start: 0, duration: 0.58, volume: 0.065, type: "triangle" },
       { frequency: 220, endFrequency: 440, start: 0.08, duration: 0.5, volume: 0.035, type: "sine" }
+    ],
+    deep: [
+      { frequency: 246.94, start: 0, duration: 0.7, volume: 0.065, type: "sine" },
+      { frequency: 493.88, start: 0.05, duration: 0.48, volume: 0.035, type: "triangle" }
+    ],
+    air: [
+      { frequency: 880, start: 0, duration: 0.22, volume: 0.045, type: "sine" },
+      { frequency: 1318.51, start: 0.08, duration: 0.26, volume: 0.03, type: "sine" }
+    ],
+    rise: [
+      { frequency: 392, endFrequency: 659.25, start: 0, duration: 0.42, volume: 0.055, type: "triangle" },
+      { frequency: 523.25, endFrequency: 783.99, start: 0.16, duration: 0.46, volume: 0.04, type: "sine" }
+    ],
+    double: [
+      { frequency: 587.33, start: 0, duration: 0.16, volume: 0.065, type: "sine" },
+      { frequency: 587.33, start: 0.26, duration: 0.18, volume: 0.06, type: "sine" },
+      { frequency: 880, start: 0.32, duration: 0.22, volume: 0.03, type: "triangle" }
     ]
   };
 
