@@ -55,6 +55,8 @@ let targetEndTime = null;
 let currentStatus = "Stopped";
 let activeBreak = null;
 let lastFocusedElement = null;
+let soundLoopTimeout = null;
+let activeAudioContext = null;
 
 const elements = {
   timerDisplay: document.getElementById("timerDisplay"),
@@ -254,6 +256,7 @@ function showModal(breakItem) {
 
 function closeModal(restoreFocus) {
   elements.modalOverlay.hidden = true;
+  stopSoundLoop();
   document.removeEventListener("keydown", trapModalFocus);
   if (restoreFocus && lastFocusedElement && typeof lastFocusedElement.focus === "function") {
     lastFocusedElement.focus();
@@ -263,15 +266,40 @@ function closeModal(restoreFocus) {
 function playSound() {
   if (!settings.soundEnabled) return;
 
+  stopSoundLoop();
+  playSoundLoop();
+}
+
+function playSoundLoop() {
+  if (!settings.soundEnabled || elements.modalOverlay.hidden) return;
+
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
 
-    const audioContext = new AudioContext();
-    const finishAt = playSelectedTone(audioContext, settings.soundTone);
-    window.setTimeout(() => audioContext.close(), finishAt * 1000 + 120);
+    activeAudioContext = new AudioContext();
+    const finishAt = playSelectedTone(activeAudioContext, settings.soundTone);
+    soundLoopTimeout = window.setTimeout(() => {
+      closeAudioContext();
+      playSoundLoop();
+    }, finishAt * 1000 + 1200);
   } catch (error) {
     showMessage("Sound could not play in this browser session.", "warning");
+  }
+}
+
+function stopSoundLoop() {
+  if (soundLoopTimeout) {
+    window.clearTimeout(soundLoopTimeout);
+    soundLoopTimeout = null;
+  }
+  closeAudioContext();
+}
+
+function closeAudioContext() {
+  if (activeAudioContext) {
+    activeAudioContext.close();
+    activeAudioContext = null;
   }
 }
 
