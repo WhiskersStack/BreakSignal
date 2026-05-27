@@ -9,28 +9,72 @@ const DEFAULT_BREAKS = [
     title: "Eye Break",
     duration: "20 seconds",
     description: "Soften your gaze and release screen tension.",
-    message: "Look at something far away for 20 seconds. Let your eyes soften."
+    messages: [
+      "Look at something far away for 20 seconds. Let your eyes soften.",
+      "Blink slowly and release the tension behind your eyes.",
+      "Shift your gaze away from the screen and let the room come back into focus.",
+      "Your eyes have been working hard. Give them a clean reset.",
+      "Look toward the distance. No sharp focus, no strain, just softness.",
+      "Relax your forehead, unclench your jaw, and let your vision rest.",
+      "Close your eyes for a few slow breaths, then look far away.",
+      "Let your eyes drift beyond the screen. Focus returns sharper after rest.",
+      "Take a quiet visual pause. The screen can wait.",
+      "Reset your gaze before fatigue becomes the background noise."
+    ]
   },
   {
     id: "stretch",
     title: "Stretch Break",
     duration: "1 minute",
     description: "Open the chest, neck, and shoulders.",
-    message: "Stand up, open your chest, roll your shoulders, and breathe."
+    messages: [
+      "Stand up, open your chest, roll your shoulders, and breathe.",
+      "Reach upward, lengthen your spine, and let your shoulders drop.",
+      "Roll your neck gently. Small motion, no force.",
+      "Stretch your arms, loosen your wrists, and reset your posture.",
+      "Open your chest like you are making room for more air.",
+      "Stand tall for a moment. Your body needs movement, not just endurance.",
+      "Pull your shoulders back gently and breathe into the space you create.",
+      "Let your spine decompress. A small stretch can change the whole session.",
+      "Move slowly through one clean stretch. No rush, no pressure.",
+      "Release the stiffness before it becomes part of the workday."
+    ]
   },
   {
     id: "walk",
     title: "Walking Break",
     duration: "2 minutes",
     description: "Move gently and reset your energy.",
-    message: "Take a short walk. Let your body reset before returning."
+    messages: [
+      "Take a short walk. Let your body reset before returning.",
+      "Step away from the desk and give your mind more oxygen.",
+      "Walk slowly for two minutes. Let your focus rebuild in motion.",
+      "Move your legs, loosen your hips, and let the screen disappear for a moment.",
+      "A short walk can clear more fog than another forced minute at the desk.",
+      "Leave the chair. Let your body remind your brain that it is awake.",
+      "Walk with no goal except returning clearer.",
+      "Stand up and move through the room. Momentum begins in the body.",
+      "Give your circulation a signal. A few steps are enough to start.",
+      "Reset your energy with movement, then come back sharper."
+    ]
   },
   {
     id: "posture",
     title: "Posture Break",
     duration: "30 seconds",
     description: "Return to a stable, aligned working position.",
-    message: "Relax your shoulders, align your neck, and place both feet on the floor."
+    messages: [
+      "Relax your shoulders, align your neck, and place both feet on the floor.",
+      "Unclench your jaw, lower your shoulders, and sit tall without forcing it.",
+      "Bring your screen to your eyes, not your neck to the screen.",
+      "Plant both feet. Let your spine stack naturally.",
+      "Reset your posture before your body starts negotiating with pain.",
+      "Relax your hands, soften your face, and straighten gently.",
+      "Check your neck, shoulders, wrists, and feet. Bring everything back to neutral.",
+      "Sit like you are protecting tomorrow’s energy, not just today’s task.",
+      "Let your shoulders fall away from your ears. That is the signal.",
+      "Small alignment now prevents a louder correction later."
+    ]
   }
 ];
 
@@ -40,7 +84,6 @@ const DEFAULT_SETTINGS = {
   soundEnabled: true,
   notificationsEnabled: false,
   enabledBreakTypes: ["eye", "stretch", "walk", "posture"],
-  customMessages: {},
   dailyBreakCount: 0,
   history: [],
   lastSavedDate: getTodayKey(),
@@ -53,6 +96,7 @@ let remainingSeconds = DEFAULT_SETTINGS.intervalMinutes * 60;
 let totalSeconds = DEFAULT_SETTINGS.intervalMinutes * 60;
 let currentStatus = "Stopped";
 let activeBreak = null;
+let activeBreakMessage = "";
 let lastFocusedElement = null;
 
 const elements = {
@@ -71,8 +115,6 @@ const elements = {
   soundToggle: document.getElementById("soundToggle"),
   notificationToggle: document.getElementById("notificationToggle"),
   breakTypeList: document.getElementById("breakTypeList"),
-  messageFields: document.getElementById("messageFields"),
-  resetMessagesBtn: document.getElementById("resetMessagesBtn"),
   dailyCount: document.getElementById("dailyCount"),
   historyList: document.getElementById("historyList"),
   clearHistoryBtn: document.getElementById("clearHistoryBtn"),
@@ -94,7 +136,6 @@ function initApp() {
   totalSeconds = settings.intervalMinutes * 60;
 
   renderBreakTypes();
-  renderMessageFields();
   bindEvents();
   syncSettingsToInputs();
   renderHistory();
@@ -109,7 +150,6 @@ function bindEvents() {
   elements.doneBtn.addEventListener("click", completeBreak);
   elements.snoozeBtn.addEventListener("click", snoozeBreak);
   elements.skipBtn.addEventListener("click", skipBreak);
-  elements.resetMessagesBtn.addEventListener("click", resetDefaultMessages);
   elements.clearHistoryBtn.addEventListener("click", clearHistory);
   elements.intervalInput.addEventListener("change", handleIntervalChange);
   elements.snoozeInput.addEventListener("change", handleSnoozeChange);
@@ -121,14 +161,16 @@ function bindEvents() {
 function loadSettings() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
     if (saved && typeof saved === "object") {
       settings = {
         ...DEFAULT_SETTINGS,
         ...saved,
-        customMessages: { ...DEFAULT_SETTINGS.customMessages, ...(saved.customMessages || {}) },
         history: Array.isArray(saved.history) ? saved.history : [],
         enabledBreakTypes: Array.isArray(saved.enabledBreakTypes) ? saved.enabledBreakTypes : DEFAULT_SETTINGS.enabledBreakTypes
       };
+
+      delete settings.customMessages;
     }
   } catch (error) {
     settings = { ...DEFAULT_SETTINGS };
@@ -167,6 +209,8 @@ function pauseTimer() {
 function resetTimer() {
   clearActiveTimer();
   currentStatus = "Stopped";
+  activeBreak = null;
+  activeBreakMessage = "";
   closeModal(false);
   setTimerDuration(settings.intervalMinutes * 60);
   showMessage("Timer reset to your normal interval.", "success");
@@ -191,15 +235,16 @@ function triggerBreak(isTest) {
 
   clearActiveTimer();
   activeBreak = getNextBreak();
+  activeBreakMessage = getRandomBreakMessage(activeBreak);
   currentStatus = "Break Time";
   setTimerDuration(0);
   updateDisplay();
-  showModal(activeBreak);
+  showModal(activeBreak, activeBreakMessage);
   playSound();
-  sendNotification(activeBreak);
+  sendNotification(activeBreak, activeBreakMessage);
 
   if (isTest) {
-    addHistoryItem(activeBreak, "Test");
+    addHistoryItem(activeBreak, "Test", activeBreakMessage);
     showMessage("Test reminder opened.", "success");
   } else {
     showMessage("Break time. Take the reset.", "success");
@@ -210,7 +255,7 @@ function completeBreak() {
   if (!activeBreak) return;
 
   settings.dailyBreakCount += 1;
-  addHistoryItem(activeBreak, "Done");
+  addHistoryItem(activeBreak, "Done", activeBreakMessage);
   advanceBreakIndex();
   saveSettings();
   closeModal(true);
@@ -220,7 +265,7 @@ function completeBreak() {
 function snoozeBreak() {
   if (!activeBreak) return;
 
-  addHistoryItem(activeBreak, "Snoozed");
+  addHistoryItem(activeBreak, "Snoozed", activeBreakMessage);
   closeModal(true);
   setTimerDuration(settings.snoozeMinutes * 60);
   currentStatus = "Running";
@@ -232,16 +277,16 @@ function snoozeBreak() {
 function skipBreak() {
   if (!activeBreak) return;
 
-  addHistoryItem(activeBreak, "Skipped");
+  addHistoryItem(activeBreak, "Skipped", activeBreakMessage);
   advanceBreakIndex();
   closeModal(true);
   restartNormalInterval("Break skipped. Normal interval restarted.");
 }
 
-function showModal(breakItem) {
+function showModal(breakItem, message) {
   lastFocusedElement = document.activeElement;
   elements.modalTitle.textContent = breakItem.title;
-  elements.modalMessage.textContent = getBreakMessage(breakItem.id);
+  elements.modalMessage.textContent = message;
   elements.modalDuration.textContent = breakItem.duration;
   elements.modalOverlay.hidden = false;
   elements.doneBtn.focus();
@@ -305,13 +350,13 @@ function requestNotificationPermission() {
   });
 }
 
-function sendNotification(breakItem) {
+function sendNotification(breakItem, message) {
   if (!settings.notificationsEnabled || !("Notification" in window) || Notification.permission !== "granted") {
     return;
   }
 
   new Notification("BreakSignal Reminder", {
-    body: getBreakMessage(breakItem.id)
+    body: message || getRandomBreakMessage(breakItem)
   });
 }
 
@@ -345,13 +390,13 @@ function updateButtons() {
   elements.pauseBtn.disabled = !timerId;
 }
 
-function addHistoryItem(breakItem, action) {
+function addHistoryItem(breakItem, action, message) {
   const item = {
     id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
     time: new Date().toISOString(),
     breakType: breakItem.title,
     action,
-    message: getBreakMessage(breakItem.id)
+    message: message || getRandomBreakMessage(breakItem)
   };
 
   settings.history = [item, ...settings.history].slice(0, HISTORY_LIMIT);
@@ -383,7 +428,8 @@ function renderHistory() {
     title.textContent = item.breakType;
 
     const preview = document.createElement("p");
-    preview.textContent = item.message.length > 92 ? `${item.message.slice(0, 92)}...` : item.message;
+    const historyMessage = item.message || "Break reminder completed.";
+    preview.textContent = historyMessage.length > 92 ? `${historyMessage.slice(0, 92)}...` : historyMessage;
 
     row.append(meta, title, preview);
     elements.historyList.appendChild(row);
@@ -427,27 +473,6 @@ function renderBreakTypes() {
     });
 
     elements.breakTypeList.appendChild(label);
-  });
-}
-
-function renderMessageFields() {
-  elements.messageFields.innerHTML = "";
-
-  DEFAULT_BREAKS.forEach((breakItem) => {
-    const wrapper = document.createElement("label");
-    wrapper.className = "message-card";
-    wrapper.innerHTML = `
-      <span class="message-label">${breakItem.title}</span>
-      <textarea data-message-id="${breakItem.id}">${getBreakMessage(breakItem.id)}</textarea>
-    `;
-
-    const textarea = wrapper.querySelector("textarea");
-    textarea.addEventListener("input", () => {
-      settings.customMessages[breakItem.id] = textarea.value.trim() || breakItem.message;
-      saveSettings();
-    });
-
-    elements.messageFields.appendChild(wrapper);
   });
 }
 
@@ -517,15 +542,9 @@ function clearHistory() {
   showMessage("Break history cleared.", "success");
 }
 
-function resetDefaultMessages() {
-  settings.customMessages = {};
-  saveSettings();
-  renderMessageFields();
-  showMessage("Default break messages restored.", "success");
-}
-
 function restartNormalInterval(message) {
   activeBreak = null;
+  activeBreakMessage = "";
   setTimerDuration(settings.intervalMinutes * 60);
   currentStatus = "Running";
   startIntervalOnly();
@@ -589,9 +608,13 @@ function advanceBreakIndex() {
   settings.nextBreakIndex = (settings.nextBreakIndex + 1) % enabledCount;
 }
 
-function getBreakMessage(id) {
-  const fallback = DEFAULT_BREAKS.find((breakItem) => breakItem.id === id)?.message || "";
-  return settings.customMessages[id] || fallback;
+function getRandomBreakMessage(breakItem) {
+  if (!breakItem || !Array.isArray(breakItem.messages) || !breakItem.messages.length) {
+    return "Take a short break. Your body and focus will thank you.";
+  }
+
+  const randomIndex = Math.floor(Math.random() * breakItem.messages.length);
+  return breakItem.messages[randomIndex];
 }
 
 function parseWholeMinutes(value) {
