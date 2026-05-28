@@ -729,31 +729,6 @@ h2 {
   padding: 0 18px 18px;
 }
 
-.search-checklist {
-  margin-top: 28px;
-  padding: 22px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: rgba(7, 11, 20, 0.28);
-}
-
-.search-checklist h2 {
-  font-size: 1.18rem;
-}
-
-.search-checklist ul {
-  display: grid;
-  gap: 10px;
-  margin: 16px 0 0;
-  padding-left: 1.2rem;
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-.search-checklist code {
-  color: var(--text);
-}
-
 body.compact-mode .app-shell {
   width: min(760px, calc(100% - 32px));
   min-height: 100vh;
