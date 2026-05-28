@@ -300,6 +300,7 @@ h2 {
 .small-btn {
   min-height: 36px;
   padding: 0 0.75rem;
+  margin-top: 0.4rem;
   font-size: 0.88rem;
 }
 
