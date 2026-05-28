@@ -15,11 +15,13 @@
   <meta property="og:title" content="BreakSignal - Break Reminder for Eyes, Posture & Focus">
   <meta property="og:description" content="A calm, minimal break reminder for eye breaks, stretching, walking, posture, and focus.">
   <meta property="og:url" content="https://www.break-signal.com/">
-  <meta property="og:image" content="https://www.break-signal.com/logo.svg">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://www.break-signal.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="BreakSignal - Break Reminder for Eyes, Posture & Focus">
   <meta name="twitter:description" content="A calm, minimal break reminder for eye breaks, stretching, walking, posture, and focus.">
-  <meta name="twitter:image" content="https://www.break-signal.com/logo.svg">
+  <meta name="twitter:image" content="https://www.break-signal.com/og-image.png">
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
@@ -70,6 +72,14 @@
         },
         {
           "@type": "Question",
+          "name": "Does BreakSignal require an account?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. BreakSignal does not require sign-up, login, a backend, a database, or external APIs."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Where is my break history stored?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -82,6 +92,22 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Yes. You can set a shorter reminder interval and use Eye Break reminders to look away from the screen and relax your eyes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does BreakSignal play sounds?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. BreakSignal uses the Web Audio API to generate alert tones in the browser without external audio files."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does BreakSignal work on mobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. BreakSignal has a responsive layout for mobile browsers, though it is primarily designed for people working at a computer."
           }
         }
       ]
@@ -153,16 +179,19 @@
 
               <label class="field">
                 <span>Alert tone</span>
-                <select id="soundToneSelect">
-                  <option value="signal">Soft Signal</option>
-                  <option value="chime">Calm Chime</option>
-                  <option value="pulse">Focus Pulse</option>
-                  <option value="sweep">Reset Sweep</option>
-                  <option value="deep">Deep Bell</option>
-                  <option value="air">Air Ping</option>
-                  <option value="rise">Gentle Rise</option>
-                  <option value="double">Double Tap</option>
-                </select>
+                <div class="tone-control">
+                  <select id="soundToneSelect">
+                    <option value="signal">Soft Signal</option>
+                    <option value="chime">Calm Chime</option>
+                    <option value="pulse">Focus Pulse</option>
+                    <option value="sweep">Reset Sweep</option>
+                    <option value="deep">Deep Bell</option>
+                    <option value="air">Air Ping</option>
+                    <option value="rise">Gentle Rise</option>
+                    <option value="double">Double Tap</option>
+                  </select>
+                  <button id="previewToneBtn" class="ghost-btn small-btn tone-preview-btn" type="button">Preview tone</button>
+                </div>
                 <small>Generated in-browser. No audio files are used.</small>
               </label>
             </div>
@@ -209,6 +238,7 @@
               </div>
               <button id="clearHistoryBtn" class="ghost-btn small-btn" type="button">Clear</button>
             </div>
+            <p id="historySummary" class="history-summary">Latest 30 entries are kept.</p>
             <div id="historyList" class="history-list"></div>
           </section>
         </div>

@@ -367,6 +367,18 @@ h2 {
   line-height: 1.45;
 }
 
+.tone-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.tone-preview-btn {
+  min-height: 46px;
+  white-space: nowrap;
+}
+
 .toggle-row {
   flex-wrap: wrap;
   margin-top: 18px;
@@ -487,10 +499,16 @@ h2 {
   min-height: 420px;
 }
 
+.history-summary {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
 .history-list {
   display: grid;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 12px;
   max-height: min(420px, 52vh);
   overflow-y: auto;
   padding-right: 6px;
@@ -732,6 +750,14 @@ h2 {
   .app-shell {
     width: min(100% - 22px, 1120px);
     padding-top: 18px;
+  }
+
+  .tone-control {
+    grid-template-columns: 1fr;
+  }
+
+  .tone-preview-btn {
+    width: 100%;
   }
 
   .site-header {

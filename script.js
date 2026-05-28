@@ -74,10 +74,12 @@ const elements = {
   snoozeInput: document.getElementById("snoozeInput"),
   soundToggle: document.getElementById("soundToggle"),
   soundToneSelect: document.getElementById("soundToneSelect"),
+  previewToneBtn: document.getElementById("previewToneBtn"),
   notificationToggle: document.getElementById("notificationToggle"),
   breakTypeList: document.getElementById("breakTypeList"),
   dailyCount: document.getElementById("dailyCount"),
   historyList: document.getElementById("historyList"),
+  historySummary: document.getElementById("historySummary"),
   clearHistoryBtn: document.getElementById("clearHistoryBtn"),
   modalOverlay: document.getElementById("modalOverlay"),
   modalTitle: document.getElementById("modalTitle"),
@@ -116,6 +118,7 @@ function bindEvents() {
   elements.snoozeInput.addEventListener("change", handleSnoozeChange);
   elements.soundToggle.addEventListener("change", handleSoundToggle);
   elements.soundToneSelect.addEventListener("change", handleSoundToneChange);
+  elements.previewToneBtn.addEventListener("click", previewSelectedTone);
   elements.notificationToggle.addEventListener("change", handleNotificationToggle);
   elements.modalOverlay.addEventListener("keydown", handleModalKeydown);
 }
@@ -336,6 +339,36 @@ function closeAudioContext() {
   }
 }
 
+function previewSelectedTone() {
+  settings.soundTone = elements.soundToneSelect.value;
+  saveSettings();
+  if (playOneShotTone(settings.soundTone)) {
+    showMessage("Tone preview played. No reminder or history was created.", "success");
+  }
+}
+
+function playOneShotTone(tone) {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) {
+      showMessage("Sound preview is not supported in this browser.", "warning");
+      return false;
+    }
+
+    const previewContext = new AudioContext();
+    if (previewContext.state === "suspended") {
+      previewContext.resume();
+    }
+
+    const toneLength = playSelectedTone(previewContext, tone);
+    window.setTimeout(() => previewContext.close(), (toneLength + 0.25) * 1000);
+    return true;
+  } catch (error) {
+    showMessage("Sound preview could not play in this browser session.", "warning");
+    return false;
+  }
+}
+
 function playSelectedTone(audioContext, tone) {
   const tones = {
     signal: [
@@ -495,6 +528,7 @@ function addHistoryItem(breakItem, action) {
 
 function renderHistory() {
   elements.historyList.innerHTML = "";
+  updateHistorySummary();
 
   if (!settings.history.length) {
     const empty = document.createElement("p");
@@ -521,6 +555,13 @@ function renderHistory() {
     row.append(meta, title, preview);
     elements.historyList.appendChild(row);
   });
+}
+
+function updateHistorySummary() {
+  const count = settings.history.length;
+  elements.historySummary.textContent = count
+    ? `Showing ${count} of the latest ${HISTORY_LIMIT} activity entries.`
+    : `Latest ${HISTORY_LIMIT} activity entries will appear here.`;
 }
 
 function resetDailyCounterIfNeeded() {
@@ -608,6 +649,9 @@ function handleSnoozeChange() {
 
 function handleSoundToggle() {
   settings.soundEnabled = elements.soundToggle.checked;
+  if (!settings.soundEnabled) {
+    stopSoundLoop();
+  }
   saveSettings();
   showMessage(settings.soundEnabled ? "Sound alert enabled." : "Sound alert disabled.", "success");
 }
@@ -615,7 +659,7 @@ function handleSoundToggle() {
 function handleSoundToneChange() {
   settings.soundTone = elements.soundToneSelect.value;
   saveSettings();
-  showMessage("Alert tone saved. Use Test Reminder to hear it.", "success");
+  showMessage("Alert tone saved. Use Preview tone to hear it.", "success");
 }
 
 function handleNotificationToggle() {
