@@ -544,6 +544,97 @@ h2 {
   text-align: center;
 }
 
+.seo-section {
+  margin-top: 28px;
+  padding: clamp(24px, 4vw, 42px);
+  border-top: 1px solid var(--border);
+}
+
+.seo-intro {
+  max-width: 820px;
+}
+
+.seo-intro h2,
+.seo-split h2,
+.faq-section h2 {
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+  line-height: 1.12;
+}
+
+.seo-intro p,
+.seo-card p,
+.seo-split p,
+.faq-list p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.seo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.seo-card {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(17, 29, 46, 0.48);
+}
+
+.seo-card h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.seo-card p {
+  margin: 0;
+}
+
+.seo-split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.seo-split > div {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(7, 11, 20, 0.28);
+}
+
+.faq-section {
+  margin-top: 28px;
+}
+
+.faq-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.faq-list details {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(16, 24, 39, 0.58);
+}
+
+.faq-list summary {
+  min-height: 52px;
+  padding: 15px 18px;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.faq-list p {
+  margin: 0;
+  padding: 0 18px 18px;
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -599,7 +690,9 @@ h2 {
 @media (max-width: 840px) {
   .content-grid,
   .form-grid,
-  .break-type-list {
+  .break-type-list,
+  .seo-grid,
+  .seo-split {
     grid-template-columns: 1fr;
   }
 

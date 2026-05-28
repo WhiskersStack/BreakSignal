@@ -47,6 +47,46 @@
       ]
     }
   </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is BreakSignal free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. BreakSignal is a free browser-based break reminder for eye breaks, stretching, walking, posture checks, and focus resets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does BreakSignal keep running after I close the tab?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. BreakSignal runs while the browser tab is open. Settings and break history are saved locally, but the countdown does not continue after the tab is closed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is my break history stored?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BreakSignal stores settings and break history in your browser's localStorage. It does not use accounts, a backend, a database, or external APIs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use BreakSignal for the 20-20-20 eye break rule?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can set a shorter reminder interval and use Eye Break reminders to look away from the screen and relax your eyes."
+          }
+        }
+      ]
+    }
+  </script>
 </head>
 <body>
   <div class="app-shell">
@@ -174,6 +214,114 @@
           </section>
         </aside>
       </div>
+
+      <section class="seo-section" aria-labelledby="about-heading">
+        <div class="seo-intro">
+          <p class="section-kicker">Break reminder for computer work</p>
+          <h2 id="about-heading">A quieter way to remember eye breaks, posture checks, stretching, and movement.</h2>
+          <p>
+            BreakSignal is a free browser-based break reminder for people who spend long stretches at a computer.
+            It helps you build a steady rhythm of eye breaks, stretch breaks, walking breaks, and posture resets
+            without installing an app or creating an account.
+          </p>
+        </div>
+
+        <div class="seo-grid">
+          <article class="seo-card">
+            <h3>Eye Breaks</h3>
+            <p>
+              Use short eye break reminders to look away from the screen, soften your gaze, blink slowly, and reduce
+              the feeling of visual strain during deep work sessions.
+            </p>
+          </article>
+
+          <article class="seo-card">
+            <h3>Stretch Breaks</h3>
+            <p>
+              Stretch reminders encourage simple movement for your neck, shoulders, wrists, chest, and back before
+              stiffness becomes part of the workday.
+            </p>
+          </article>
+
+          <article class="seo-card">
+            <h3>Walking Breaks</h3>
+            <p>
+              Walking breaks help you step away from the chair, reset your energy, and return to the desk with a
+              clearer head and a little more momentum.
+            </p>
+          </article>
+
+          <article class="seo-card">
+            <h3>Posture Checks</h3>
+            <p>
+              Posture reminders help you notice your shoulders, neck, wrists, and feet so you can return to a more
+              comfortable working position.
+            </p>
+          </article>
+        </div>
+
+        <div class="seo-split">
+          <div>
+            <p class="section-kicker">Private by design</p>
+            <h2>Runs locally in your browser.</h2>
+            <p>
+              BreakSignal does not require a login, backend, database, or external API. Your reminder interval,
+              enabled break types, sound preference, daily count, and break history stay in your own browser using
+              localStorage.
+            </p>
+          </div>
+          <div>
+            <p class="section-kicker">Simple workflow</p>
+            <h2>Open the page, start the timer, take the break.</h2>
+            <p>
+              The timer works while the tab is open. When a reminder appears, choose Done, Snooze, or Skip. The app
+              keeps a recent activity history so you can see your reset rhythm during the day.
+            </p>
+          </div>
+        </div>
+
+        <section class="faq-section" aria-labelledby="faq-heading">
+          <p class="section-kicker">FAQ</p>
+          <h2 id="faq-heading">BreakSignal questions</h2>
+
+          <div class="faq-list">
+            <details>
+              <summary>Is BreakSignal free?</summary>
+              <p>Yes. BreakSignal is a free web-based break reminder for eye breaks, stretch breaks, walking breaks, posture checks, and focus resets.</p>
+            </details>
+
+            <details>
+              <summary>Does BreakSignal work after I close the tab?</summary>
+              <p>No. The countdown runs while the browser tab is open. Your settings and history are saved, but the timer does not continue after the tab is closed.</p>
+            </details>
+
+            <details>
+              <summary>Does BreakSignal require an account?</summary>
+              <p>No. There is no sign-up, login, backend, database, or external API. You can open the page and start using the timer immediately.</p>
+            </details>
+
+            <details>
+              <summary>Where is my break history stored?</summary>
+              <p>Your settings and break history are stored locally in your browser using localStorage. Clearing browser site data can remove that history.</p>
+            </details>
+
+            <details>
+              <summary>Can I use it for the 20-20-20 eye break rule?</summary>
+              <p>Yes. Set a reminder interval that fits your workflow and keep Eye Break enabled to get regular prompts to look away from the screen.</p>
+            </details>
+
+            <details>
+              <summary>Does BreakSignal play sounds?</summary>
+              <p>Yes. BreakSignal uses the Web Audio API to generate alert tones in the browser. It does not load external audio files.</p>
+            </details>
+
+            <details>
+              <summary>Does BreakSignal work on mobile?</summary>
+              <p>The layout is responsive and works on mobile browsers, though it is designed primarily for people working at a computer.</p>
+            </details>
+          </div>
+        </section>
+      </section>
     </main>
   </div>
 
