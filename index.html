@@ -129,90 +129,85 @@
       </section>
 
       <div class="content-grid">
-        <section class="settings-stack" aria-label="Break settings">
-          <div class="glass-card panel">
-            <div class="panel-heading">
-              <div>
-                <p class="section-kicker">Settings</p>
-                <h2>Break cadence</h2>
-              </div>
-            </div>
-
-            <div class="form-grid">
-              <label class="field">
-                <span>Reminder interval</span>
-                <input id="intervalInput" type="number" min="1" step="1" inputmode="numeric">
-                <small>Minutes between break reminders.</small>
-              </label>
-
-              <label class="field">
-                <span>Snooze duration</span>
-                <input id="snoozeInput" type="number" min="1" step="1" inputmode="numeric">
-                <small>Minutes before a snoozed reminder returns.</small>
-              </label>
-
-              <label class="field">
-                <span>Alert tone</span>
-                <select id="soundToneSelect">
-                  <option value="signal">Soft Signal</option>
-                  <option value="chime">Calm Chime</option>
-                  <option value="pulse">Focus Pulse</option>
-                  <option value="sweep">Reset Sweep</option>
-                  <option value="deep">Deep Bell</option>
-                  <option value="air">Air Ping</option>
-                  <option value="rise">Gentle Rise</option>
-                  <option value="double">Double Tap</option>
-                </select>
-                <small>Generated in-browser. No audio files are used.</small>
-              </label>
-            </div>
-
-            <div class="toggle-row">
-              <label class="toggle">
-                <input id="soundToggle" type="checkbox">
-                <span class="toggle-ui"></span>
-                <span>Sound alert</span>
-              </label>
-
-              <label class="toggle">
-                <input id="notificationToggle" type="checkbox">
-                <span class="toggle-ui"></span>
-                <span>Browser notifications</span>
-              </label>
+        <section class="glass-card panel cadence-panel" aria-labelledby="cadence-heading">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Settings</p>
+              <h2 id="cadence-heading">Break cadence</h2>
             </div>
           </div>
 
-          <div class="glass-card panel">
-            <div class="panel-heading">
-              <div>
-                <p class="section-kicker">Break types</p>
-                <h2>Rotation</h2>
-              </div>
-            </div>
-            <div id="breakTypeList" class="break-type-list"></div>
+          <div class="form-grid">
+            <label class="field">
+              <span>Reminder interval</span>
+              <input id="intervalInput" type="number" min="1" step="1" inputmode="numeric">
+              <small>Minutes between break reminders.</small>
+            </label>
+
+            <label class="field">
+              <span>Snooze duration</span>
+              <input id="snoozeInput" type="number" min="1" step="1" inputmode="numeric">
+              <small>Minutes before a snoozed reminder returns.</small>
+            </label>
+
+            <label class="field">
+              <span>Alert tone</span>
+              <select id="soundToneSelect">
+                <option value="signal">Soft Signal</option>
+                <option value="chime">Calm Chime</option>
+                <option value="pulse">Focus Pulse</option>
+                <option value="sweep">Reset Sweep</option>
+                <option value="deep">Deep Bell</option>
+                <option value="air">Air Ping</option>
+                <option value="rise">Gentle Rise</option>
+                <option value="double">Double Tap</option>
+              </select>
+              <small>Generated in-browser. No audio files are used.</small>
+            </label>
           </div>
 
+          <div class="toggle-row">
+            <label class="toggle">
+              <input id="soundToggle" type="checkbox">
+              <span class="toggle-ui"></span>
+              <span>Sound alert</span>
+            </label>
+
+            <label class="toggle">
+              <input id="notificationToggle" type="checkbox">
+              <span class="toggle-ui"></span>
+              <span>Browser notifications</span>
+            </label>
+          </div>
         </section>
 
-        <aside class="side-stack" aria-label="Stats and history">
-          <section class="glass-card panel stats-panel" aria-labelledby="stats-heading">
-            <p class="section-kicker">Today</p>
-            <h2 id="stats-heading">Daily stats</h2>
-            <div class="stat-number" id="dailyCount">0</div>
-            <p class="muted">Completed breaks logged today.</p>
-          </section>
+        <section class="glass-card panel stats-panel" aria-labelledby="stats-heading">
+          <p class="section-kicker">Today</p>
+          <h2 id="stats-heading">Daily stats</h2>
+          <div class="stat-number" id="dailyCount">0</div>
+          <p class="muted">Completed breaks logged today.</p>
+        </section>
 
-          <section class="glass-card panel history-panel" aria-labelledby="history-heading">
-            <div class="panel-heading split-heading">
-              <div>
-                <p class="section-kicker">Activity</p>
-                <h2 id="history-heading">Break history</h2>
-              </div>
-              <button id="clearHistoryBtn" class="ghost-btn small-btn" type="button">Clear</button>
+        <section class="glass-card panel break-types-panel" aria-labelledby="break-types-heading">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Break types</p>
+              <h2 id="break-types-heading">Rotation</h2>
             </div>
-            <div id="historyList" class="history-list"></div>
-          </section>
-        </aside>
+          </div>
+          <div id="breakTypeList" class="break-type-list"></div>
+        </section>
+
+        <section class="glass-card panel history-panel" aria-labelledby="history-heading">
+          <div class="panel-heading split-heading">
+            <div>
+              <p class="section-kicker">Activity</p>
+              <h2 id="history-heading">Break history</h2>
+            </div>
+            <button id="clearHistoryBtn" class="ghost-btn small-btn" type="button">Clear</button>
+          </div>
+          <div id="historyList" class="history-list"></div>
+        </section>
       </div>
 
       <section class="seo-section" aria-labelledby="about-heading">
