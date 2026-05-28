@@ -439,9 +439,13 @@ h2 {
   line-height: 1.45;
 }
 
+.tone-field {
+  grid-column: 1 / -1;
+}
+
 .tone-control {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(260px, 0.5fr) auto;
   gap: 10px;
   align-items: center;
 }
