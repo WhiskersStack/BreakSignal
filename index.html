@@ -150,6 +150,7 @@
           <button id="pauseBtn" class="secondary-btn" type="button">Pause</button>
           <button id="resetBtn" class="secondary-btn" type="button">Reset</button>
           <button id="testBtn" class="ghost-btn" type="button">Test Reminder</button>
+          <button id="compactModeBtn" class="ghost-btn" type="button" aria-pressed="false">Compact Mode</button>
         </div>
         <p id="appMessage" class="app-message" role="status" aria-live="polite"></p>
       </section>
@@ -162,6 +163,14 @@
                 <p class="section-kicker">Settings</p>
                 <h2 id="cadence-heading">Break cadence</h2>
               </div>
+            </div>
+
+            <div class="preset-group" aria-label="Break cadence presets">
+              <button class="preset-btn" type="button" data-preset="20-20-20">20-20-20</button>
+              <button class="preset-btn" type="button" data-preset="deep-work">Deep Work</button>
+              <button class="preset-btn" type="button" data-preset="posture-guard">Posture Guard</button>
+              <button class="preset-btn" type="button" data-preset="movement-mode">Movement Mode</button>
+              <button class="preset-btn" type="button" data-preset="custom">Custom</button>
             </div>
 
             <div class="form-grid">
@@ -212,8 +221,13 @@
           </section>
 
           <section class="glass-card panel stats-panel" aria-labelledby="stats-heading">
-            <p class="section-kicker">Today</p>
-            <h2 id="stats-heading">Daily stats</h2>
+            <div class="panel-heading split-heading">
+              <div>
+                <p class="section-kicker">Today</p>
+                <h2 id="stats-heading">Daily stats</h2>
+              </div>
+              <button id="resetTodayBtn" class="ghost-btn small-btn" type="button">Reset today</button>
+            </div>
             <div class="stat-number" id="dailyCount">0</div>
             <p class="muted">Completed breaks logged today.</p>
           </section>
@@ -349,6 +363,17 @@
               <p>The layout is responsive and works on mobile browsers, though it is designed primarily for people working at a computer.</p>
             </details>
           </div>
+        </section>
+
+        <section class="search-checklist" aria-labelledby="search-checklist-heading">
+          <p class="section-kicker">Search visibility checklist</p>
+          <h2 id="search-checklist-heading">After the next deploy</h2>
+          <ul>
+            <li>Submit <code>sitemap.xml</code> in Google Search Console.</li>
+            <li>Request indexing for the homepage.</li>
+            <li>Check mobile usability after Google crawls the page.</li>
+            <li>Confirm the page title and description in search preview tools.</li>
+          </ul>
         </section>
       </section>
     </main>

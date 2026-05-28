@@ -2,6 +2,32 @@
 
 const STORAGE_KEY = "breaksignal.settings.v1";
 const HISTORY_LIMIT = 30;
+const DEFAULT_MOTIVATION = "Start a calm rhythm. Your future self gets the benefit.";
+const PRESETS = {
+  custom: {
+    label: "Custom"
+  },
+  "20-20-20": {
+    label: "20-20-20",
+    intervalMinutes: 20,
+    enabledBreakTypes: ["eye"]
+  },
+  "deep-work": {
+    label: "Deep Work",
+    intervalMinutes: 45,
+    enabledBreakTypes: ["eye", "posture", "stretch"]
+  },
+  "posture-guard": {
+    label: "Posture Guard",
+    intervalMinutes: 30,
+    enabledBreakTypes: ["posture", "stretch"]
+  },
+  "movement-mode": {
+    label: "Movement Mode",
+    intervalMinutes: 60,
+    enabledBreakTypes: ["walk", "stretch"]
+  }
+};
 
 const DEFAULT_BREAKS = [
   {
@@ -44,7 +70,9 @@ const DEFAULT_SETTINGS = {
   dailyBreakCount: 0,
   history: [],
   lastSavedDate: getTodayKey(),
-  nextBreakIndex: 0
+  nextBreakIndex: 0,
+  activePreset: "custom",
+  compactMode: false
 };
 
 let settings = { ...DEFAULT_SETTINGS };
@@ -58,8 +86,10 @@ let isPreviewBreak = false;
 let lastFocusedElement = null;
 let soundLoopInterval = null;
 let activeAudioContext = null;
+let completionFeedbackTimer = null;
 
 const elements = {
+  timerCard: document.querySelector(".timer-card"),
   timerDisplay: document.getElementById("timerDisplay"),
   statusBadge: document.getElementById("statusBadge"),
   nextBreakType: document.getElementById("nextBreakType"),
@@ -69,7 +99,9 @@ const elements = {
   pauseBtn: document.getElementById("pauseBtn"),
   resetBtn: document.getElementById("resetBtn"),
   testBtn: document.getElementById("testBtn"),
+  compactModeBtn: document.getElementById("compactModeBtn"),
   appMessage: document.getElementById("appMessage"),
+  presetButtons: document.querySelectorAll(".preset-btn"),
   intervalInput: document.getElementById("intervalInput"),
   snoozeInput: document.getElementById("snoozeInput"),
   soundToggle: document.getElementById("soundToggle"),
@@ -78,6 +110,7 @@ const elements = {
   notificationToggle: document.getElementById("notificationToggle"),
   breakTypeList: document.getElementById("breakTypeList"),
   dailyCount: document.getElementById("dailyCount"),
+  resetTodayBtn: document.getElementById("resetTodayBtn"),
   historyList: document.getElementById("historyList"),
   historySummary: document.getElementById("historySummary"),
   clearHistoryBtn: document.getElementById("clearHistoryBtn"),
@@ -101,6 +134,8 @@ function initApp() {
   renderBreakTypes();
   bindEvents();
   syncSettingsToInputs();
+  syncCompactMode();
+  syncPresetButtons();
   renderHistory();
   updateDisplay();
 }
@@ -110,10 +145,15 @@ function bindEvents() {
   elements.pauseBtn.addEventListener("click", pauseTimer);
   elements.resetBtn.addEventListener("click", resetTimer);
   elements.testBtn.addEventListener("click", () => triggerBreak(true));
+  elements.compactModeBtn.addEventListener("click", toggleCompactMode);
   elements.doneBtn.addEventListener("click", completeBreak);
   elements.snoozeBtn.addEventListener("click", snoozeBreak);
   elements.skipBtn.addEventListener("click", skipBreak);
+  elements.resetTodayBtn.addEventListener("click", resetTodayStats);
   elements.clearHistoryBtn.addEventListener("click", clearHistory);
+  elements.presetButtons.forEach((button) => {
+    button.addEventListener("click", () => applyPreset(button.dataset.preset));
+  });
   elements.intervalInput.addEventListener("change", handleIntervalChange);
   elements.snoozeInput.addEventListener("change", handleSnoozeChange);
   elements.soundToggle.addEventListener("change", handleSoundToggle);
@@ -138,6 +178,12 @@ function loadSettings() {
       if (!["signal", "chime", "pulse", "sweep", "deep", "air", "rise", "double"].includes(settings.soundTone)) {
         settings.soundTone = DEFAULT_SETTINGS.soundTone;
       }
+
+      if (!PRESETS[settings.activePreset]) {
+        settings.activePreset = DEFAULT_SETTINGS.activePreset;
+      }
+
+      settings.compactMode = Boolean(settings.compactMode);
     }
   } catch (error) {
     settings = { ...DEFAULT_SETTINGS };
@@ -231,6 +277,7 @@ function completeBreak() {
   saveSettings();
   closeModal(true);
   restartNormalInterval("Break completed. Timer restarted.");
+  showCompletionFeedback();
 }
 
 function snoozeBreak() {
@@ -573,6 +620,49 @@ function resetDailyCounterIfNeeded() {
   }
 }
 
+function applyPreset(presetId) {
+  const preset = PRESETS[presetId];
+  if (!preset) return;
+
+  settings.activePreset = presetId;
+
+  if (presetId !== "custom") {
+    settings.intervalMinutes = preset.intervalMinutes;
+    settings.enabledBreakTypes = [...preset.enabledBreakTypes];
+    settings.nextBreakIndex = 0;
+    elements.intervalInput.value = settings.intervalMinutes;
+
+    if (currentStatus === "Stopped" || currentStatus === "Paused") {
+      setTimerDuration(settings.intervalMinutes * 60);
+    }
+  }
+
+  saveSettings();
+  renderBreakTypes();
+  syncPresetButtons();
+  updateDisplay();
+
+  const message = presetId === "custom"
+    ? "Custom cadence selected."
+    : `${preset.label} preset applied.`;
+  showMessage(message, "success");
+}
+
+function syncPresetButtons() {
+  elements.presetButtons.forEach((button) => {
+    const isActive = button.dataset.preset === settings.activePreset;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+}
+
+function markCustomPreset() {
+  if (settings.activePreset !== "custom") {
+    settings.activePreset = "custom";
+    syncPresetButtons();
+  }
+}
+
 function renderBreakTypes() {
   elements.breakTypeList.innerHTML = "";
 
@@ -591,11 +681,13 @@ function renderBreakTypes() {
     const input = label.querySelector("input");
     input.checked = settings.enabledBreakTypes.includes(breakItem.id);
     input.addEventListener("change", () => {
+      markCustomPreset();
       settings.enabledBreakTypes = Array.from(elements.breakTypeList.querySelectorAll("input:checked")).map((item) => item.value);
       if (settings.enabledBreakTypes.length && !settings.enabledBreakTypes.includes(getNextBreak().id)) {
         settings.nextBreakIndex = 0;
       }
       saveSettings();
+      syncPresetButtons();
       updateDisplay();
       showMessage(settings.enabledBreakTypes.length ? "Break rotation updated." : "Choose at least one break type before starting.", "warning");
     });
@@ -626,7 +718,9 @@ function handleIntervalChange() {
   }
 
   settings.intervalMinutes = value;
+  markCustomPreset();
   saveSettings();
+  syncPresetButtons();
   if (currentStatus === "Stopped" || currentStatus === "Paused") {
     setTimerDuration(settings.intervalMinutes * 60);
     updateDisplay();
@@ -645,6 +739,45 @@ function handleSnoozeChange() {
   settings.snoozeMinutes = value;
   saveSettings();
   showMessage("Snooze duration saved.", "success");
+}
+
+function toggleCompactMode() {
+  settings.compactMode = !settings.compactMode;
+  saveSettings();
+  syncCompactMode();
+  showMessage(settings.compactMode ? "Compact mode enabled." : "Full dashboard restored.", "success");
+}
+
+function syncCompactMode() {
+  document.body.classList.toggle("compact-mode", settings.compactMode);
+  elements.compactModeBtn.setAttribute("aria-pressed", String(settings.compactMode));
+  elements.compactModeBtn.textContent = settings.compactMode ? "Full Dashboard" : "Compact Mode";
+}
+
+function resetTodayStats() {
+  settings.dailyBreakCount = 0;
+  saveSettings();
+  updateDisplay();
+  showMessage("Today's completed break count was reset. History was kept.", "success");
+}
+
+function showCompletionFeedback() {
+  if (completionFeedbackTimer) {
+    window.clearTimeout(completionFeedbackTimer);
+  }
+
+  elements.timerCard.classList.add("reset-logged");
+  elements.statusBadge.textContent = "Reset logged";
+  elements.statusBadge.className = "status-badge completed";
+  elements.motivationalLine.textContent = "Reset logged. Keep the next stretch calm and steady.";
+  showMessage("Reset logged. Timer restarted.", "success");
+
+  completionFeedbackTimer = window.setTimeout(() => {
+    elements.timerCard.classList.remove("reset-logged");
+    elements.motivationalLine.textContent = DEFAULT_MOTIVATION;
+    completionFeedbackTimer = null;
+    updateDisplay();
+  }, 1400);
 }
 
 function handleSoundToggle() {
@@ -768,7 +901,9 @@ function validateSettings() {
 }
 
 function getNextBreak() {
-  const enabled = DEFAULT_BREAKS.filter((breakItem) => settings.enabledBreakTypes.includes(breakItem.id));
+  const enabled = settings.enabledBreakTypes
+    .map((id) => DEFAULT_BREAKS.find((breakItem) => breakItem.id === id))
+    .filter(Boolean);
   if (!enabled.length) return DEFAULT_BREAKS[0];
 
   const index = settings.nextBreakIndex % enabled.length;
