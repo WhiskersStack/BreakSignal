@@ -65,6 +65,7 @@ const DEFAULT_SETTINGS = {
   snoozeMinutes: 5,
   soundEnabled: true,
   soundTone: "signal",
+  soundVolume: 70,
   notificationsEnabled: false,
   enabledBreakTypes: ["eye", "stretch", "walk", "posture"],
   dailyBreakCount: 0,
@@ -107,6 +108,8 @@ const elements = {
   soundToggle: document.getElementById("soundToggle"),
   soundToneSelect: document.getElementById("soundToneSelect"),
   previewToneBtn: document.getElementById("previewToneBtn"),
+  volumeInput: document.getElementById("volumeInput"),
+  volumeValue: document.getElementById("volumeValue"),
   notificationToggle: document.getElementById("notificationToggle"),
   breakTypeList: document.getElementById("breakTypeList"),
   dailyCount: document.getElementById("dailyCount"),
@@ -159,6 +162,7 @@ function bindEvents() {
   elements.soundToggle.addEventListener("change", handleSoundToggle);
   elements.soundToneSelect.addEventListener("change", handleSoundToneChange);
   elements.previewToneBtn.addEventListener("click", previewSelectedTone);
+  elements.volumeInput.addEventListener("input", handleVolumeChange);
   elements.notificationToggle.addEventListener("change", handleNotificationToggle);
   elements.modalOverlay.addEventListener("keydown", handleModalKeydown);
 }
@@ -178,6 +182,8 @@ function loadSettings() {
       if (!["signal", "chime", "pulse", "sweep", "deep", "air", "rise", "double", "neon", "orbit", "cascade", "launch", "beacon", "starlight", "warp", "crystal", "uplink", "horizon"].includes(settings.soundTone)) {
         settings.soundTone = DEFAULT_SETTINGS.soundTone;
       }
+
+      settings.soundVolume = normalizeVolume(settings.soundVolume);
 
       if (!PRESETS[settings.activePreset]) {
         settings.activePreset = DEFAULT_SETTINGS.activePreset;
@@ -388,6 +394,7 @@ function closeAudioContext() {
 
 function previewSelectedTone() {
   settings.soundTone = elements.soundToneSelect.value;
+  settings.soundVolume = normalizeVolume(elements.volumeInput.value);
   saveSettings();
   if (playOneShotTone(settings.soundTone)) {
     showMessage("Tone preview played. No reminder or history was created.", "success");
@@ -530,7 +537,7 @@ function playTone(audioContext, note) {
   }
 
   gain.gain.setValueAtTime(0.001, startAt);
-  gain.gain.exponentialRampToValueAtTime(note.volume, startAt + 0.03);
+  gain.gain.exponentialRampToValueAtTime(note.volume * getVolumeScale(), startAt + 0.03);
   gain.gain.exponentialRampToValueAtTime(0.001, endAt);
 
   oscillator.connect(gain);
@@ -765,6 +772,8 @@ function syncSettingsToInputs() {
   elements.snoozeInput.value = settings.snoozeMinutes;
   elements.soundToggle.checked = settings.soundEnabled;
   elements.soundToneSelect.value = settings.soundTone;
+  elements.volumeInput.value = settings.soundVolume;
+  elements.volumeValue.textContent = `${settings.soundVolume}%`;
   elements.notificationToggle.checked = settings.notificationsEnabled;
 }
 
@@ -852,6 +861,12 @@ function handleSoundToneChange() {
   settings.soundTone = elements.soundToneSelect.value;
   saveSettings();
   showMessage("Alert tone saved. Use Preview tone to hear it.", "success");
+}
+
+function handleVolumeChange() {
+  settings.soundVolume = normalizeVolume(elements.volumeInput.value);
+  elements.volumeValue.textContent = `${settings.soundVolume}%`;
+  saveSettings();
 }
 
 function handleNotificationToggle() {
@@ -982,6 +997,16 @@ function parseWholeMinutes(value) {
   const number = Number(value);
   if (!Number.isFinite(number) || number < 1) return null;
   return Math.floor(number);
+}
+
+function normalizeVolume(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return DEFAULT_SETTINGS.soundVolume;
+  return Math.min(Math.max(Math.round(number), 20), 100);
+}
+
+function getVolumeScale() {
+  return normalizeVolume(settings.soundVolume) / 100;
 }
 
 function formatTime(seconds) {

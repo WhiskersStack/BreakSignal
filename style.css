@@ -66,6 +66,12 @@ input {
   padding: 0 0.9rem;
 }
 
+input[type="range"] {
+  min-height: 0;
+  padding: 0;
+  accent-color: var(--cyan);
+}
+
 select {
   min-height: 46px;
   padding: 0 2.35rem 0 0.9rem;
@@ -453,6 +459,23 @@ h2 {
 .tone-preview-btn {
   min-height: 46px;
   white-space: nowrap;
+}
+
+.volume-control {
+  display: grid;
+  grid-template-columns: auto minmax(140px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.volume-control span,
+.volume-control output {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 750;
 }
 
 .toggle-row {
@@ -905,6 +928,15 @@ body.compact-mode .timer-display {
 
   .tone-preview-btn {
     width: 100%;
+  }
+
+  .volume-control {
+    grid-template-columns: 1fr auto;
+  }
+
+  .volume-control input {
+    grid-column: 1 / -1;
+    grid-row: 2;
   }
 
   .site-header {

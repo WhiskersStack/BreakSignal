@@ -190,26 +190,39 @@
                 <span>Alert tone</span>
                 <div class="tone-control">
                   <select id="soundToneSelect">
-                    <option value="signal">Soft Signal</option>
-                    <option value="chime">Calm Chime</option>
-                    <option value="pulse">Focus Pulse</option>
-                    <option value="sweep">Reset Sweep</option>
-                    <option value="deep">Deep Bell</option>
-                    <option value="air">Air Ping</option>
-                    <option value="rise">Gentle Rise</option>
-                    <option value="double">Double Tap</option>
-                    <option value="neon">Neon Lift</option>
-                    <option value="orbit">Orbit Ping</option>
-                    <option value="cascade">Digital Cascade</option>
-                    <option value="launch">Launch Sweep</option>
-                    <option value="beacon">Focus Beacon</option>
-                    <option value="starlight">Starlight Arp</option>
-                    <option value="warp">Warp Signal</option>
-                    <option value="crystal">Crystal Steps</option>
-                    <option value="uplink">Uplink Pulse</option>
-                    <option value="horizon">Horizon Rise</option>
+                    <optgroup label="Calm">
+                      <option value="signal">Soft Signal</option>
+                      <option value="chime">Calm Chime</option>
+                      <option value="deep">Deep Bell</option>
+                      <option value="air">Air Ping</option>
+                    </optgroup>
+                    <optgroup label="Bright">
+                      <option value="pulse">Focus Pulse</option>
+                      <option value="sweep">Reset Sweep</option>
+                      <option value="rise">Gentle Rise</option>
+                      <option value="double">Double Tap</option>
+                    </optgroup>
+                    <optgroup label="Futuristic">
+                      <option value="neon">Neon Lift</option>
+                      <option value="orbit">Orbit Ping</option>
+                      <option value="cascade">Digital Cascade</option>
+                      <option value="beacon">Focus Beacon</option>
+                      <option value="starlight">Starlight Arp</option>
+                      <option value="crystal">Crystal Steps</option>
+                    </optgroup>
+                    <optgroup label="Energetic">
+                      <option value="launch">Launch Sweep</option>
+                      <option value="warp">Warp Signal</option>
+                      <option value="uplink">Uplink Pulse</option>
+                      <option value="horizon">Horizon Rise</option>
+                    </optgroup>
                   </select>
                   <button id="previewToneBtn" class="ghost-btn small-btn tone-preview-btn" type="button">Preview tone</button>
+                </div>
+                <div class="volume-control">
+                  <span>Volume</span>
+                  <input id="volumeInput" type="range" min="20" max="100" step="5">
+                  <output id="volumeValue" for="volumeInput">70%</output>
                 </div>
                 <small>Generated in-browser. No audio files are used.</small>
               </label>
