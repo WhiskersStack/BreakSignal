@@ -328,10 +328,19 @@ h2 {
 }
 
 .dashboard-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.85fr);
+  display: flex;
   gap: 18px;
   align-items: stretch;
+}
+
+.dashboard-row > :first-child {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.dashboard-row > :last-child {
+  flex: 0 0 clamp(300px, 34%, 390px);
+  min-width: 0;
 }
 
 .panel {
@@ -683,7 +692,6 @@ h2 {
 }
 
 @media (max-width: 840px) {
-  .dashboard-row,
   .form-grid,
   .break-type-list,
   .seo-grid,
@@ -707,6 +715,16 @@ h2 {
 
   .stats-panel {
     min-height: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .dashboard-row {
+    flex-direction: column;
+  }
+
+  .dashboard-row > :last-child {
+    flex-basis: auto;
   }
 }
 
