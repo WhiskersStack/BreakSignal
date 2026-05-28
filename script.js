@@ -175,7 +175,7 @@ function loadSettings() {
       };
       delete settings.customMessages;
 
-      if (!["signal", "chime", "pulse", "sweep", "deep", "air", "rise", "double"].includes(settings.soundTone)) {
+      if (!["signal", "chime", "pulse", "sweep", "deep", "air", "rise", "double", "neon", "orbit", "cascade", "launch", "beacon", "starlight", "warp", "crystal", "uplink", "horizon"].includes(settings.soundTone)) {
         settings.soundTone = DEFAULT_SETTINGS.soundTone;
       }
 
@@ -450,6 +450,65 @@ function playSelectedTone(audioContext, tone) {
       { frequency: 587.33, start: 0, duration: 0.16, volume: 0.065, type: "sine" },
       { frequency: 587.33, start: 0.26, duration: 0.18, volume: 0.06, type: "sine" },
       { frequency: 880, start: 0.32, duration: 0.22, volume: 0.03, type: "triangle" }
+    ],
+    neon: [
+      { frequency: 440, endFrequency: 659.25, start: 0, duration: 0.26, volume: 0.058, type: "triangle" },
+      { frequency: 659.25, start: 0.16, duration: 0.18, volume: 0.052, type: "sine" },
+      { frequency: 987.77, start: 0.32, duration: 0.28, volume: 0.044, type: "sine" },
+      { frequency: 1318.51, start: 0.5, duration: 0.22, volume: 0.028, type: "triangle" }
+    ],
+    orbit: [
+      { frequency: 329.63, endFrequency: 493.88, start: 0, duration: 0.5, volume: 0.052, type: "sine" },
+      { frequency: 659.25, start: 0.08, duration: 0.16, volume: 0.04, type: "triangle" },
+      { frequency: 783.99, start: 0.34, duration: 0.18, volume: 0.04, type: "triangle" },
+      { frequency: 987.77, start: 0.62, duration: 0.2, volume: 0.032, type: "sine" }
+    ],
+    cascade: [
+      { frequency: 1046.5, start: 0, duration: 0.12, volume: 0.04, type: "square" },
+      { frequency: 880, start: 0.11, duration: 0.12, volume: 0.04, type: "triangle" },
+      { frequency: 659.25, start: 0.22, duration: 0.13, volume: 0.045, type: "triangle" },
+      { frequency: 523.25, start: 0.36, duration: 0.22, volume: 0.052, type: "sine" },
+      { frequency: 783.99, start: 0.5, duration: 0.2, volume: 0.032, type: "sine" }
+    ],
+    launch: [
+      { frequency: 196, endFrequency: 523.25, start: 0, duration: 0.62, volume: 0.055, type: "sine" },
+      { frequency: 392, endFrequency: 1174.66, start: 0.08, duration: 0.56, volume: 0.045, type: "triangle" },
+      { frequency: 1567.98, start: 0.54, duration: 0.16, volume: 0.026, type: "sine" }
+    ],
+    beacon: [
+      { frequency: 261.63, start: 0, duration: 0.42, volume: 0.055, type: "sine" },
+      { frequency: 523.25, start: 0.04, duration: 0.36, volume: 0.04, type: "triangle" },
+      { frequency: 783.99, start: 0.18, duration: 0.34, volume: 0.035, type: "sine" },
+      { frequency: 1046.5, start: 0.42, duration: 0.2, volume: 0.028, type: "triangle" }
+    ],
+    starlight: [
+      { frequency: 587.33, start: 0, duration: 0.14, volume: 0.04, type: "sine" },
+      { frequency: 739.99, start: 0.12, duration: 0.14, volume: 0.042, type: "sine" },
+      { frequency: 987.77, start: 0.24, duration: 0.18, volume: 0.04, type: "triangle" },
+      { frequency: 1479.98, start: 0.42, duration: 0.28, volume: 0.026, type: "sine" }
+    ],
+    warp: [
+      { frequency: 174.61, endFrequency: 698.46, start: 0, duration: 0.5, volume: 0.05, type: "sawtooth" },
+      { frequency: 349.23, endFrequency: 1396.91, start: 0.08, duration: 0.48, volume: 0.032, type: "triangle" },
+      { frequency: 1046.5, start: 0.5, duration: 0.14, volume: 0.024, type: "sine" }
+    ],
+    crystal: [
+      { frequency: 1567.98, start: 0, duration: 0.1, volume: 0.026, type: "sine" },
+      { frequency: 1174.66, start: 0.12, duration: 0.1, volume: 0.032, type: "triangle" },
+      { frequency: 880, start: 0.24, duration: 0.12, volume: 0.036, type: "triangle" },
+      { frequency: 659.25, start: 0.38, duration: 0.24, volume: 0.045, type: "sine" }
+    ],
+    uplink: [
+      { frequency: 493.88, start: 0, duration: 0.1, volume: 0.044, type: "square" },
+      { frequency: 493.88, start: 0.14, duration: 0.1, volume: 0.04, type: "square" },
+      { frequency: 987.77, start: 0.28, duration: 0.22, volume: 0.032, type: "triangle" },
+      { frequency: 1318.51, start: 0.46, duration: 0.16, volume: 0.024, type: "sine" }
+    ],
+    horizon: [
+      { frequency: 293.66, endFrequency: 440, start: 0, duration: 0.46, volume: 0.048, type: "sine" },
+      { frequency: 440, endFrequency: 659.25, start: 0.18, duration: 0.46, volume: 0.04, type: "triangle" },
+      { frequency: 659.25, endFrequency: 987.77, start: 0.36, duration: 0.46, volume: 0.03, type: "sine" },
+      { frequency: 1318.51, start: 0.74, duration: 0.18, volume: 0.022, type: "triangle" }
     ]
   };
 
