@@ -649,6 +649,7 @@ h2 {
 }
 
 .seo-intro h2,
+.rule-section h2,
 .seo-split h2,
 .faq-section h2 {
   font-size: clamp(1.45rem, 3vw, 2.2rem);
@@ -657,6 +658,7 @@ h2 {
 
 .seo-intro p,
 .seo-card p,
+.rule-section p,
 .seo-split p,
 .faq-list p {
   color: var(--muted);
@@ -684,6 +686,44 @@ h2 {
 
 .seo-card p {
   margin: 0;
+}
+
+.rule-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 24px;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(139, 92, 246, 0.06)),
+    rgba(7, 11, 20, 0.28);
+}
+
+.rule-section p {
+  max-width: 720px;
+  margin: 14px 0 0;
+}
+
+.rule-steps {
+  display: grid;
+  gap: 10px;
+  min-width: 150px;
+}
+
+.rule-steps span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 1rem;
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  border-radius: 999px;
+  color: var(--text);
+  background: rgba(16, 24, 39, 0.68);
+  font-weight: 800;
 }
 
 .seo-split {
@@ -806,8 +846,14 @@ body.compact-mode .timer-display {
   .form-grid,
   .break-type-list,
   .seo-grid,
+  .rule-section,
   .seo-split {
     grid-template-columns: 1fr;
+  }
+
+  .rule-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    min-width: 0;
   }
 
   .site-header {
