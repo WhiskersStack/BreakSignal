@@ -3,6 +3,7 @@
 const STORAGE_KEY = "breaksignal.settings.v1";
 const HISTORY_LIMIT = 30;
 const DEFAULT_MOTIVATION = "Start a calm rhythm. Your future self gets the benefit.";
+const PREVIEW_DURATION_MS = 5000;
 const PRESETS = {
   custom: {
     label: "Custom"
@@ -64,7 +65,7 @@ const DEFAULT_SETTINGS = {
   intervalMinutes: 30,
   snoozeMinutes: 5,
   soundEnabled: true,
-  soundTone: "signal",
+  soundTone: "beacon",
   soundVolume: 70,
   notificationsEnabled: false,
   enabledBreakTypes: ["eye", "stretch", "walk", "posture"],
@@ -87,6 +88,9 @@ let isPreviewBreak = false;
 let lastFocusedElement = null;
 let soundLoopInterval = null;
 let activeAudioContext = null;
+let previewAudioContext = null;
+let previewLoopInterval = null;
+let previewStopTimer = null;
 let completionFeedbackTimer = null;
 
 const elements = {
@@ -228,6 +232,7 @@ function pauseTimer() {
 
 function resetTimer() {
   clearActiveTimer();
+  stopTonePreview();
   currentStatus = "Stopped";
   isPreviewBreak = false;
   closeModal(false);
@@ -337,6 +342,7 @@ function closeModal(restoreFocus) {
 }
 
 function playSound() {
+  stopTonePreview();
   if (!settings.soundEnabled) return;
 
   stopSoundLoop();
@@ -393,15 +399,19 @@ function closeAudioContext() {
 }
 
 function previewSelectedTone() {
+  if (isTonePreviewing()) {
+    stopTonePreview("Tone preview stopped.");
+    return;
+  }
+
+  startTonePreview();
+}
+
+function startTonePreview() {
   settings.soundTone = elements.soundToneSelect.value;
   settings.soundVolume = normalizeVolume(elements.volumeInput.value);
   saveSettings();
-  if (playOneShotTone(settings.soundTone)) {
-    showMessage("Tone preview played. No reminder or history was created.", "success");
-  }
-}
 
-function playOneShotTone(tone) {
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) {
@@ -409,18 +419,63 @@ function playOneShotTone(tone) {
       return false;
     }
 
-    const previewContext = new AudioContext();
-    if (previewContext.state === "suspended") {
-      previewContext.resume();
+    stopTonePreview();
+    previewAudioContext = new AudioContext();
+    if (previewAudioContext.state === "suspended") {
+      previewAudioContext.resume();
     }
 
-    const toneLength = playSelectedTone(previewContext, tone);
-    window.setTimeout(() => previewContext.close(), (toneLength + 0.25) * 1000);
+    const repeatPreview = () => {
+      if (!previewAudioContext) return;
+      playSelectedTone(previewAudioContext, settings.soundTone);
+    };
+
+    repeatPreview();
+    previewLoopInterval = window.setInterval(repeatPreview, 1800);
+    previewStopTimer = window.setTimeout(() => {
+      stopTonePreview("Tone preview finished.");
+    }, PREVIEW_DURATION_MS);
+
+    syncTonePreviewButton(true);
+    showMessage("Previewing tone for 5 seconds. Click Stop preview to end it.", "success");
     return true;
   } catch (error) {
+    stopTonePreview();
     showMessage("Sound preview could not play in this browser session.", "warning");
     return false;
   }
+}
+
+function stopTonePreview(message) {
+  if (previewLoopInterval) {
+    window.clearInterval(previewLoopInterval);
+    previewLoopInterval = null;
+  }
+
+  if (previewStopTimer) {
+    window.clearTimeout(previewStopTimer);
+    previewStopTimer = null;
+  }
+
+  if (previewAudioContext) {
+    const contextToClose = previewAudioContext;
+    previewAudioContext = null;
+    contextToClose.close().catch(() => {});
+  }
+
+  syncTonePreviewButton(false);
+  if (message) {
+    showMessage(message, "success");
+  }
+}
+
+function isTonePreviewing() {
+  return Boolean(previewAudioContext || previewLoopInterval || previewStopTimer);
+}
+
+function syncTonePreviewButton(isPreviewing) {
+  elements.previewToneBtn.textContent = isPreviewing ? "Stop preview" : "Preview tone";
+  elements.previewToneBtn.setAttribute("aria-pressed", String(isPreviewing));
 }
 
 function playSelectedTone(audioContext, tone) {
@@ -852,6 +907,7 @@ function handleSoundToggle() {
   settings.soundEnabled = elements.soundToggle.checked;
   if (!settings.soundEnabled) {
     stopSoundLoop();
+    stopTonePreview();
   }
   saveSettings();
   showMessage(settings.soundEnabled ? "Sound alert enabled." : "Sound alert disabled.", "success");
@@ -860,7 +916,7 @@ function handleSoundToggle() {
 function handleSoundToneChange() {
   settings.soundTone = elements.soundToneSelect.value;
   saveSettings();
-  showMessage("Alert tone saved. Use Preview tone to hear it.", "success");
+  showMessage(isTonePreviewing() ? "Alert tone updated for the active preview." : "Alert tone saved. Use Preview tone to hear it.", "success");
 }
 
 function handleVolumeChange() {
