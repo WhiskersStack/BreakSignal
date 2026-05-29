@@ -109,6 +109,14 @@
             "@type": "Answer",
             "text": "Yes. BreakSignal has a responsive layout for mobile browsers, though it is primarily designed for people working at a computer."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Does BreakSignal support keyboard navigation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Use Tab to move between controls and Enter or Space to activate buttons and form controls."
+          }
         }
       ]
     }
@@ -127,7 +135,7 @@
     </header>
 
     <main>
-      <section class="timer-card glass-card" aria-labelledby="timer-heading">
+      <section id="timer" class="timer-card glass-card" aria-labelledby="timer-heading">
         <div class="timer-topline">
           <div>
             <p class="section-kicker">Quiet command center</p>
@@ -155,7 +163,7 @@
         <p id="appMessage" class="app-message" role="status" aria-live="polite"></p>
       </section>
 
-      <div class="dashboard-layout">
+      <div id="settings" class="dashboard-layout">
         <div class="dashboard-row">
           <section class="glass-card panel cadence-panel" aria-labelledby="cadence-heading">
             <div class="panel-heading">
@@ -253,6 +261,28 @@
             </div>
             <div class="stat-number" id="dailyCount">0</div>
             <p class="muted">Completed breaks logged today.</p>
+            <div class="streak-meter">
+              <span>Focus rhythm</span>
+              <strong id="streakCount">0 clean resets</strong>
+            </div>
+            <dl class="daily-breakdown" aria-label="Completed breaks by type today">
+              <div>
+                <dt>Eye breaks</dt>
+                <dd id="eyeStat">0</dd>
+              </div>
+              <div>
+                <dt>Stretch breaks</dt>
+                <dd id="stretchStat">0</dd>
+              </div>
+              <div>
+                <dt>Walking breaks</dt>
+                <dd id="walkStat">0</dd>
+              </div>
+              <div>
+                <dt>Posture checks</dt>
+                <dd id="postureStat">0</dd>
+              </div>
+            </dl>
           </section>
         </div>
 
@@ -356,7 +386,7 @@
         </section>
 
         <div class="seo-split">
-          <div>
+          <div id="privacy">
             <p class="section-kicker">Private by design</p>
             <h2>Runs locally in your browser.</h2>
             <p>
@@ -375,7 +405,7 @@
           </div>
         </div>
 
-        <section class="faq-section" aria-labelledby="faq-heading">
+        <section id="faq" class="faq-section" aria-labelledby="faq-heading">
           <p class="section-kicker">FAQ</p>
           <h2 id="faq-heading">BreakSignal questions</h2>
 
@@ -414,19 +444,50 @@
               <summary>Does BreakSignal work on mobile?</summary>
               <p>The layout is responsive and works on mobile browsers, though it is designed primarily for people working at a computer.</p>
             </details>
+
+            <details>
+              <summary>Does BreakSignal support keyboard navigation?</summary>
+              <p>Yes. Use Tab to move between controls and Enter or Space to activate buttons and form controls.</p>
+            </details>
           </div>
         </section>
 
       </section>
     </main>
+
+    <footer class="site-footer" aria-label="Site footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <p class="footer-kicker">BreakSignal</p>
+          <p class="footer-title">Protect your eyes, posture, and focus.</p>
+          <p class="footer-text">
+            A calm browser-based break reminder for eye breaks, movement, stretching, and posture resets.
+          </p>
+        </div>
+
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="#timer">Timer</a>
+          <a href="#settings">Settings</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#faq">FAQ</a>
+          <a href="https://github.com/WhiskersStack/breaksignal" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <p>Runs locally in your browser. No account, no backend, no database.</p>
+        <p>Version 1.0.0 | (c) <span id="currentYear">2026</span> BreakSignal.</p>
+      </div>
+    </footer>
   </div>
 
   <div id="modalOverlay" class="modal-overlay" hidden>
     <section class="break-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalMessage">
-      <p class="section-kicker">Break Time</p>
+      <p class="section-kicker">Time for a reset signal</p>
       <h2 id="modalTitle">Eye Break</h2>
       <p id="modalMessage" class="modal-message">Look at something far away for 20 seconds. Let your eyes soften.</p>
       <p class="duration-pill">Suggested duration: <span id="modalDuration">20 seconds</span></p>
+      <p class="modal-helper">Take the break now, snooze it briefly, or skip and return to your normal rhythm.</p>
       <div class="modal-actions">
         <button id="doneBtn" class="primary-btn" type="button">Done</button>
         <button id="snoozeBtn" class="secondary-btn" type="button">Snooze</button>

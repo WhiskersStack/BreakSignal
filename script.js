@@ -66,6 +66,13 @@ const DEFAULT_BREAK_MESSAGES = DEFAULT_BREAKS.reduce((messages, breakItem) => {
   return messages;
 }, {});
 
+const DEFAULT_DAILY_STATS = {
+  eye: 0,
+  stretch: 0,
+  walk: 0,
+  posture: 0
+};
+
 const DEFAULT_SETTINGS = {
   intervalMinutes: 30,
   snoozeMinutes: 5,
@@ -75,6 +82,8 @@ const DEFAULT_SETTINGS = {
   notificationsEnabled: false,
   enabledBreakTypes: ["eye", "stretch", "walk", "posture"],
   dailyBreakCount: 0,
+  dailyStats: { ...DEFAULT_DAILY_STATS },
+  currentStreak: 0,
   history: [],
   customMessages: { ...DEFAULT_BREAK_MESSAGES },
   lastSavedDate: getTodayKey(),
@@ -83,7 +92,11 @@ const DEFAULT_SETTINGS = {
   compactMode: false
 };
 
-let settings = { ...DEFAULT_SETTINGS };
+let settings = {
+  ...DEFAULT_SETTINGS,
+  dailyStats: { ...DEFAULT_DAILY_STATS },
+  customMessages: { ...DEFAULT_BREAK_MESSAGES }
+};
 let timerId = null;
 let remainingSeconds = DEFAULT_SETTINGS.intervalMinutes * 60;
 let totalSeconds = DEFAULT_SETTINGS.intervalMinutes * 60;
@@ -124,6 +137,11 @@ const elements = {
   breakTypeList: document.getElementById("breakTypeList"),
   messageEditorList: document.getElementById("messageEditorList"),
   dailyCount: document.getElementById("dailyCount"),
+  eyeStat: document.getElementById("eyeStat"),
+  stretchStat: document.getElementById("stretchStat"),
+  walkStat: document.getElementById("walkStat"),
+  postureStat: document.getElementById("postureStat"),
+  streakCount: document.getElementById("streakCount"),
   resetTodayBtn: document.getElementById("resetTodayBtn"),
   historyList: document.getElementById("historyList"),
   historySummary: document.getElementById("historySummary"),
@@ -137,6 +155,7 @@ const elements = {
   snoozeBtn: document.getElementById("snoozeBtn"),
   skipBtn: document.getElementById("skipBtn")
 };
+const currentYear = document.getElementById("currentYear");
 
 document.addEventListener("DOMContentLoaded", initApp);
 
@@ -154,6 +173,10 @@ function initApp() {
   syncPresetButtons();
   renderHistory();
   updateDisplay();
+
+  if (currentYear) {
+    currentYear.textContent = new Date().getFullYear();
+  }
 }
 
 function bindEvents() {
@@ -190,6 +213,9 @@ function loadSettings() {
         ...saved,
         history: Array.isArray(saved.history) ? saved.history : [],
         enabledBreakTypes: Array.isArray(saved.enabledBreakTypes) ? saved.enabledBreakTypes : DEFAULT_SETTINGS.enabledBreakTypes,
+        dailyBreakCount: normalizeCounter(saved.dailyBreakCount),
+        dailyStats: normalizeDailyStats(saved.dailyStats),
+        currentStreak: normalizeCounter(saved.currentStreak),
         customMessages: normalizeCustomMessages(saved.customMessages)
       };
 
@@ -208,6 +234,7 @@ function loadSettings() {
   } catch (error) {
     settings = {
       ...DEFAULT_SETTINGS,
+      dailyStats: { ...DEFAULT_DAILY_STATS },
       customMessages: { ...DEFAULT_BREAK_MESSAGES }
     };
     showMessage("Saved settings could not be read, so defaults were loaded.", "warning");
@@ -296,6 +323,8 @@ function completeBreak() {
   }
 
   settings.dailyBreakCount += 1;
+  settings.dailyStats[activeBreak.id] = normalizeCounter(settings.dailyStats[activeBreak.id]) + 1;
+  settings.currentStreak += 1;
   addHistoryItem(activeBreak, "Completed");
   advanceBreakIndex();
   saveSettings();
@@ -330,8 +359,10 @@ function skipBreak() {
     return;
   }
 
+  settings.currentStreak = 0;
   addHistoryItem(activeBreak, "Skipped");
   advanceBreakIndex();
+  saveSettings();
   closeModal(true);
   restartNormalInterval("Break skipped. Normal interval restarted.");
 }
@@ -667,6 +698,11 @@ function updateDisplay() {
   elements.timerDisplay.textContent = formatTime(remainingSeconds);
   elements.nextBreakType.textContent = getNextBreak().title;
   elements.dailyCount.textContent = settings.dailyBreakCount;
+  elements.eyeStat.textContent = settings.dailyStats.eye;
+  elements.stretchStat.textContent = settings.dailyStats.stretch;
+  elements.walkStat.textContent = settings.dailyStats.walk;
+  elements.postureStat.textContent = settings.dailyStats.posture;
+  elements.streakCount.textContent = formatStreak(settings.currentStreak);
   updateStatusBadge();
   updateProgress();
   updateButtons();
@@ -766,6 +802,8 @@ function resetDailyCounterIfNeeded() {
   const today = getTodayKey();
   if (settings.lastSavedDate !== today) {
     settings.dailyBreakCount = 0;
+    settings.dailyStats = { ...DEFAULT_DAILY_STATS };
+    settings.currentStreak = 0;
     settings.lastSavedDate = today;
     saveSettings();
   }
@@ -931,6 +969,8 @@ function syncCompactMode() {
 
 function resetTodayStats() {
   settings.dailyBreakCount = 0;
+  settings.dailyStats = { ...DEFAULT_DAILY_STATS };
+  settings.currentStreak = 0;
   saveSettings();
   updateDisplay();
   showMessage("Today's completed break count was reset. History was kept.", "success");
@@ -1141,6 +1181,24 @@ function normalizeVolume(value) {
   return Math.min(Math.max(Math.round(number), 20), 100);
 }
 
+function normalizeCounter(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0) return 0;
+  return Math.floor(number);
+}
+
+function normalizeDailyStats(savedStats) {
+  const normalized = { ...DEFAULT_DAILY_STATS };
+
+  if (savedStats && typeof savedStats === "object") {
+    Object.keys(DEFAULT_DAILY_STATS).forEach((breakId) => {
+      normalized[breakId] = normalizeCounter(savedStats[breakId]);
+    });
+  }
+
+  return normalized;
+}
+
 function normalizeCustomMessages(savedMessages) {
   const normalized = { ...DEFAULT_BREAK_MESSAGES };
 
@@ -1158,6 +1216,11 @@ function normalizeCustomMessages(savedMessages) {
 
 function getVolumeScale() {
   return normalizeVolume(settings.soundVolume) / 100;
+}
+
+function formatStreak(value) {
+  const count = normalizeCounter(value);
+  return `${count} clean reset${count === 1 ? "" : "s"}`;
 }
 
 function formatTime(seconds) {

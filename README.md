@@ -8,9 +8,23 @@ The app runs entirely in the browser using plain HTML, CSS, and JavaScript. It s
 
 https://www.break-signal.com/
 
-## Screenshot
+## Screenshots
 
-![BreakSignal interface](og-image.png)
+### Dashboard
+
+![BreakSignal dashboard](assets/screenshots/breaksignal-dashboard.png)
+
+### Settings
+
+![BreakSignal settings](assets/screenshots/breaksignal-settings.png)
+
+### Break Reminder Modal
+
+![BreakSignal break reminder modal](assets/screenshots/breaksignal-modal.png)
+
+### Mobile Layout
+
+![BreakSignal mobile layout](assets/screenshots/breaksignal-mobile.png)
 
 ## Features
 
@@ -19,10 +33,11 @@ https://www.break-signal.com/
 - 20-20-20 eye break preset
 - Custom reminder intervals and snooze duration
 - Editable break messages
-- Browser-generated alert tones with volume control
+- Browser-generated alert tones with grouped tone presets and volume control
 - Optional browser notifications
 - Compact timer mode
-- Daily completed-break counter
+- Daily completed-break counter with break-type breakdown
+- Focus rhythm streak counter
 - Recent break history saved locally
 - Responsive dark futuristic interface
 
@@ -36,9 +51,22 @@ https://www.break-signal.com/
 - Browser Notifications API
 - AWS S3 Static Website Hosting
 
+## Architecture
+
+BreakSignal is a fully static browser app.
+
+The app uses:
+
+- HTML for structure
+- CSS for layout and styling
+- Vanilla JavaScript for timer logic, browser notifications, sound alerts, settings, and history
+- localStorage for saving user preferences and recent activity
+
+No backend, database, authentication, or external API is required.
+
 ## How The App Works
 
-BreakSignal runs a timer while the browser tab is open. When the timer reaches zero, it opens a break reminder modal with the next enabled break type. The user can mark the break as done, snooze it, or skip it.
+BreakSignal runs a timer while the browser tab is open. When the timer reaches zero, it opens a break reminder modal with the next enabled break type. The user can mark the break as completed, snooze it, or skip it.
 
 The app does not require a backend, database, account, or external API. Closing the tab stops the timer, but preferences and recent activity stay saved in the browser.
 
@@ -54,7 +82,8 @@ BreakSignal uses localStorage to save:
 - Sound tone and volume
 - Notification preference
 - Custom break messages
-- Daily break count
+- Daily break count and break-type stats
+- Focus rhythm streak
 - Recent break history
 
 ## Browser APIs
@@ -71,14 +100,16 @@ Users can optionally enable browser notifications. Permission is requested only 
 
 ```text
 BreakSignal/
-├── index.html
-├── style.css
-├── script.js
-├── logo.svg
-├── og-image.png
-├── robots.txt
-├── sitemap.xml
-└── README.md
+|-- assets/
+|   `-- screenshots/
+|-- index.html
+|-- style.css
+|-- script.js
+|-- logo.svg
+|-- og-image.png
+|-- robots.txt
+|-- sitemap.xml
+`-- README.md
 ```
 
 ## AWS Deployment
@@ -95,6 +126,27 @@ Basic deployment steps:
 4. Set `index.html` as the index document.
 5. Configure public access for simple testing.
 6. Point a custom domain at the hosted site when ready.
+
+## AWS Hosting Model
+
+Current hosting model:
+
+```text
+User Browser -> Amazon S3 Static Website Hosting -> HTML/CSS/JS
+```
+
+Future production model:
+
+```text
+User Browser -> CloudFront -> Private S3 Bucket
+```
+
+Optional future infrastructure:
+
+- Route 53 for DNS
+- AWS Certificate Manager for HTTPS
+- CloudFront Origin Access Control
+- Terraform for infrastructure as code
 
 ## Future AWS Upgrade Path
 
@@ -116,6 +168,10 @@ A more production-ready version could use:
 - AWS Certificate Manager for HTTPS
 - Route 53 for DNS
 - Terraform to manage the infrastructure
+
+## Version
+
+1.0.0
 
 ## What Was Learned
 
