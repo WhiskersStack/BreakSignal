@@ -23,6 +23,8 @@
   <meta name="twitter:description" content="A calm computer break timer for eye breaks, posture checks, stretching, walking, and focus resets.">
   <meta name="twitter:image" content="https://www.break-signal.com/og-image.png">
   <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
     {
@@ -159,6 +161,7 @@
           <button id="resetBtn" class="secondary-btn" type="button">Reset</button>
           <button id="testBtn" class="ghost-btn" type="button">Test Reminder</button>
           <button id="compactModeBtn" class="ghost-btn" type="button" aria-pressed="false">Compact Mode</button>
+          <button id="installAppBtn" class="ghost-btn" type="button" hidden>Install App</button>
         </div>
         <p id="appMessage" class="app-message" role="status" aria-live="polite"></p>
       </section>

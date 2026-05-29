@@ -111,6 +111,7 @@ let previewAudioContext = null;
 let previewLoopInterval = null;
 let previewStopTimer = null;
 let completionFeedbackTimer = null;
+let deferredInstallPrompt = null;
 
 const elements = {
   timerCard: document.querySelector(".timer-card"),
@@ -124,6 +125,7 @@ const elements = {
   resetBtn: document.getElementById("resetBtn"),
   testBtn: document.getElementById("testBtn"),
   compactModeBtn: document.getElementById("compactModeBtn"),
+  installAppBtn: document.getElementById("installAppBtn"),
   appMessage: document.getElementById("appMessage"),
   presetButtons: document.querySelectorAll(".preset-btn"),
   intervalInput: document.getElementById("intervalInput"),
@@ -173,6 +175,7 @@ function initApp() {
   syncPresetButtons();
   renderHistory();
   updateDisplay();
+  registerServiceWorker();
 
   if (currentYear) {
     currentYear.textContent = new Date().getFullYear();
@@ -185,6 +188,7 @@ function bindEvents() {
   elements.resetBtn.addEventListener("click", resetTimer);
   elements.testBtn.addEventListener("click", () => triggerBreak(true));
   elements.compactModeBtn.addEventListener("click", toggleCompactMode);
+  elements.installAppBtn.addEventListener("click", installApp);
   elements.doneBtn.addEventListener("click", completeBreak);
   elements.snoozeBtn.addEventListener("click", snoozeBreak);
   elements.skipBtn.addEventListener("click", skipBreak);
@@ -202,6 +206,8 @@ function bindEvents() {
   elements.volumeInput.addEventListener("input", handleVolumeChange);
   elements.notificationToggle.addEventListener("change", handleNotificationToggle);
   elements.modalOverlay.addEventListener("keydown", handleModalKeydown);
+  window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+  window.addEventListener("appinstalled", handleAppInstalled);
 }
 
 function loadSettings() {
@@ -1044,6 +1050,47 @@ function handleModalKeydown(event) {
   if (event.key === "Escape") {
     skipBreak();
   }
+}
+
+function handleBeforeInstallPrompt(event) {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  elements.installAppBtn.hidden = false;
+}
+
+function handleAppInstalled() {
+  deferredInstallPrompt = null;
+  elements.installAppBtn.hidden = true;
+  showMessage("BreakSignal is installed.", "success");
+}
+
+async function installApp() {
+  if (!deferredInstallPrompt) {
+    elements.installAppBtn.hidden = true;
+    showMessage("Install is not available in this browser right now.", "warning");
+    return;
+  }
+
+  deferredInstallPrompt.prompt();
+  const choice = await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  elements.installAppBtn.hidden = true;
+
+  if (choice.outcome === "accepted") {
+    showMessage("Install started.", "success");
+  } else {
+    showMessage("Install dismissed. You can still use BreakSignal in the browser.", "warning");
+  }
+}
+
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator) || !window.isSecureContext) return;
+
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js").catch(() => {
+      showMessage("Offline install support could not be enabled in this browser.", "warning");
+    });
+  });
 }
 
 function trapModalFocus(event) {

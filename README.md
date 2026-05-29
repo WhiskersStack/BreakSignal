@@ -35,6 +35,7 @@ https://www.break-signal.com/
 - Editable break messages
 - Browser-generated alert tones with grouped tone presets and volume control
 - Optional browser notifications
+- Progressive Web App install support
 - Compact timer mode
 - Daily completed-break counter with break-type breakdown
 - Focus rhythm streak counter
@@ -49,6 +50,7 @@ https://www.break-signal.com/
 - localStorage
 - Web Audio API
 - Browser Notifications API
+- Service Worker API
 - AWS S3 Static Website Hosting
 
 ## Architecture
@@ -61,6 +63,7 @@ The app uses:
 - CSS for layout and styling
 - Vanilla JavaScript for timer logic, browser notifications, sound alerts, settings, and history
 - localStorage for saving user preferences and recent activity
+- A web manifest and service worker for install support and offline app-shell caching
 
 No backend, database, authentication, or external API is required.
 
@@ -96,15 +99,22 @@ Alert tones are generated in the browser with the Web Audio API. No external aud
 
 Users can optionally enable browser notifications. Permission is requested only when the notification toggle is enabled.
 
+### Progressive Web App
+
+BreakSignal includes a web manifest, install icons, and a service worker. Supported browsers can install it as a standalone app while keeping all data local to the browser.
+
 ## Project Structure
 
 ```text
 BreakSignal/
 |-- assets/
+|   |-- icons/
 |   `-- screenshots/
 |-- index.html
 |-- style.css
 |-- script.js
+|-- manifest.webmanifest
+|-- service-worker.js
 |-- logo.svg
 |-- og-image.png
 |-- robots.txt
