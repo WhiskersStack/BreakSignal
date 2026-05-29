@@ -1,0 +1,127 @@
+# BreakSignal
+
+BreakSignal is a minimal static web app that helps users protect their eyes, posture, and focus by reminding them to take healthy breaks while working at a computer.
+
+The app runs entirely in the browser using plain HTML, CSS, and JavaScript. It saves settings and break history with localStorage and is designed for deployment as a static website on Amazon S3.
+
+## Live Demo
+
+https://www.break-signal.com/
+
+## Screenshot
+
+![BreakSignal interface](og-image.png)
+
+## Features
+
+- Countdown break reminder timer
+- Eye, stretch, walking, and posture break rotation
+- 20-20-20 eye break preset
+- Custom reminder intervals and snooze duration
+- Editable break messages
+- Browser-generated alert tones with volume control
+- Optional browser notifications
+- Compact timer mode
+- Daily completed-break counter
+- Recent break history saved locally
+- Responsive dark futuristic interface
+
+## Tech Stack
+
+- HTML
+- CSS
+- Vanilla JavaScript
+- localStorage
+- Web Audio API
+- Browser Notifications API
+- AWS S3 Static Website Hosting
+
+## How The App Works
+
+BreakSignal runs a timer while the browser tab is open. When the timer reaches zero, it opens a break reminder modal with the next enabled break type. The user can mark the break as done, snooze it, or skip it.
+
+The app does not require a backend, database, account, or external API. Closing the tab stops the timer, but preferences and recent activity stay saved in the browser.
+
+## localStorage
+
+BreakSignal uses localStorage to save:
+
+- Reminder interval
+- Snooze duration
+- Enabled break types
+- Selected preset
+- Compact mode preference
+- Sound tone and volume
+- Notification preference
+- Custom break messages
+- Daily break count
+- Recent break history
+
+## Browser APIs
+
+### Web Audio API
+
+Alert tones are generated in the browser with the Web Audio API. No external audio files are loaded.
+
+### Browser Notifications API
+
+Users can optionally enable browser notifications. Permission is requested only when the notification toggle is enabled.
+
+## Project Structure
+
+```text
+BreakSignal/
+├── index.html
+├── style.css
+├── script.js
+├── logo.svg
+├── og-image.png
+├── robots.txt
+├── sitemap.xml
+└── README.md
+```
+
+## AWS Deployment
+
+BreakSignal is designed as a static website that can be hosted on Amazon S3. Since the app runs fully in the browser and uses localStorage for persistence, it does not require a backend server or database.
+
+This makes it a beginner-friendly AWS portfolio project because it demonstrates static hosting, browser-side state management, and a clean deployment path.
+
+Basic deployment steps:
+
+1. Create an S3 bucket.
+2. Enable static website hosting.
+3. Upload the static files.
+4. Set `index.html` as the index document.
+5. Configure public access for simple testing.
+6. Point a custom domain at the hosted site when ready.
+
+## Future AWS Upgrade Path
+
+This project can later be upgraded with:
+
+- Amazon CloudFront for CDN delivery
+- Origin Access Control to keep the S3 bucket private
+- AWS Certificate Manager for HTTPS
+- Route 53 for custom domain DNS
+- Terraform for infrastructure as code
+
+## Future Cloud Architecture
+
+A more production-ready version could use:
+
+- Amazon S3 as a private origin
+- Amazon CloudFront as the CDN
+- Origin Access Control to protect the bucket
+- AWS Certificate Manager for HTTPS
+- Route 53 for DNS
+- Terraform to manage the infrastructure
+
+## What Was Learned
+
+- Building a useful app with only static files
+- Managing browser-side state with localStorage
+- Using the Web Audio API for generated sounds
+- Handling Browser Notifications API permissions
+- Designing responsive UI without a framework
+- Preparing a static front-end project for AWS hosting

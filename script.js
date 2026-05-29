@@ -61,6 +61,11 @@ const DEFAULT_BREAKS = [
   }
 ];
 
+const DEFAULT_BREAK_MESSAGES = DEFAULT_BREAKS.reduce((messages, breakItem) => {
+  messages[breakItem.id] = breakItem.message;
+  return messages;
+}, {});
+
 const DEFAULT_SETTINGS = {
   intervalMinutes: 30,
   snoozeMinutes: 5,
@@ -71,6 +76,7 @@ const DEFAULT_SETTINGS = {
   enabledBreakTypes: ["eye", "stretch", "walk", "posture"],
   dailyBreakCount: 0,
   history: [],
+  customMessages: { ...DEFAULT_BREAK_MESSAGES },
   lastSavedDate: getTodayKey(),
   nextBreakIndex: 0,
   activePreset: "custom",
@@ -116,11 +122,13 @@ const elements = {
   volumeValue: document.getElementById("volumeValue"),
   notificationToggle: document.getElementById("notificationToggle"),
   breakTypeList: document.getElementById("breakTypeList"),
+  messageEditorList: document.getElementById("messageEditorList"),
   dailyCount: document.getElementById("dailyCount"),
   resetTodayBtn: document.getElementById("resetTodayBtn"),
   historyList: document.getElementById("historyList"),
   historySummary: document.getElementById("historySummary"),
   clearHistoryBtn: document.getElementById("clearHistoryBtn"),
+  resetMessagesBtn: document.getElementById("resetMessagesBtn"),
   modalOverlay: document.getElementById("modalOverlay"),
   modalTitle: document.getElementById("modalTitle"),
   modalMessage: document.getElementById("modalMessage"),
@@ -139,6 +147,7 @@ function initApp() {
   totalSeconds = settings.intervalMinutes * 60;
 
   renderBreakTypes();
+  renderMessageEditors();
   bindEvents();
   syncSettingsToInputs();
   syncCompactMode();
@@ -157,6 +166,7 @@ function bindEvents() {
   elements.snoozeBtn.addEventListener("click", snoozeBreak);
   elements.skipBtn.addEventListener("click", skipBreak);
   elements.resetTodayBtn.addEventListener("click", resetTodayStats);
+  elements.resetMessagesBtn.addEventListener("click", resetDefaultMessages);
   elements.clearHistoryBtn.addEventListener("click", clearHistory);
   elements.presetButtons.forEach((button) => {
     button.addEventListener("click", () => applyPreset(button.dataset.preset));
@@ -179,9 +189,9 @@ function loadSettings() {
         ...DEFAULT_SETTINGS,
         ...saved,
         history: Array.isArray(saved.history) ? saved.history : [],
-        enabledBreakTypes: Array.isArray(saved.enabledBreakTypes) ? saved.enabledBreakTypes : DEFAULT_SETTINGS.enabledBreakTypes
+        enabledBreakTypes: Array.isArray(saved.enabledBreakTypes) ? saved.enabledBreakTypes : DEFAULT_SETTINGS.enabledBreakTypes,
+        customMessages: normalizeCustomMessages(saved.customMessages)
       };
-      delete settings.customMessages;
 
       if (!["signal", "chime", "pulse", "sweep", "deep", "air", "rise", "double", "neon", "orbit", "cascade", "launch", "beacon", "starlight", "warp", "crystal", "uplink", "horizon"].includes(settings.soundTone)) {
         settings.soundTone = DEFAULT_SETTINGS.soundTone;
@@ -196,7 +206,10 @@ function loadSettings() {
       settings.compactMode = Boolean(settings.compactMode);
     }
   } catch (error) {
-    settings = { ...DEFAULT_SETTINGS };
+    settings = {
+      ...DEFAULT_SETTINGS,
+      customMessages: { ...DEFAULT_BREAK_MESSAGES }
+    };
     showMessage("Saved settings could not be read, so defaults were loaded.", "warning");
   }
 }
@@ -283,7 +296,7 @@ function completeBreak() {
   }
 
   settings.dailyBreakCount += 1;
-  addHistoryItem(activeBreak, "Done");
+  addHistoryItem(activeBreak, "Completed");
   advanceBreakIndex();
   saveSettings();
   closeModal(true);
@@ -304,6 +317,7 @@ function snoozeBreak() {
   setTimerDuration(settings.snoozeMinutes * 60);
   currentStatus = "Running";
   startIntervalOnly();
+  currentStatus = "Snoozed";
   showMessage(`Snoozed for ${settings.snoozeMinutes} minute${settings.snoozeMinutes === 1 ? "" : "s"}.`, "warning");
   updateDisplay();
 }
@@ -665,12 +679,21 @@ function updateProgress() {
 }
 
 function updateStatusBadge() {
-  elements.statusBadge.textContent = currentStatus;
+  const statusLabels = {
+    Stopped: "Ready",
+    Running: "Running",
+    Paused: "Paused",
+    "Break Time": "Break active",
+    Snoozed: "Snoozed"
+  };
+
+  elements.statusBadge.textContent = statusLabels[currentStatus] || currentStatus;
   elements.statusBadge.className = "status-badge";
 
   if (currentStatus === "Running") elements.statusBadge.classList.add("running");
   if (currentStatus === "Paused") elements.statusBadge.classList.add("paused");
   if (currentStatus === "Break Time") elements.statusBadge.classList.add("break");
+  if (currentStatus === "Snoozed") elements.statusBadge.classList.add("snoozed");
   if (currentStatus === "Stopped") elements.statusBadge.classList.add("stopped");
 }
 
@@ -701,7 +724,7 @@ function renderHistory() {
   if (!settings.history.length) {
     const empty = document.createElement("p");
     empty.className = "empty-state";
-    empty.textContent = "No break activity yet. Start the timer and build a calmer work rhythm.";
+    empty.textContent = "No breaks logged yet. Start a session to build your recovery rhythm.";
     elements.historyList.appendChild(empty);
     return;
   }
@@ -712,7 +735,14 @@ function renderHistory() {
 
     const meta = document.createElement("div");
     meta.className = "history-meta";
-    meta.innerHTML = `<span>${formatHistoryTime(item.time)}</span><span>${item.action}</span>`;
+
+    const timestamp = document.createElement("span");
+    timestamp.textContent = `${formatHistoryDate(item.time)} at ${formatHistoryTime(item.time)}`;
+
+    const action = document.createElement("span");
+    action.textContent = item.action;
+
+    meta.append(timestamp, action);
 
     const title = document.createElement("strong");
     title.textContent = item.breakType;
@@ -814,6 +844,28 @@ function renderBreakTypes() {
     });
 
     elements.breakTypeList.appendChild(label);
+  });
+}
+
+function renderMessageEditors() {
+  elements.messageEditorList.innerHTML = "";
+
+  DEFAULT_BREAKS.forEach((breakItem) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "message-editor";
+
+    const label = document.createElement("label");
+    label.setAttribute("for", `message-${breakItem.id}`);
+    label.textContent = breakItem.title;
+
+    const textarea = document.createElement("textarea");
+    textarea.id = `message-${breakItem.id}`;
+    textarea.value = getBreakMessage(breakItem.id);
+    textarea.dataset.breakMessage = breakItem.id;
+    textarea.addEventListener("input", handleMessageChange);
+
+    wrapper.append(label, textarea);
+    elements.messageEditorList.appendChild(wrapper);
   });
 }
 
@@ -925,6 +977,19 @@ function handleVolumeChange() {
   saveSettings();
 }
 
+function handleMessageChange(event) {
+  const breakId = event.target.dataset.breakMessage;
+  const fallbackMessage = DEFAULT_BREAK_MESSAGES[breakId];
+  const customMessage = event.target.value.trim();
+
+  settings.customMessages[breakId] = customMessage || fallbackMessage;
+  saveSettings();
+
+  if (activeBreak?.id === breakId && !elements.modalOverlay.hidden) {
+    elements.modalMessage.textContent = getBreakMessage(breakId);
+  }
+}
+
 function handleNotificationToggle() {
   if (elements.notificationToggle.checked) {
     requestNotificationPermission();
@@ -960,10 +1025,25 @@ function trapModalFocus(event) {
 }
 
 function clearHistory() {
+  const confirmed = window.confirm("Clear all break history?");
+  if (!confirmed) return;
+
   settings.history = [];
   saveSettings();
   renderHistory();
   showMessage("Break history cleared.", "success");
+}
+
+function resetDefaultMessages() {
+  settings.customMessages = { ...DEFAULT_BREAK_MESSAGES };
+  saveSettings();
+  renderMessageEditors();
+
+  if (activeBreak && !elements.modalOverlay.hidden) {
+    elements.modalMessage.textContent = getBreakMessage(activeBreak.id);
+  }
+
+  showMessage("Default break messages restored.", "success");
 }
 
 function restartNormalInterval(message) {
@@ -1046,7 +1126,7 @@ function advanceBreakIndex() {
 }
 
 function getBreakMessage(id) {
-  return DEFAULT_BREAKS.find((breakItem) => breakItem.id === id)?.message || "";
+  return settings.customMessages?.[id] || DEFAULT_BREAK_MESSAGES[id] || "";
 }
 
 function parseWholeMinutes(value) {
@@ -1059,6 +1139,21 @@ function normalizeVolume(value) {
   const number = Number(value);
   if (!Number.isFinite(number)) return DEFAULT_SETTINGS.soundVolume;
   return Math.min(Math.max(Math.round(number), 20), 100);
+}
+
+function normalizeCustomMessages(savedMessages) {
+  const normalized = { ...DEFAULT_BREAK_MESSAGES };
+
+  if (savedMessages && typeof savedMessages === "object") {
+    DEFAULT_BREAKS.forEach((breakItem) => {
+      const message = savedMessages[breakItem.id];
+      if (typeof message === "string" && message.trim()) {
+        normalized[breakItem.id] = message.trim();
+      }
+    });
+  }
+
+  return normalized;
 }
 
 function getVolumeScale() {
@@ -1075,6 +1170,11 @@ function formatTime(seconds) {
 function formatHistoryTime(value) {
   const date = new Date(value);
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function formatHistoryDate(value) {
+  const date = new Date(value);
+  return date.toLocaleDateString([], { month: "short", day: "numeric" });
 }
 
 function getTodayKey() {

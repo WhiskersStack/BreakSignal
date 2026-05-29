@@ -220,6 +220,11 @@ h2 {
   border-color: rgba(56, 189, 248, 0.42);
 }
 
+.status-badge.snoozed {
+  color: #FBBF24;
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
 .status-badge.completed {
   color: var(--success);
   border-color: rgba(52, 211, 153, 0.42);
@@ -586,6 +591,30 @@ h2 {
   line-height: 1.35;
 }
 
+.messages-panel {
+  min-width: 0;
+}
+
+.message-editor-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.message-editor {
+  display: grid;
+  gap: 8px;
+}
+
+.message-editor label {
+  font-weight: 750;
+}
+
+.message-editor textarea {
+  min-height: 104px;
+}
+
 .stat-number {
   margin: 18px 0 4px;
   font-size: 4.6rem;
@@ -872,6 +901,7 @@ body.compact-mode .timer-display {
 @media (max-width: 840px) {
   .form-grid,
   .break-type-list,
+  .message-editor-list,
   .seo-grid,
   .rule-section,
   .seo-split {
