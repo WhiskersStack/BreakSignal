@@ -150,6 +150,9 @@ const elements = {
   historySummary: document.getElementById("historySummary"),
   clearHistoryBtn: document.getElementById("clearHistoryBtn"),
   resetMessagesBtn: document.getElementById("resetMessagesBtn"),
+  clearHistoryOverlay: document.getElementById("clearHistoryOverlay"),
+  confirmClearHistoryBtn: document.getElementById("confirmClearHistoryBtn"),
+  cancelClearHistoryBtn: document.getElementById("cancelClearHistoryBtn"),
   modalOverlay: document.getElementById("modalOverlay"),
   modalTitle: document.getElementById("modalTitle"),
   modalMessage: document.getElementById("modalMessage"),
@@ -195,7 +198,9 @@ function bindEvents() {
   elements.skipBtn.addEventListener("click", skipBreak);
   elements.resetTodayBtn.addEventListener("click", resetTodayStats);
   elements.resetMessagesBtn.addEventListener("click", resetDefaultMessages);
-  elements.clearHistoryBtn.addEventListener("click", clearHistory);
+  elements.clearHistoryBtn.addEventListener("click", showClearHistoryConfirm);
+  elements.confirmClearHistoryBtn.addEventListener("click", clearHistory);
+  elements.cancelClearHistoryBtn.addEventListener("click", closeClearHistoryConfirm);
   elements.presetButtons.forEach((button) => {
     button.addEventListener("click", () => applyPreset(button.dataset.preset));
   });
@@ -207,6 +212,7 @@ function bindEvents() {
   elements.volumeInput.addEventListener("input", handleVolumeChange);
   elements.notificationToggle.addEventListener("change", handleNotificationToggle);
   elements.modalOverlay.addEventListener("keydown", handleModalKeydown);
+  elements.clearHistoryOverlay.addEventListener("keydown", handleClearHistoryKeydown);
   window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
   window.addEventListener("appinstalled", handleAppInstalled);
 }
@@ -1105,6 +1111,28 @@ function handleModalKeydown(event) {
   }
 }
 
+function showClearHistoryConfirm() {
+  lastFocusedElement = document.activeElement;
+  elements.clearHistoryOverlay.hidden = false;
+  document.addEventListener("keydown", trapClearHistoryFocus);
+  elements.confirmClearHistoryBtn.focus();
+}
+
+function closeClearHistoryConfirm() {
+  elements.clearHistoryOverlay.hidden = true;
+  document.removeEventListener("keydown", trapClearHistoryFocus);
+
+  if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+    lastFocusedElement.focus();
+  }
+}
+
+function handleClearHistoryKeydown(event) {
+  if (event.key === "Escape") {
+    closeClearHistoryConfirm();
+  }
+}
+
 function savePreviewReturnState() {
   const wasRunning = Boolean(timerId);
   if (wasRunning) {
@@ -1186,13 +1214,29 @@ function trapModalFocus(event) {
   }
 }
 
-function clearHistory() {
-  const confirmed = window.confirm("Clear all break history?");
-  if (!confirmed) return;
+function trapClearHistoryFocus(event) {
+  if (elements.clearHistoryOverlay.hidden || event.key !== "Tab") return;
 
+  const focusableElements = elements.clearHistoryOverlay.querySelectorAll("button");
+  if (!focusableElements.length) return;
+
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+
+  if (event.shiftKey && document.activeElement === firstElement) {
+    event.preventDefault();
+    lastElement.focus();
+  } else if (!event.shiftKey && document.activeElement === lastElement) {
+    event.preventDefault();
+    firstElement.focus();
+  }
+}
+
+function clearHistory() {
   settings.history = [];
   saveSettings();
   renderHistory();
+  closeClearHistoryConfirm();
   showMessage("Break history cleared.", "success");
 }
 

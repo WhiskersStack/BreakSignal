@@ -952,6 +952,10 @@ body.compact-mode .timer-display {
   margin-top: 24px;
 }
 
+.confirm-modal {
+  width: min(480px, 100%);
+}
+
 @media (max-width: 840px) {
   .form-grid,
   .break-type-list,

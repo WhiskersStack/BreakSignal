@@ -499,6 +499,20 @@
     </section>
   </div>
 
+  <div id="clearHistoryOverlay" class="modal-overlay" hidden>
+    <section class="break-modal confirm-modal" role="dialog" aria-modal="true" aria-labelledby="clearHistoryTitle" aria-describedby="clearHistoryMessage">
+      <p class="section-kicker">Confirm clear</p>
+      <h2 id="clearHistoryTitle">Clear break history?</h2>
+      <p id="clearHistoryMessage" class="modal-message">
+        This removes the recent activity list only. Today's stats and your saved settings will stay in place.
+      </p>
+      <div class="modal-actions">
+        <button id="confirmClearHistoryBtn" class="primary-btn" type="button">Clear history</button>
+        <button id="cancelClearHistoryBtn" class="ghost-btn" type="button">Cancel</button>
+      </div>
+    </section>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
