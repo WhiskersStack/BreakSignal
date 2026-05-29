@@ -112,6 +112,7 @@ let previewLoopInterval = null;
 let previewStopTimer = null;
 let completionFeedbackTimer = null;
 let deferredInstallPrompt = null;
+let previewReturnState = null;
 
 const elements = {
   timerCard: document.querySelector(".timer-card"),
@@ -281,6 +282,7 @@ function resetTimer() {
   stopTonePreview();
   currentStatus = "Stopped";
   isPreviewBreak = false;
+  previewReturnState = null;
   closeModal(false);
   setTimerDuration(settings.intervalMinutes * 60);
   showMessage("Timer reset to your normal interval.", "success");
@@ -301,9 +303,22 @@ function tickTimer() {
 }
 
 function triggerBreak(isTest) {
-  if (!validateSettings()) return;
+  if (!validateSettings()) {
+    if (!isTest && remainingSeconds <= 0 && (currentStatus === "Running" || currentStatus === "Snoozed")) {
+      currentStatus = "Stopped";
+      setTimerDuration(settings.intervalMinutes * 60);
+      updateDisplay();
+    }
+    return;
+  }
 
-  clearActiveTimer();
+  if (isTest) {
+    savePreviewReturnState();
+  } else {
+    previewReturnState = null;
+    clearActiveTimer();
+  }
+
   activeBreak = getNextBreak();
   isPreviewBreak = isTest;
   currentStatus = "Break Time";
@@ -401,11 +416,26 @@ function playSound() {
 }
 
 function closePreviewBreak(message) {
+  const returnState = previewReturnState;
+  previewReturnState = null;
   activeBreak = null;
   isPreviewBreak = false;
   currentStatus = "Stopped";
   closeModal(true);
-  setTimerDuration(settings.intervalMinutes * 60);
+
+  if (returnState) {
+    currentStatus = returnState.status;
+    remainingSeconds = returnState.remainingSeconds;
+    totalSeconds = returnState.totalSeconds;
+    targetEndTime = null;
+
+    if (returnState.wasRunning && remainingSeconds > 0) {
+      startIntervalOnly();
+    }
+  } else {
+    setTimerDuration(settings.intervalMinutes * 60);
+  }
+
   showMessage(message, "success");
   updateDisplay();
 }
@@ -858,6 +888,15 @@ function markCustomPreset() {
   }
 }
 
+function pauseTimerForEmptyBreakRotation() {
+  if (!timerId) return false;
+
+  syncRemainingSeconds();
+  clearActiveTimer();
+  currentStatus = "Paused";
+  return true;
+}
+
 function renderBreakTypes() {
   elements.breakTypeList.innerHTML = "";
 
@@ -878,6 +917,20 @@ function renderBreakTypes() {
     input.addEventListener("change", () => {
       markCustomPreset();
       settings.enabledBreakTypes = Array.from(elements.breakTypeList.querySelectorAll("input:checked")).map((item) => item.value);
+      if (!settings.enabledBreakTypes.length) {
+        const timerWasPaused = pauseTimerForEmptyBreakRotation();
+        saveSettings();
+        syncPresetButtons();
+        updateDisplay();
+        showMessage(
+          timerWasPaused
+            ? "Timer paused. Choose at least one break type before continuing."
+            : "Choose at least one break type before starting.",
+          "warning"
+        );
+        return;
+      }
+
       if (settings.enabledBreakTypes.length && !settings.enabledBreakTypes.includes(getNextBreak().id)) {
         settings.nextBreakIndex = 0;
       }
@@ -1052,6 +1105,22 @@ function handleModalKeydown(event) {
   }
 }
 
+function savePreviewReturnState() {
+  const wasRunning = Boolean(timerId);
+  if (wasRunning) {
+    syncRemainingSeconds();
+  }
+
+  previewReturnState = {
+    status: currentStatus,
+    remainingSeconds,
+    totalSeconds,
+    wasRunning
+  };
+
+  clearActiveTimer();
+}
+
 function handleBeforeInstallPrompt(event) {
   event.preventDefault();
   deferredInstallPrompt = event;
@@ -1084,7 +1153,13 @@ async function installApp() {
 }
 
 function registerServiceWorker() {
-  if (!("serviceWorker" in navigator) || !window.isSecureContext) return;
+  if (
+    !("serviceWorker" in navigator) ||
+    !window.isSecureContext ||
+    !["http:", "https:"].includes(window.location.protocol)
+  ) {
+    return;
+  }
 
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/service-worker.js").catch(() => {
