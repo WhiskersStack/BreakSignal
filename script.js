@@ -231,6 +231,7 @@ const elements = {
   volumeInput: document.getElementById("volumeInput"),
   volumeValue: document.getElementById("volumeValue"),
   notificationToggle: document.getElementById("notificationToggle"),
+  notificationStatus: document.getElementById("notificationStatus"),
   breakTypeList: document.getElementById("breakTypeList"),
   dailyCount: document.getElementById("dailyCount"),
   eyeStat: document.getElementById("eyeStat"),
@@ -792,6 +793,7 @@ function requestNotificationPermission() {
     settings.notificationsEnabled = false;
     elements.notificationToggle.checked = false;
     saveSettings();
+    updateNotificationStatus();
     showMessage("This browser does not support notifications.", "warning");
     return;
   }
@@ -800,6 +802,7 @@ function requestNotificationPermission() {
     settings.notificationsEnabled = true;
     elements.notificationToggle.checked = true;
     saveSettings();
+    updateNotificationStatus();
     showMessage("Browser notifications enabled.", "success");
     return;
   }
@@ -808,6 +811,7 @@ function requestNotificationPermission() {
     settings.notificationsEnabled = false;
     elements.notificationToggle.checked = false;
     saveSettings();
+    updateNotificationStatus();
     showMessage("Notification permission is blocked in this browser. You can re-enable it from site settings.", "warning");
     return;
   }
@@ -822,6 +826,7 @@ function requestNotificationPermission() {
       showMessage("Notification permission was denied. You can still use in-app reminders.", "warning");
     }
     saveSettings();
+    updateNotificationStatus();
   });
 }
 
@@ -847,6 +852,28 @@ function updateDisplay() {
   updateStatusBadge();
   updateProgress();
   updateButtons();
+  updateNotificationStatus();
+}
+
+function updateNotificationStatus() {
+  if (!elements.notificationStatus) return;
+
+  if (!("Notification" in window)) {
+    elements.notificationStatus.textContent = "Notifications: Not supported in this browser";
+    return;
+  }
+
+  if (Notification.permission === "denied") {
+    elements.notificationStatus.textContent = "Notifications: Blocked in browser settings";
+    return;
+  }
+
+  if (settings.notificationsEnabled && Notification.permission === "granted") {
+    elements.notificationStatus.textContent = "Notifications: Enabled";
+    return;
+  }
+
+  elements.notificationStatus.textContent = "Notifications: Off";
 }
 
 function updateProgress() {
@@ -1076,6 +1103,7 @@ function syncSettingsToInputs() {
   elements.volumeInput.value = settings.soundVolume;
   elements.volumeValue.textContent = `${settings.soundVolume}%`;
   elements.notificationToggle.checked = settings.notificationsEnabled;
+  updateNotificationStatus();
 }
 
 function handleIntervalChange() {
@@ -1179,6 +1207,7 @@ function handleNotificationToggle() {
   } else {
     settings.notificationsEnabled = false;
     saveSettings();
+    updateNotificationStatus();
     showMessage("Browser notifications disabled.", "success");
   }
 }

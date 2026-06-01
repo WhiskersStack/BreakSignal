@@ -182,6 +182,20 @@ A more production-ready version could use:
 
 1.0.0
 
+## Release Notes
+
+### v1.0.0
+
+- Added polished timer dashboard
+- Added break type rotation
+- Added daily stats and focus rhythm streak
+- Added generated alert tones
+- Added browser notification support
+- Added compact mode
+- Added responsive footer
+- Added PWA manifest and service worker
+- Added AWS static hosting documentation
+
 ## What Was Learned
 
 - Building a useful app with only static files
