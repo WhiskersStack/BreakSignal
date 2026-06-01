@@ -3,22 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="BreakSignal is a minimal break reminder for eye breaks, stretching, walking, posture, and focus.">
-  <title>BreakSignal | Break Reminder</title>
+  <meta name="description" content="BreakSignal is a free computer break reminder and 20-20-20 eye break timer for eye breaks, posture checks, stretching, walking, and focus resets.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="BreakSignal">
+  <meta name="theme-color" content="#070B14">
+  <meta name="application-name" content="BreakSignal">
+  <link rel="canonical" href="https://www.break-signal.com/">
+  <title>BreakSignal - Free Break Reminder & 20-20-20 Eye Break Timer</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BreakSignal">
+  <meta property="og:title" content="BreakSignal - Free Break Reminder & 20-20-20 Eye Break Timer">
+  <meta property="og:description" content="A calm computer break timer for eye breaks, posture checks, stretching, walking, and focus resets.">
+  <meta property="og:url" content="https://www.break-signal.com/">
+  <meta property="og:image" content="https://www.break-signal.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BreakSignal - Free Break Reminder & 20-20-20 Eye Break Timer">
+  <meta name="twitter:description" content="A calm computer break timer for eye breaks, posture checks, stretching, walking, and focus resets.">
+  <meta name="twitter:image" content="https://www.break-signal.com/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
   <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BreakSignal",
+      "url": "https://www.break-signal.com/",
+      "description": "BreakSignal is a minimal break reminder for eye breaks, stretching, walking, posture, and focus while working at a computer.",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript and a modern web browser.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Eye break reminders",
+        "Stretch break reminders",
+        "Walking break reminders",
+        "Posture break reminders",
+        "Local break history",
+        "Generated sound alerts"
+      ]
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is BreakSignal free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. BreakSignal is a free browser-based break reminder for eye breaks, stretching, walking, posture checks, and focus resets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does BreakSignal keep running after I close the tab?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. BreakSignal runs while the browser tab is open. Settings and break history are saved locally, but the countdown does not continue after the tab is closed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does BreakSignal require an account?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. BreakSignal does not require sign-up, login, a backend, a database, or external APIs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is my break history stored?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BreakSignal stores settings and break history in your browser's localStorage. It does not use accounts, a backend, a database, or external APIs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use BreakSignal for the 20-20-20 eye break rule?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can set a shorter reminder interval and use Eye Break reminders to look away from the screen and relax your eyes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does BreakSignal play sounds?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. BreakSignal uses the Web Audio API to generate alert tones in the browser without external audio files."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does BreakSignal work on mobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. BreakSignal has a responsive layout for mobile browsers, though it is primarily designed for people working at a computer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does BreakSignal support keyboard navigation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Use Tab to move between controls and Enter or Space to activate buttons and form controls."
+          }
+        }
+      ]
+    }
+  </script>
 </head>
 <body>
   <div class="app-shell">
     <header class="site-header" aria-label="BreakSignal header">
       <div class="brand-mark" aria-hidden="true">
-        <svg class="logo" viewBox="0 0 64 64" role="img">
-          <circle cx="32" cy="32" r="23" class="logo-ring"></circle>
-          <path d="M49 20a23 23 0 0 1 3 12" class="logo-arc"></path>
-          <path d="M13 43a23 23 0 0 1-3-11" class="logo-pulse"></path>
-          <rect x="25" y="23" width="5" height="18" rx="2.5" class="logo-bar"></rect>
-          <rect x="34" y="23" width="5" height="18" rx="2.5" class="logo-bar"></rect>
-          <circle cx="32" cy="32" r="29" class="logo-glow"></circle>
-        </svg>
+        <img class="logo-image" src="logo.svg" alt="">
       </div>
       <div>
         <p class="eyebrow">BreakSignal</p>
@@ -27,7 +137,7 @@
     </header>
 
     <main>
-      <section class="timer-card glass-card" aria-labelledby="timer-heading">
+      <section id="timer" class="timer-card glass-card" aria-labelledby="timer-heading">
         <div class="timer-topline">
           <div>
             <p class="section-kicker">Quiet command center</p>
@@ -50,21 +160,45 @@
           <button id="pauseBtn" class="secondary-btn" type="button">Pause</button>
           <button id="resetBtn" class="secondary-btn" type="button">Reset</button>
           <button id="testBtn" class="ghost-btn" type="button">Test Reminder</button>
+          <button id="compactModeBtn" class="ghost-btn" type="button" aria-pressed="false">Compact Mode</button>
+          <button id="installAppBtn" class="ghost-btn" type="button" hidden>Install App</button>
         </div>
         <p id="appMessage" class="app-message" role="status" aria-live="polite"></p>
       </section>
 
-      <div class="content-grid">
-        <section class="settings-stack" aria-label="Break settings">
-          <div class="glass-card panel">
+      <div id="settings" class="dashboard-layout">
+        <div class="dashboard-row">
+          <section class="glass-card panel cadence-panel" aria-labelledby="cadence-heading">
             <div class="panel-heading">
               <div>
                 <p class="section-kicker">Settings</p>
-                <h2>Break cadence</h2>
+                <h2 id="cadence-heading">Break cadence</h2>
               </div>
             </div>
 
+            <div class="preset-group" aria-label="Break cadence presets">
+              <button class="preset-btn" type="button" data-preset="20-20-20">20-20-20</button>
+              <button class="preset-btn" type="button" data-preset="deep-work">Deep Work</button>
+              <button class="preset-btn" type="button" data-preset="posture-guard">Posture Guard</button>
+              <button class="preset-btn" type="button" data-preset="movement-mode">Movement Mode</button>
+              <button class="preset-btn" type="button" data-preset="custom">Custom</button>
+            </div>
+
             <div class="form-grid">
+              <label class="field">
+                <span>Theme</span>
+                <select id="themeSelect">
+                  <option value="dark">Dark</option>
+                  <option value="light">Light</option>
+                  <option value="midnight">Midnight Blue</option>
+                  <option value="amoled">AMOLED</option>
+                  <option value="forest">Forest</option>
+                  <option value="sunset">Sunset</option>
+                  <option value="cyber">Cyber</option>
+                </select>
+                <small>Choose the visual style for this browser.</small>
+              </label>
+
               <label class="field">
                 <span>Reminder interval</span>
                 <input id="intervalInput" type="number" min="1" step="1" inputmode="numeric">
@@ -75,6 +209,47 @@
                 <span>Snooze duration</span>
                 <input id="snoozeInput" type="number" min="1" step="1" inputmode="numeric">
                 <small>Minutes before a snoozed reminder returns.</small>
+              </label>
+
+              <label class="field tone-field">
+                <span>Alert tone</span>
+                <div class="tone-control">
+                  <select id="soundToneSelect">
+                    <optgroup label="Calm">
+                      <option value="signal">Soft Signal</option>
+                      <option value="chime">Calm Chime</option>
+                      <option value="deep">Deep Bell</option>
+                      <option value="air">Air Ping</option>
+                    </optgroup>
+                    <optgroup label="Bright">
+                      <option value="pulse">Focus Pulse</option>
+                      <option value="sweep">Reset Sweep</option>
+                      <option value="rise">Gentle Rise</option>
+                      <option value="double">Double Tap</option>
+                    </optgroup>
+                    <optgroup label="Futuristic">
+                      <option value="neon">Neon Lift</option>
+                      <option value="orbit">Orbit Ping</option>
+                      <option value="cascade">Digital Cascade</option>
+                      <option value="beacon">Focus Beacon</option>
+                      <option value="starlight">Starlight Arp</option>
+                      <option value="crystal">Crystal Steps</option>
+                    </optgroup>
+                    <optgroup label="Energetic">
+                      <option value="launch">Launch Sweep</option>
+                      <option value="warp">Warp Signal</option>
+                      <option value="uplink">Uplink Pulse</option>
+                      <option value="horizon">Horizon Rise</option>
+                    </optgroup>
+                  </select>
+                  <button id="previewToneBtn" class="ghost-btn small-btn tone-preview-btn" type="button" aria-pressed="false">Preview tone</button>
+                </div>
+                <div class="volume-control">
+                  <span>Volume</span>
+                  <input id="volumeInput" type="range" min="20" max="100" step="5">
+                  <output id="volumeValue" for="volumeInput">70%</output>
+                </div>
+                <small>Generated in-browser. No audio files are used.</small>
               </label>
             </div>
 
@@ -91,25 +266,52 @@
                 <span>Browser notifications</span>
               </label>
             </div>
-          </div>
+          </section>
 
-          <div class="glass-card panel">
+          <section class="glass-card panel stats-panel" aria-labelledby="stats-heading">
+            <div class="panel-heading split-heading">
+              <div>
+                <p class="section-kicker">Today</p>
+                <h2 id="stats-heading">Daily stats</h2>
+              </div>
+              <button id="resetTodayBtn" class="ghost-btn small-btn" type="button">Reset today</button>
+            </div>
+            <div class="stat-number" id="dailyCount">0</div>
+            <p class="muted">Completed breaks logged today.</p>
+            <div class="streak-meter">
+              <span>Focus rhythm</span>
+              <strong id="streakCount">0 clean resets</strong>
+            </div>
+            <dl class="daily-breakdown" aria-label="Completed breaks by type today">
+              <div>
+                <dt>Eye breaks</dt>
+                <dd id="eyeStat">0</dd>
+              </div>
+              <div>
+                <dt>Stretch breaks</dt>
+                <dd id="stretchStat">0</dd>
+              </div>
+              <div>
+                <dt>Walking breaks</dt>
+                <dd id="walkStat">0</dd>
+              </div>
+              <div>
+                <dt>Posture checks</dt>
+                <dd id="postureStat">0</dd>
+              </div>
+            </dl>
+          </section>
+        </div>
+
+        <div class="dashboard-row">
+          <section class="glass-card panel break-types-panel" aria-labelledby="break-types-heading">
             <div class="panel-heading">
               <div>
                 <p class="section-kicker">Break types</p>
-                <h2>Rotation</h2>
+                <h2 id="break-types-heading">Rotation</h2>
               </div>
             </div>
             <div id="breakTypeList" class="break-type-list"></div>
-          </div>
-        </section>
-
-        <aside class="side-stack" aria-label="Stats and history">
-          <section class="glass-card panel stats-panel" aria-labelledby="stats-heading">
-            <p class="section-kicker">Today</p>
-            <h2 id="stats-heading">Daily stats</h2>
-            <div class="stat-number" id="dailyCount">0</div>
-            <p class="muted">Completed breaks logged today.</p>
           </section>
 
           <section class="glass-card panel history-panel" aria-labelledby="history-heading">
@@ -120,23 +322,255 @@
               </div>
               <button id="clearHistoryBtn" class="ghost-btn small-btn" type="button">Clear</button>
             </div>
+            <p id="historySummary" class="history-summary">Latest 30 entries are kept.</p>
             <div id="historyList" class="history-list"></div>
           </section>
-        </aside>
+        </div>
+
       </div>
+
+      <section class="seo-section" aria-labelledby="about-heading">
+        <div class="seo-intro">
+          <p class="section-kicker">Break reminder for computer work</p>
+          <h2 id="about-heading">A quieter way to remember eye breaks, posture checks, stretching, and movement.</h2>
+          <p>
+            BreakSignal is a free browser-based break reminder for people who spend long stretches at a computer.
+            It helps you build a steady rhythm of eye breaks, stretch breaks, walking breaks, and posture resets
+            without installing an app or creating an account.
+          </p>
+        </div>
+
+        <div class="seo-grid">
+          <article class="seo-card">
+            <h3>Eye Breaks</h3>
+            <p>
+              Use short eye break reminders to look away from the screen, soften your gaze, blink slowly, and reduce
+              the feeling of visual strain during deep work sessions.
+            </p>
+          </article>
+
+          <article class="seo-card">
+            <h3>Stretch Breaks</h3>
+            <p>
+              Stretch reminders encourage simple movement for your neck, shoulders, wrists, chest, and back before
+              stiffness becomes part of the workday.
+            </p>
+          </article>
+
+          <article class="seo-card">
+            <h3>Walking Breaks</h3>
+            <p>
+              Walking breaks help you step away from the chair, reset your energy, and return to the desk with a
+              clearer head and a little more momentum.
+            </p>
+          </article>
+
+          <article class="seo-card">
+            <h3>Posture Checks</h3>
+            <p>
+              Posture reminders help you notice your shoulders, neck, wrists, and feet so you can return to a more
+              comfortable working position.
+            </p>
+          </article>
+        </div>
+
+        <section class="rule-section mode-guide" aria-labelledby="rule-heading">
+          <div class="mode-guide-intro">
+            <p class="section-kicker">Break modes</p>
+            <h2 id="rule-heading">A simple rhythm for screen-heavy work.</h2>
+            <p>
+              Choose a mode that matches the work session. Each preset adjusts the reminder cadence and
+              break rotation without changing the simple timer workflow.
+            </p>
+
+            <div class="mode-tabs" role="tablist" aria-label="BreakSignal modes">
+              <button id="mode-tab-20-20-20" class="mode-tab active" type="button" role="tab" aria-selected="true" aria-controls="mode-panel-20-20-20" data-mode="20-20-20">20-20-20</button>
+              <button id="mode-tab-deep-work" class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="mode-panel-deep-work" data-mode="deep-work">Deep Work</button>
+              <button id="mode-tab-posture-guard" class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="mode-panel-posture-guard" data-mode="posture-guard">Posture Guard</button>
+              <button id="mode-tab-movement-mode" class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="mode-panel-movement-mode" data-mode="movement-mode">Movement Mode</button>
+            </div>
+          </div>
+
+          <div class="mode-panels">
+            <article id="mode-panel-20-20-20" class="mode-panel active" role="tabpanel" aria-labelledby="mode-tab-20-20-20">
+              <p class="mode-label">Eye protection</p>
+              <h3>20-20-20</h3>
+              <p>
+                A focused eye-break rhythm for screen-heavy work: every 20 minutes, look farther away for
+                about 20 seconds and let your eyes soften.
+              </p>
+              <div class="rule-steps" aria-label="20-20-20 mode details">
+                <span>20 min</span>
+                <span>20 sec</span>
+                <span>Eye only</span>
+              </div>
+            </article>
+
+            <article id="mode-panel-deep-work" class="mode-panel" role="tabpanel" aria-labelledby="mode-tab-deep-work" hidden>
+              <p class="mode-label">Longer focus blocks</p>
+              <h3>Deep Work</h3>
+              <p>
+                A quieter cadence for focused work sessions, rotating eye breaks, posture checks, and
+                stretching without interrupting too often.
+              </p>
+              <div class="rule-steps" aria-label="Deep Work mode details">
+                <span>45 min</span>
+                <span>Eyes</span>
+                <span>Posture + stretch</span>
+              </div>
+            </article>
+
+            <article id="mode-panel-posture-guard" class="mode-panel" role="tabpanel" aria-labelledby="mode-tab-posture-guard" hidden>
+              <p class="mode-label">Desk alignment</p>
+              <h3>Posture Guard</h3>
+              <p>
+                A steady reset for desk posture. It keeps the rotation focused on posture checks and
+                stretch breaks before tension builds up.
+              </p>
+              <div class="rule-steps" aria-label="Posture Guard mode details">
+                <span>30 min</span>
+                <span>Posture</span>
+                <span>Stretch</span>
+              </div>
+            </article>
+
+            <article id="mode-panel-movement-mode" class="mode-panel" role="tabpanel" aria-labelledby="mode-tab-movement-mode" hidden>
+              <p class="mode-label">Movement reset</p>
+              <h3>Movement Mode</h3>
+              <p>
+                A lower-frequency mode for longer work blocks that prioritizes walking and stretching so
+                your body changes position through the day.
+              </p>
+              <div class="rule-steps" aria-label="Movement Mode details">
+                <span>60 min</span>
+                <span>Walk</span>
+                <span>Stretch</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <div class="seo-split">
+          <div id="privacy">
+            <p class="section-kicker">Private by design</p>
+            <h2>Runs locally in your browser.</h2>
+            <p>
+              BreakSignal does not require a login, backend, database, or external API. Your reminder interval,
+              enabled break types, sound preference, daily count, and break history stay in your own browser using
+              localStorage.
+            </p>
+          </div>
+          <div>
+            <p class="section-kicker">Simple workflow</p>
+            <h2>Open the page, start the timer, take the break.</h2>
+            <p>
+              The timer works while the tab is open. When a reminder appears, choose Done, Snooze, or Skip. The app
+              keeps a recent activity history so you can see your reset rhythm during the day.
+            </p>
+          </div>
+        </div>
+
+        <section id="faq" class="faq-section" aria-labelledby="faq-heading">
+          <p class="section-kicker">FAQ</p>
+          <h2 id="faq-heading">BreakSignal questions</h2>
+
+          <div class="faq-list">
+            <details>
+              <summary>Is BreakSignal free?</summary>
+              <p>Yes. BreakSignal is a free web-based break reminder for eye breaks, stretch breaks, walking breaks, posture checks, and focus resets.</p>
+            </details>
+
+            <details>
+              <summary>Does BreakSignal work after I close the tab?</summary>
+              <p>No. The countdown runs while the browser tab is open. Your settings and history are saved, but the timer does not continue after the tab is closed.</p>
+            </details>
+
+            <details>
+              <summary>Does BreakSignal require an account?</summary>
+              <p>No. There is no sign-up, login, backend, database, or external API. You can open the page and start using the timer immediately.</p>
+            </details>
+
+            <details>
+              <summary>Where is my break history stored?</summary>
+              <p>Your settings and break history are stored locally in your browser using localStorage. Clearing browser site data can remove that history.</p>
+            </details>
+
+            <details>
+              <summary>Can I use it for the 20-20-20 eye break rule?</summary>
+              <p>Yes. Set a reminder interval that fits your workflow and keep Eye Break enabled to get regular prompts to look away from the screen.</p>
+            </details>
+
+            <details>
+              <summary>Does BreakSignal play sounds?</summary>
+              <p>Yes. BreakSignal uses the Web Audio API to generate alert tones in the browser. It does not load external audio files.</p>
+            </details>
+
+            <details>
+              <summary>Does BreakSignal work on mobile?</summary>
+              <p>The layout is responsive and works on mobile browsers, though it is designed primarily for people working at a computer.</p>
+            </details>
+
+            <details>
+              <summary>Does BreakSignal support keyboard navigation?</summary>
+              <p>Yes. Use Tab to move between controls and Enter or Space to activate buttons and form controls.</p>
+            </details>
+          </div>
+        </section>
+
+      </section>
     </main>
+
+    <footer class="site-footer" aria-label="Site footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <p class="footer-kicker">BreakSignal</p>
+          <p class="footer-title">Protect your eyes, posture, and focus.</p>
+          <p class="footer-text">
+            A calm browser-based break reminder for eye breaks, movement, stretching, and posture resets.
+          </p>
+        </div>
+
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="#timer">Timer</a>
+          <a href="#settings">Settings</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#faq">FAQ</a>
+          <a href="https://github.com/WhiskersStack/breaksignal" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <p>Runs locally in your browser. No account, no backend, no database.</p>
+        <p>Version 1.0.0 | (c) <span id="currentYear">2026</span> BreakSignal.</p>
+      </div>
+    </footer>
   </div>
 
   <div id="modalOverlay" class="modal-overlay" hidden>
     <section class="break-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalMessage">
-      <p class="section-kicker">Break Time</p>
+      <p class="section-kicker">Time for a reset signal</p>
       <h2 id="modalTitle">Eye Break</h2>
       <p id="modalMessage" class="modal-message">Look at something far away for 20 seconds. Let your eyes soften.</p>
       <p class="duration-pill">Suggested duration: <span id="modalDuration">20 seconds</span></p>
+      <p class="modal-helper">Take the break now, snooze it briefly, or skip and return to your normal rhythm.</p>
       <div class="modal-actions">
         <button id="doneBtn" class="primary-btn" type="button">Done</button>
         <button id="snoozeBtn" class="secondary-btn" type="button">Snooze</button>
         <button id="skipBtn" class="ghost-btn" type="button">Skip</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="clearHistoryOverlay" class="modal-overlay" hidden>
+    <section class="break-modal confirm-modal" role="dialog" aria-modal="true" aria-labelledby="clearHistoryTitle" aria-describedby="clearHistoryMessage">
+      <p class="section-kicker">Confirm clear</p>
+      <h2 id="clearHistoryTitle">Clear break history?</h2>
+      <p id="clearHistoryMessage" class="modal-message">
+        This removes the recent activity list only. Today's stats and your saved settings will stay in place.
+      </p>
+      <div class="modal-actions">
+        <button id="confirmClearHistoryBtn" class="primary-btn" type="button">Clear history</button>
+        <button id="cancelClearHistoryBtn" class="ghost-btn" type="button">Cancel</button>
       </div>
     </section>
   </div>
