@@ -7,7 +7,7 @@ BreakSignal is a static Progressive Web App. The simplest Play Store path is to 
 - App name: `BreakSignal`
 - Package name: `com.breaksignal.app`
 - Start URL: `https://www.break-signal.com/`
-- Manifest URL: `https://www.break-signal.com/manifest.webmanifest`
+- Manifest URL: `https://www.break-signal.com/manifest.json`
 - App category: Productivity, Health, or Utilities
 - Pricing: Free
 
@@ -26,20 +26,20 @@ Before creating the Android wrapper, confirm these URLs work in a browser:
 
 ```text
 https://www.break-signal.com/
-https://www.break-signal.com/manifest.webmanifest
+https://www.break-signal.com/manifest.json
 https://www.break-signal.com/service-worker.js
-https://www.break-signal.com/assets/icons/icon-512.png
-https://www.break-signal.com/assets/icons/maskable-512.png
+https://www.break-signal.com/icons/icon-512.png
+https://www.break-signal.com/icons/maskable-512.png
 ```
 
 The current repo already includes the required PWA files:
 
 ```text
-manifest.webmanifest
+manifest.json
 service-worker.js
-assets/icons/icon-192.png
-assets/icons/icon-512.png
-assets/icons/maskable-512.png
+icons/icon-192.png
+icons/icon-512.png
+icons/maskable-512.png
 ```
 
 ## 2. Generate The Android TWA Project
@@ -47,7 +47,7 @@ assets/icons/maskable-512.png
 From a working folder outside the deployed static site, run:
 
 ```powershell
-npx @bubblewrap/cli init --manifest=https://www.break-signal.com/manifest.webmanifest --directory=android
+npx @bubblewrap/cli init --manifest=https://www.break-signal.com/manifest.json --directory=android
 ```
 
 Suggested answers:

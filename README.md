@@ -108,18 +108,19 @@ BreakSignal includes a web manifest, install icons, and a service worker. Suppor
 
 ```text
 BreakSignal/
+|-- www/
+|   |-- index.html
+|   |-- style.css
+|   |-- script.js
+|   |-- manifest.json
+|   |-- service-worker.js
+|   |-- logo.svg
+|   `-- icons/
 |-- assets/
-|   |-- icons/
 |   `-- screenshots/
-|-- index.html
-|-- style.css
-|-- script.js
-|-- manifest.webmanifest
-|-- service-worker.js
-|-- logo.svg
-|-- og-image.png
-|-- robots.txt
-|-- sitemap.xml
+|-- android/
+|-- capacitor.config.json
+|-- package.json
 `-- README.md
 ```
 
@@ -133,7 +134,7 @@ Basic deployment steps:
 
 1. Create an S3 bucket.
 2. Enable static website hosting.
-3. Upload the static files.
+3. Upload the contents of `www/` as static files.
 4. Set `index.html` as the index document.
 5. Configure public access for simple testing.
 6. Point a custom domain at the hosted site when ready.

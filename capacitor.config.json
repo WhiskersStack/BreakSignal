@@ -1,0 +1,6 @@
+{
+  "appId": "com.breaksignal.app",
+  "appName": "BreakSignal",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
