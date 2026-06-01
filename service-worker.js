@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "breaksignal-v1.0.1";
+const CACHE_NAME = "breaksignal-v1.0.2";
 const APP_SHELL = [
   "/",
   "/index.html",
