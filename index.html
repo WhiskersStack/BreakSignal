@@ -360,21 +360,79 @@
           </article>
         </div>
 
-        <section class="rule-section" aria-labelledby="rule-heading">
-          <div>
-            <p class="section-kicker">20-20-20 eye break timer</p>
+        <section class="rule-section mode-guide" aria-labelledby="rule-heading">
+          <div class="mode-guide-intro">
+            <p class="section-kicker">Break modes</p>
             <h2 id="rule-heading">A simple rhythm for screen-heavy work.</h2>
             <p>
-              The 20-20-20 rule is a common eye break habit: about every 20 minutes, look at something
-              farther away for about 20 seconds. BreakSignal includes a 20-20-20 preset so you can start
-              that rhythm without configuring a separate eye break timer.
+              Choose a mode that matches the work session. Each preset adjusts the reminder cadence and
+              break rotation without changing the simple timer workflow.
             </p>
+
+            <div class="mode-tabs" role="tablist" aria-label="BreakSignal modes">
+              <button id="mode-tab-20-20-20" class="mode-tab active" type="button" role="tab" aria-selected="true" aria-controls="mode-panel-20-20-20" data-mode="20-20-20">20-20-20</button>
+              <button id="mode-tab-deep-work" class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="mode-panel-deep-work" data-mode="deep-work">Deep Work</button>
+              <button id="mode-tab-posture-guard" class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="mode-panel-posture-guard" data-mode="posture-guard">Posture Guard</button>
+              <button id="mode-tab-movement-mode" class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="mode-panel-movement-mode" data-mode="movement-mode">Movement Mode</button>
+            </div>
           </div>
 
-          <div class="rule-steps" aria-label="20-20-20 steps">
-            <span>20 min</span>
-            <span>20 sec</span>
-            <span>Far gaze</span>
+          <div class="mode-panels">
+            <article id="mode-panel-20-20-20" class="mode-panel active" role="tabpanel" aria-labelledby="mode-tab-20-20-20">
+              <p class="mode-label">Eye protection</p>
+              <h3>20-20-20</h3>
+              <p>
+                A focused eye-break rhythm for screen-heavy work: every 20 minutes, look farther away for
+                about 20 seconds and let your eyes soften.
+              </p>
+              <div class="rule-steps" aria-label="20-20-20 mode details">
+                <span>20 min</span>
+                <span>20 sec</span>
+                <span>Eye only</span>
+              </div>
+            </article>
+
+            <article id="mode-panel-deep-work" class="mode-panel" role="tabpanel" aria-labelledby="mode-tab-deep-work" hidden>
+              <p class="mode-label">Longer focus blocks</p>
+              <h3>Deep Work</h3>
+              <p>
+                A quieter cadence for focused work sessions, rotating eye breaks, posture checks, and
+                stretching without interrupting too often.
+              </p>
+              <div class="rule-steps" aria-label="Deep Work mode details">
+                <span>45 min</span>
+                <span>Eyes</span>
+                <span>Posture + stretch</span>
+              </div>
+            </article>
+
+            <article id="mode-panel-posture-guard" class="mode-panel" role="tabpanel" aria-labelledby="mode-tab-posture-guard" hidden>
+              <p class="mode-label">Desk alignment</p>
+              <h3>Posture Guard</h3>
+              <p>
+                A steady reset for desk posture. It keeps the rotation focused on posture checks and
+                stretch breaks before tension builds up.
+              </p>
+              <div class="rule-steps" aria-label="Posture Guard mode details">
+                <span>30 min</span>
+                <span>Posture</span>
+                <span>Stretch</span>
+              </div>
+            </article>
+
+            <article id="mode-panel-movement-mode" class="mode-panel" role="tabpanel" aria-labelledby="mode-tab-movement-mode" hidden>
+              <p class="mode-label">Movement reset</p>
+              <h3>Movement Mode</h3>
+              <p>
+                A lower-frequency mode for longer work blocks that prioritizes walking and stretching so
+                your body changes position through the day.
+              </p>
+              <div class="rule-steps" aria-label="Movement Mode details">
+                <span>60 min</span>
+                <span>Walk</span>
+                <span>Stretch</span>
+              </div>
+            </article>
           </div>
         </section>
 

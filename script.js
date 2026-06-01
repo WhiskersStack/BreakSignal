@@ -221,6 +221,8 @@ const elements = {
   installAppBtn: document.getElementById("installAppBtn"),
   appMessage: document.getElementById("appMessage"),
   presetButtons: document.querySelectorAll(".preset-btn"),
+  modeTabs: document.querySelectorAll(".mode-tab"),
+  modePanels: document.querySelectorAll(".mode-panel"),
   intervalInput: document.getElementById("intervalInput"),
   snoozeInput: document.getElementById("snoozeInput"),
   soundToggle: document.getElementById("soundToggle"),
@@ -291,6 +293,9 @@ function bindEvents() {
   elements.cancelClearHistoryBtn.addEventListener("click", closeClearHistoryConfirm);
   elements.presetButtons.forEach((button) => {
     button.addEventListener("click", () => applyPreset(button.dataset.preset));
+  });
+  elements.modeTabs.forEach((button) => {
+    button.addEventListener("click", () => switchModePanel(button.dataset.mode));
   });
   elements.intervalInput.addEventListener("change", handleIntervalChange);
   elements.snoozeInput.addEventListener("change", handleSnoozeChange);
@@ -978,6 +983,20 @@ function syncPresetButtons() {
     const isActive = button.dataset.preset === settings.activePreset;
     button.classList.toggle("active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
+  });
+}
+
+function switchModePanel(modeId) {
+  elements.modeTabs.forEach((button) => {
+    const isActive = button.dataset.mode === modeId;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+  });
+
+  elements.modePanels.forEach((panel) => {
+    const isActive = panel.id === `mode-panel-${modeId}`;
+    panel.hidden = !isActive;
+    panel.classList.toggle("active", isActive);
   });
 }
 
