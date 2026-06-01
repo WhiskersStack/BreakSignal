@@ -32,6 +32,7 @@ https://www.break-signal.com/
 - Eye, stretch, walking, and posture break rotation
 - 20-20-20 eye break preset
 - Custom reminder intervals and snooze duration
+- Multi-theme visual selector with saved preference
 - Rotating built-in break messages
 - Browser-generated alert tones with grouped tone presets and volume control
 - Optional browser notifications
@@ -81,6 +82,7 @@ BreakSignal uses localStorage to save:
 - Snooze duration
 - Enabled break types
 - Selected preset
+- Selected visual theme
 - Compact mode preference
 - Sound tone and volume
 - Notification preference

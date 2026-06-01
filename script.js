@@ -1,9 +1,11 @@
 "use strict";
 
 const STORAGE_KEY = "breaksignal.settings.v1";
+const THEME_STORAGE_KEY = "breakSignalTheme";
 const HISTORY_LIMIT = 30;
 const DEFAULT_MOTIVATION = "Start a calm rhythm. Your future self gets the benefit.";
 const PREVIEW_DURATION_MS = 5000;
+const VALID_THEMES = new Set(["dark", "light", "midnight", "amoled", "forest", "sunset", "cyber"]);
 const PRESETS = {
   custom: {
     label: "Custom"
@@ -224,6 +226,7 @@ const elements = {
   modeTabs: document.querySelectorAll(".mode-tab"),
   modePanels: document.querySelectorAll(".mode-panel"),
   intervalInput: document.getElementById("intervalInput"),
+  themeSelect: document.getElementById("themeSelect"),
   snoozeInput: document.getElementById("snoozeInput"),
   soundToggle: document.getElementById("soundToggle"),
   soundToneSelect: document.getElementById("soundToneSelect"),
@@ -258,6 +261,7 @@ const currentYear = document.getElementById("currentYear");
 document.addEventListener("DOMContentLoaded", initApp);
 
 function initApp() {
+  loadSavedTheme();
   loadSettings();
   resetDailyCounterIfNeeded();
   remainingSeconds = settings.intervalMinutes * 60;
@@ -265,6 +269,7 @@ function initApp() {
 
   renderBreakTypes();
   bindEvents();
+  setupThemeSelector();
   syncSettingsToInputs();
   syncCompactMode();
   syncPresetButtons();
@@ -308,6 +313,29 @@ function bindEvents() {
   elements.clearHistoryOverlay.addEventListener("keydown", handleClearHistoryKeydown);
   window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
   window.addEventListener("appinstalled", handleAppInstalled);
+}
+
+function applyTheme(themeName) {
+  const safeTheme = VALID_THEMES.has(themeName) ? themeName : "dark";
+  document.documentElement.dataset.theme = safeTheme;
+  localStorage.setItem(THEME_STORAGE_KEY, safeTheme);
+
+  if (elements.themeSelect) {
+    elements.themeSelect.value = safeTheme;
+  }
+}
+
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || "dark";
+  applyTheme(savedTheme);
+}
+
+function setupThemeSelector() {
+  if (!elements.themeSelect) return;
+
+  elements.themeSelect.addEventListener("change", () => {
+    applyTheme(elements.themeSelect.value);
+  });
 }
 
 function loadSettings() {
