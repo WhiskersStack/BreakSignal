@@ -159,6 +159,10 @@ Optional future infrastructure:
 - CloudFront Origin Access Control
 - Terraform for infrastructure as code
 
+## Google Play Store Deployment
+
+BreakSignal can be published on Google Play as a Trusted Web Activity wrapper around the live PWA. See [PLAY_STORE_DEPLOYMENT.md](PLAY_STORE_DEPLOYMENT.md) for the Android App Bundle, Digital Asset Links, Play Console, store listing, and privacy policy checklist.
+
 ## Future AWS Upgrade Path
 
 This project can later be upgraded with:
