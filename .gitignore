@@ -5,6 +5,15 @@ node_modules/
 # Capacitor / Android build output
 android/.gradle/
 android/**/build/
+android/local.properties
+*.apk
+*.aab
+
+# Android signing files and secrets
+*.jks
+*.keystore
+key.properties
+google-services.json
 
 # Logs
 *.log

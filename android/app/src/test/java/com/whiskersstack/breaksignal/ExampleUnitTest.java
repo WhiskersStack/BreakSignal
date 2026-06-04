@@ -1,4 +1,4 @@
-package com.getcapacitor.myapp;
+package com.whiskersstack.breaksignal;
 
 import static org.junit.Assert.*;
 
