@@ -8,7 +8,10 @@
     "cap:add:android": "npx cap add android",
     "cap:add:ios": "npx cap add ios",
     "cap:open:android": "npx cap open android",
-    "cap:open:ios": "npx cap open ios"
+    "cap:open:ios": "npx cap open ios",
+    "assets:source": "python scripts/generate_android_brand_assets.py",
+    "assets:android": "npx capacitor-assets generate --android",
+    "android:sync": "npx cap sync android"
   },
   "dependencies": {
     "@capacitor/android": "7.6.6",

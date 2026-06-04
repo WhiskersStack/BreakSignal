@@ -117,12 +117,123 @@ BreakSignal/
 |   |-- logo.svg
 |   `-- icons/
 |-- assets/
-|   `-- screenshots/
+|   |-- screenshots/
+|   |-- icon-background.png
+|   |-- icon-foreground.png
+|   |-- icon-only.png
+|   |-- splash.png
+|   `-- splash-dark.png
 |-- android/
+|-- scripts/
+|   `-- generate_android_brand_assets.py
 |-- capacitor.config.json
 |-- package.json
 `-- README.md
 ```
+
+## Android Brand Asset Workflow
+
+BreakSignal uses Capacitor Assets to generate Android launcher icons and splash screens from source images in the root `assets/` folder.
+
+### Source Assets
+
+The required source files are:
+
+```text
+assets/icon-only.png
+assets/icon-foreground.png
+assets/icon-background.png
+assets/splash.png
+assets/splash-dark.png
+```
+
+These files generate Android launcher icons, adaptive icon layers, splash images, and night-mode splash resources.
+
+Icon source files should be at least `1024 x 1024 px`. Splash source files should be at least `2732 x 2732 px`.
+
+### Install Dependencies
+
+Install the project dependencies before generating assets:
+
+```bash
+npm install
+```
+
+The source-asset script also requires Pillow. Install it if needed:
+
+```bash
+python -m pip install pillow
+```
+
+### Regenerate Source Assets
+
+Generate the BreakSignal icon and splash source images:
+
+```bash
+npm run assets:source
+```
+
+This runs:
+
+```bash
+python scripts/generate_android_brand_assets.py
+```
+
+The script uses BreakSignal's dark futuristic brand colors and writes the source images to `assets/`.
+
+### Generate Android Resources
+
+After regenerating the source assets, generate the native Android icon and splash resources:
+
+```bash
+npm run assets:android
+```
+
+This runs:
+
+```bash
+npx capacitor-assets generate --android
+```
+
+Generated resources are written inside `android/app/src/main/res/`.
+
+### Sync Capacitor
+
+After changing web files or Capacitor assets, sync the Android project:
+
+```bash
+npm run android:sync
+```
+
+This runs:
+
+```bash
+npx cap sync android
+```
+
+The sync keeps the native Android project aligned with the current `www/` files and Capacitor configuration.
+
+### Test The Result
+
+Open the `android/` folder in Android Studio or run:
+
+```bash
+npm run cap:open:android
+```
+
+Test on an emulator or physical Android device and check:
+
+- App icon appears correctly
+- Splash screen appears correctly
+- Dark splash background matches BreakSignal branding
+- App launches and the timer screen loads
+- Web-only UI is hidden inside Android
+- Sound preview still works
+- Settings still save with localStorage
+
+Android 12 and newer use a system splash screen with a smaller centered icon and background color, so the launch screen may not look exactly like a full-screen image on every Android version.
+
+BreakSignal's native launch theme uses the dark background color `#070B14` to match the main interface.
 
 ## AWS Deployment
 
