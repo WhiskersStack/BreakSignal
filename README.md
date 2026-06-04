@@ -273,7 +273,18 @@ Optional future infrastructure:
 
 ## Google Play Store Deployment
 
-BreakSignal can be published on Google Play as a Trusted Web Activity wrapper around the live PWA. See [PLAY_STORE_DEPLOYMENT.md](PLAY_STORE_DEPLOYMENT.md) for the Android App Bundle, Digital Asset Links, Play Console, store listing, and privacy policy checklist.
+BreakSignal includes a Capacitor Android wrapper for a future Google Play release. The preparation branch does not create signing credentials, signed APKs, or signed Android App Bundles.
+
+Play Store preparation documents:
+
+- [Preparation instructions and status](PLAY_STORE_PREPARATION_INSTRUCTIONS.md)
+- [Manual deployment process](PLAY_STORE_DEPLOYMENT.md)
+- [Privacy policy draft](PRIVACY_POLICY.md)
+- [Google Play Data Safety notes](PLAY_STORE_DATA_SAFETY.md)
+- [Store listing draft](PLAY_STORE_LISTING_DRAFT.md)
+- [Screenshot plan](PLAY_STORE_SCREENSHOT_PLAN.md)
+- [Closed testing checklist](CLOSED_TESTING_CHECKLIST.md)
+- [Content rating notes](PLAY_STORE_CONTENT_RATING_NOTES.md)
 
 ## Future AWS Upgrade Path
 
