@@ -11,6 +11,7 @@
     "cap:open:ios": "npx cap open ios"
   },
   "dependencies": {
+    "@capacitor/android": "^7.6.6",
     "@capacitor/core": "^7.0.0"
   },
   "devDependencies": {

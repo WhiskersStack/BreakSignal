@@ -1,6 +1,5 @@
 {
-  "appId": "com.breaksignal.app",
+  "appId": "com.whiskersstack.breaksignal",
   "appName": "BreakSignal",
-  "webDir": "www",
-  "bundledWebRuntime": false
+  "webDir": "www"
 }
