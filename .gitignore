@@ -1,0 +1,11 @@
+
+# Dependencies
+node_modules/
+
+# Capacitor / Android build output
+android/.gradle/
+android/**/build/
+
+# Logs
+*.log
+npm-debug.log*
