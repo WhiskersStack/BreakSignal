@@ -161,6 +161,10 @@ const DEFAULT_BREAK_MESSAGES = Object.fromEntries(
   DEFAULT_BREAKS.map((breakItem) => [breakItem.id, BREAK_MESSAGE_BANK[breakItem.id][0]])
 );
 
+function isCapacitorApp() {
+  return typeof window.Capacitor !== "undefined";
+}
+
 const DEFAULT_DAILY_STATS = {
   eye: 0,
   stretch: 0,
@@ -277,6 +281,10 @@ function initApp() {
   updateDisplay();
   registerServiceWorker();
 
+  if (isCapacitorApp() && elements.installAppBtn) {
+    elements.installAppBtn.hidden = true;
+  }
+
   if (currentYear) {
     currentYear.textContent = new Date().getFullYear();
   }
@@ -288,7 +296,9 @@ function bindEvents() {
   elements.resetBtn.addEventListener("click", resetTimer);
   elements.testBtn.addEventListener("click", () => triggerBreak(true));
   elements.compactModeBtn.addEventListener("click", toggleCompactMode);
-  elements.installAppBtn.addEventListener("click", installApp);
+  if (elements.installAppBtn) {
+    elements.installAppBtn.addEventListener("click", installApp);
+  }
   elements.doneBtn.addEventListener("click", completeBreak);
   elements.snoozeBtn.addEventListener("click", snoozeBreak);
   elements.skipBtn.addEventListener("click", skipBreak);
@@ -311,8 +321,11 @@ function bindEvents() {
   elements.notificationToggle.addEventListener("change", handleNotificationToggle);
   elements.modalOverlay.addEventListener("keydown", handleModalKeydown);
   elements.clearHistoryOverlay.addEventListener("keydown", handleClearHistoryKeydown);
-  window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-  window.addEventListener("appinstalled", handleAppInstalled);
+
+  if (!isCapacitorApp()) {
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener("appinstalled", handleAppInstalled);
+  }
 }
 
 function applyTheme(themeName) {
@@ -1287,6 +1300,17 @@ async function installApp() {
 }
 
 function registerServiceWorker() {
+  if (isCapacitorApp()) {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.getRegistrations()
+        .then((registrations) => {
+          registrations.forEach((registration) => registration.unregister());
+        })
+        .catch(() => {});
+    }
+    return;
+  }
+
   if (
     !("serviceWorker" in navigator) ||
     !window.isSecureContext ||
@@ -1296,7 +1320,7 @@ function registerServiceWorker() {
   }
 
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js").catch(() => {
+    navigator.serviceWorker.register("service-worker.js").catch(() => {
       showMessage("Offline install support could not be enabled in this browser.", "warning");
     });
   });

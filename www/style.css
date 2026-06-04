@@ -637,7 +637,7 @@ h2 {
 }
 
 .small-btn {
-  min-height: 36px;
+  min-height: 44px;
   padding: 0 0.75rem;
   font-size: 0.88rem;
 }
@@ -700,7 +700,7 @@ h2 {
 }
 
 .preset-btn {
-  min-height: 38px;
+  min-height: 44px;
   padding: 0 0.78rem;
   color: var(--muted);
   border: 1px solid var(--border);
@@ -1094,7 +1094,7 @@ h2 {
 }
 
 .mode-tab {
-  min-height: 38px;
+  min-height: 44px;
   padding: 0 0.9rem;
   border: 1px solid var(--border);
   border-radius: 999px;

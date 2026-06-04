@@ -11,10 +11,10 @@
     "cap:open:ios": "npx cap open ios"
   },
   "dependencies": {
-    "@capacitor/android": "^7.6.6",
-    "@capacitor/core": "^7.0.0"
+    "@capacitor/android": "7.6.6",
+    "@capacitor/core": "7.6.6"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.0.0"
+    "@capacitor/cli": "7.6.6"
   }
 }
