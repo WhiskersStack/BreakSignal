@@ -268,6 +268,7 @@ function initApp() {
   loadSavedTheme();
   loadSettings();
   resetDailyCounterIfNeeded();
+  syncCapacitorUi();
   remainingSeconds = settings.intervalMinutes * 60;
   totalSeconds = settings.intervalMinutes * 60;
 
@@ -281,12 +282,24 @@ function initApp() {
   updateDisplay();
   registerServiceWorker();
 
-  if (isCapacitorApp() && elements.installAppBtn) {
+  if (currentYear) {
+    currentYear.textContent = new Date().getFullYear();
+  }
+}
+
+function syncCapacitorUi() {
+  const capacitorApp = isCapacitorApp();
+  document.body.classList.toggle("capacitor-app", capacitorApp);
+
+  if (!capacitorApp) return;
+
+  if (elements.installAppBtn) {
     elements.installAppBtn.hidden = true;
   }
 
-  if (currentYear) {
-    currentYear.textContent = new Date().getFullYear();
+  if (settings.notificationsEnabled) {
+    settings.notificationsEnabled = false;
+    saveSettings();
   }
 }
 
@@ -829,6 +842,14 @@ function playTone(audioContext, note) {
 }
 
 function requestNotificationPermission() {
+  if (isCapacitorApp()) {
+    settings.notificationsEnabled = false;
+    elements.notificationToggle.checked = false;
+    saveSettings();
+    showMessage("Use in-app reminders in the Android app.", "warning");
+    return;
+  }
+
   if (!("Notification" in window)) {
     settings.notificationsEnabled = false;
     elements.notificationToggle.checked = false;
@@ -867,7 +888,12 @@ function requestNotificationPermission() {
 }
 
 function sendNotification(breakItem) {
-  if (!settings.notificationsEnabled || !("Notification" in window) || Notification.permission !== "granted") {
+  if (
+    isCapacitorApp() ||
+    !settings.notificationsEnabled ||
+    !("Notification" in window) ||
+    Notification.permission !== "granted"
+  ) {
     return;
   }
 

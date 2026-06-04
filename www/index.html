@@ -161,7 +161,7 @@
           <button id="resetBtn" class="secondary-btn" type="button">Reset</button>
           <button id="testBtn" class="ghost-btn" type="button">Test Reminder</button>
           <button id="compactModeBtn" class="ghost-btn" type="button" aria-pressed="false">Compact Mode</button>
-          <button id="installAppBtn" class="ghost-btn" type="button" hidden>Install App</button>
+          <button id="installAppBtn" class="ghost-btn web-only-setting" type="button" hidden>Install App</button>
         </div>
         <p id="appMessage" class="app-message" role="status" aria-live="polite"></p>
       </section>
@@ -260,7 +260,7 @@
                 <span>Sound alert</span>
               </label>
 
-              <label class="toggle">
+              <label class="toggle web-only-setting">
                 <input id="notificationToggle" type="checkbox">
                 <span class="toggle-ui"></span>
                 <span>Browser notifications</span>

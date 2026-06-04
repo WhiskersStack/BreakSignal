@@ -284,6 +284,7 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
+  overflow-x: hidden;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--text);
   background: var(--body-bg);
@@ -326,6 +327,7 @@ button {
   min-height: 44px;
   border: 0;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 button:disabled {
@@ -399,7 +401,7 @@ button:focus-visible {
 .app-shell {
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 32px 0 52px;
+  padding: max(32px, env(safe-area-inset-top)) 0 max(52px, env(safe-area-inset-bottom));
 }
 
 .site-header {
@@ -1243,13 +1245,26 @@ body.compact-mode .timer-display {
   font-size: clamp(4.2rem, 18vw, 8rem);
 }
 
+body.capacitor-app .web-only-setting,
+body.capacitor-app .seo-section,
+body.capacitor-app .site-footer {
+  display: none !important;
+}
+
+body.capacitor-app .app-shell {
+  padding-bottom: max(28px, env(safe-area-inset-bottom));
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 20;
   display: grid;
   place-items: center;
-  padding: 20px;
+  padding-top: max(20px, env(safe-area-inset-top));
+  padding-right: max(20px, env(safe-area-inset-right));
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  padding-left: max(20px, env(safe-area-inset-left));
   background: var(--modal-overlay-bg);
   backdrop-filter: blur(14px);
 }
@@ -1371,10 +1386,52 @@ body.compact-mode .timer-display {
   }
 }
 
+@media (max-width: 640px) {
+  .app-shell {
+    width: 100%;
+    max-width: 100%;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .timer-card,
+  .panel,
+  .break-modal {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .control-row,
+  .modal-actions {
+    gap: 12px;
+  }
+
+  .control-row button,
+  .modal-actions button {
+    min-height: 50px;
+  }
+
+  input:not([type="range"]),
+  select {
+    min-height: 48px;
+  }
+
+  .break-modal {
+    max-height: 88vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .history-list {
+    max-height: 50vh;
+  }
+}
+
 @media (max-width: 540px) {
   .app-shell {
-    width: min(100% - 22px, 1120px);
-    padding-top: 18px;
+    width: 100%;
+    padding-top: max(18px, env(safe-area-inset-top));
+    padding-bottom: max(28px, env(safe-area-inset-bottom));
   }
 
   .tone-control {
