@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BreakSignal privacy policy for the web app and Android app.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="BreakSignal">
+  <meta name="theme-color" content="#070B14">
+  <link rel="canonical" href="https://www.break-signal.com/privacy.html">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <title>Privacy Policy | BreakSignal</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070b14;
+      --bg-mid: #0b1020;
+      --card: rgba(16, 24, 39, 0.84);
+      --card-soft: rgba(17, 29, 46, 0.58);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.13);
+      --violet: #8b5cf6;
+      --border: rgba(148, 163, 184, 0.2);
+      --shadow: rgba(0, 0, 0, 0.38);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.7;
+      background:
+        radial-gradient(circle at 18% 6%, rgba(56, 189, 248, 0.14), transparent 31rem),
+        radial-gradient(circle at 84% 16%, rgba(139, 92, 246, 0.13), transparent 30rem),
+        linear-gradient(135deg, var(--bg) 0%, var(--bg-mid) 55%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    a:hover {
+      color: #7dd3fc;
+    }
+
+    .shell {
+      width: min(960px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      margin-bottom: 20px;
+      padding: 0 0.95rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      text-decoration: none;
+      background: rgba(7, 11, 20, 0.38);
+      transition: color 160ms ease, border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .back-link:hover,
+    .back-link:focus-visible {
+      color: var(--text);
+      border-color: rgba(56, 189, 248, 0.42);
+      background: var(--accent-soft);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .hero,
+    .policy-card,
+    .site-footer {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01)),
+        var(--card);
+      box-shadow: 0 24px 70px var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero {
+      padding: clamp(24px, 5vw, 44px);
+    }
+
+    .brand-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+
+    .brand-mark {
+      display: grid;
+      flex: 0 0 54px;
+      width: 54px;
+      height: 54px;
+      place-items: center;
+      border: 1px solid rgba(56, 189, 248, 0.34);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle, rgba(56, 189, 248, 0.22), transparent 68%),
+        rgba(7, 11, 20, 0.58);
+    }
+
+    .brand-mark img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 14px;
+      font-size: clamp(2.3rem, 8vw, 4.8rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .policy-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .meta-item {
+      min-height: 88px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card-soft);
+    }
+
+    .meta-label {
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .meta-value {
+      margin-bottom: 0;
+      font-weight: 750;
+    }
+
+    .policy-card {
+      margin-top: 18px;
+      padding: clamp(22px, 4vw, 34px);
+    }
+
+    .policy-section {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .policy-section:first-child {
+      padding-top: 0;
+    }
+
+    .policy-section:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    h2 {
+      margin-bottom: 12px;
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    p,
+    li {
+      color: var(--muted);
+    }
+
+    strong {
+      color: var(--text);
+    }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 1.2rem;
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 14px;
+      color: var(--text);
+      background: var(--accent-soft);
+    }
+
+    .site-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 18px;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .site-footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 24px, 960px);
+        padding: 24px 0;
+      }
+
+      .policy-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-row {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <a class="back-link" href="./index.html">Back to BreakSignal</a>
+
+    <header class="hero">
+      <div class="brand-row">
+        <div class="brand-mark" aria-hidden="true">
+          <img src="logo.svg" alt="">
+        </div>
+        <div>
+          <p class="eyebrow">BreakSignal</p>
+          <p class="subtitle">Protect your eyes, posture, and focus.</p>
+        </div>
+      </div>
+      <h1>Privacy Policy</h1>
+      <p class="subtitle">This policy explains how BreakSignal handles information in the web app and Android app.</p>
+
+      <div class="policy-meta" aria-label="Privacy policy summary">
+        <div class="meta-item">
+          <p class="meta-label">Effective Date</p>
+          <p class="meta-value">[Effective Date]</p>
+        </div>
+        <div class="meta-item">
+          <p class="meta-label">Developer</p>
+          <p class="meta-value">[Developer Name]</p>
+        </div>
+        <div class="meta-item">
+          <p class="meta-label">Contact</p>
+          <p class="meta-value">[Contact Email]</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="policy-card">
+      <section class="policy-section" aria-labelledby="overview-heading">
+        <h2 id="overview-heading">App Overview</h2>
+        <p>BreakSignal is a simple break reminder for eye breaks, stretching, walking, posture checks, and focus resets. The app is designed to run locally while the browser tab or Android app is open.</p>
+        <p>BreakSignal does not require an account, backend service, database, analytics service, advertising SDK, or external API for its core timer behavior.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="collect-heading">
+        <h2 id="collect-heading">Information We Collect</h2>
+        <p>BreakSignal does not collect personal information from you. The app does not ask for your name, email address, location, contacts, photos, payment information, or account credentials.</p>
+        <p>The app stores only local app preferences and break activity records on your device so the timer can remember your choices.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="storage-heading">
+        <h2 id="storage-heading">Local Storage</h2>
+        <p>BreakSignal uses your browser or Android WebView localStorage to save app data locally on your device. This may include:</p>
+        <ul>
+          <li>Reminder interval and snooze settings.</li>
+          <li>Selected break types and custom break messages.</li>
+          <li>Theme, sound, volume, and alert tone preferences.</li>
+          <li>Daily break count and break history entries.</li>
+          <li>Notification preference for supported web browser use.</li>
+        </ul>
+        <p class="note"><strong>Local-only storage:</strong> This information stays on your device. BreakSignal does not send this localStorage data to a server.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="notifications-heading">
+        <h2 id="notifications-heading">Notifications</h2>
+        <p>On supported web browsers, BreakSignal may ask for notification permission only if you choose to enable browser notifications. Browser notifications are used only to show break reminders while the app is open and allowed by your browser.</p>
+        <p>The current Android app disables the web notification setting inside the Capacitor app shell and does not use a native push notification service.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="sound-heading">
+        <h2 id="sound-heading">Sound Alerts</h2>
+        <p>BreakSignal can play optional reminder sounds. These sounds are generated locally with the Web Audio API. The app does not record audio, access your microphone, or load external audio files.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="third-party-heading">
+        <h2 id="third-party-heading">Third-Party Services</h2>
+        <p>BreakSignal does not include analytics, advertising networks, tracking pixels, crash reporting SDKs, authentication providers, external scripts, external fonts, external APIs, or social media SDKs.</p>
+        <p>If you use the hosted website, the website host may process standard technical connection information, such as IP address and user agent, as part of normal hosting logs. BreakSignal app code does not use that information for tracking or profiling.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="sharing-heading">
+        <h2 id="sharing-heading">Data Sharing</h2>
+        <p>BreakSignal does not sell, rent, share, or transfer personal information. The app does not transmit your local timer settings or break history to the developer or to third parties.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="retention-heading">
+        <h2 id="retention-heading">Data Retention and Deletion</h2>
+        <p>BreakSignal keeps local settings and break history on your device until you clear them. You can clear break history inside the app. You can also remove stored app data by clearing browser site data, clearing app storage, or uninstalling the Android app.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="children-heading">
+        <h2 id="children-heading">Children's Privacy</h2>
+        <p>BreakSignal is a general productivity tool and is not directed to children. The app does not knowingly collect personal information from children.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="security-heading">
+        <h2 id="security-heading">Security</h2>
+        <p>BreakSignal is designed to minimize data risk by keeping timer settings and break history local to your device. The Android app currently declares only the Internet permission and does not request location, camera, microphone, contacts, or file storage permissions.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="changes-heading">
+        <h2 id="changes-heading">Changes to This Privacy Policy</h2>
+        <p>This privacy policy may be updated as BreakSignal changes. Any updates will be posted on this page with an updated effective date.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="contact-heading">
+        <h2 id="contact-heading">Contact</h2>
+        <p>If you have questions about this privacy policy, contact the developer at <strong>[Contact Email]</strong>.</p>
+      </section>
+
+      <section class="policy-section" aria-labelledby="developer-heading">
+        <h2 id="developer-heading">Developer</h2>
+        <p>BreakSignal is developed by <strong>[Developer Name]</strong>.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>BreakSignal - Protect your eyes, posture, and focus.</p>
+      <p>Built with HTML, CSS, and JavaScript. Designed for AWS S3 static hosting.</p>
+    </footer>
+  </div>
+</body>
+</html>

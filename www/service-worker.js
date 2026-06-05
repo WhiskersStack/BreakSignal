@@ -1,9 +1,10 @@
 "use strict";
 
-const CACHE_NAME = "breaksignal-v1.0.4";
+const CACHE_NAME = "breaksignal-v1.0.5";
 const APP_SHELL = [
   "/",
   "/index.html",
+  "/privacy.html",
   "/style.css",
   "/script.js",
   "/manifest.json",
@@ -47,10 +48,10 @@ self.addEventListener("fetch", (event) => {
       fetch(request)
         .then((response) => {
           const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put("/index.html", copy));
+          caches.open(CACHE_NAME).then((cache) => cache.put(requestUrl.pathname, copy));
           return response;
         })
-        .catch(() => caches.match("/index.html"))
+        .catch(() => caches.match(request).then((cachedResponse) => cachedResponse || caches.match("/index.html")))
     );
     return;
   }

@@ -656,6 +656,37 @@ h2 {
   text-align: center;
 }
 
+.policy-link-row {
+  margin: 14px 0 0;
+  text-align: center;
+}
+
+.policy-link-row a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  text-decoration: none;
+  background: var(--surface-subtle-bg);
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.policy-link-row a:hover {
+  color: var(--text);
+  border-color: rgb(var(--accent-rgb) / 0.36);
+  background: var(--accent-softer);
+  transform: translateY(-1px);
+}
+
+.policy-link-row a:focus-visible {
+  outline: none;
+  border-color: rgb(var(--accent-rgb) / 0.72);
+  box-shadow: 0 0 0 4px var(--accent-ring);
+}
+
 .app-message.warning {
   color: var(--warning-color);
 }
