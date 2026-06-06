@@ -62,7 +62,8 @@ Complete these items manually in Google Play Console:
 - Target audience
 - Store listing text
 - App icon, feature graphic, and screenshots
-- Support email and website
+- Support email: support@break-signal.com
+- Support website: https://www.break-signal.com/
 - Closed testing track and tester access
 
 Use these repository documents as references:

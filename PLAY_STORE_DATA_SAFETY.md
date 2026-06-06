@@ -2,6 +2,11 @@
 
 These notes are a draft for manually completing the Google Play Data Safety form. Re-check every answer against the exact release candidate before submission.
 
+## Play Console References
+
+- Privacy policy URL: https://www.break-signal.com/privacy.html
+- Support email: support@break-signal.com
+
 ## Current Proposed Answers
 
 | Question | Proposed answer | Evidence |
@@ -16,6 +21,17 @@ These notes are a draft for manually completing the Google Play Data Safety form
 ## Local Data Used By The App
 
 BreakSignal stores settings, preferences, counters, and recent break history locally using `localStorage`. This data is used only to provide the timer and reminder experience on the user's device.
+
+The current app behavior is:
+
+- No account system
+- No ads
+- No analytics
+- No backend database
+- No external API for core timer behavior
+- No personal data collection
+- No personal data sharing
+- Local settings and history stay on device
 
 The Android app:
 

@@ -275,6 +275,12 @@ Optional future infrastructure:
 
 BreakSignal includes a Capacitor Android wrapper for a future Google Play release. The preparation branch does not create signing credentials, signed APKs, or signed Android App Bundles.
 
+Play Store metadata:
+
+- Privacy policy: https://www.break-signal.com/privacy.html
+- Support email: support@break-signal.com
+- Support website: https://www.break-signal.com/
+
 Play Store preparation documents:
 
 - [Preparation instructions and status](PLAY_STORE_PREPARATION_INSTRUCTIONS.md)

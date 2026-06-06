@@ -5,7 +5,9 @@ Complete this checklist with the exact build intended for the Google Play closed
 ## Build Information
 
 ```text
-Version name:
+App name: BreakSignal
+Application ID: com.whiskersstack.breaksignal
+Version name: 1.0.0
 Version code:
 Commit:
 Device(s):
@@ -13,6 +15,13 @@ Android version(s):
 Tester:
 Date:
 ```
+
+## Store Metadata To Confirm
+
+- Developer: WhiskersStack
+- Support email: support@break-signal.com
+- Support website: https://www.break-signal.com/
+- Privacy policy: https://www.break-signal.com/privacy.html
 
 ## Install And Launch
 

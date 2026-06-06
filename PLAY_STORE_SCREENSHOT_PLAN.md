@@ -33,8 +33,8 @@ Use real screens from the final Android release candidate. Keep screenshots dark
 - Screenshots contain no medical claims or guarantees.
 - Screenshots show only features available in the release candidate.
 
-## Required Before Submission
+## Remaining Manual Work
 
-- TODO: capture final screenshots after closed testing.
-- TODO: verify current Google Play screenshot dimensions and quantity requirements.
-- TODO: create the feature graphic separately using the final store branding.
+- Capture final screenshots from the release-candidate Android build.
+- Verify current Google Play screenshot dimensions and quantity requirements in Play Console before upload.
+- Create the feature graphic separately using final BreakSignal branding.

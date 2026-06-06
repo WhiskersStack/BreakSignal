@@ -46,11 +46,15 @@ Productivity
 
 BreakSignal has no account system, advertising, analytics, or backend database. Settings and recent history are stored locally.
 
+## Store Contact Details
+
+- Developer: WhiskersStack
+- Support email: support@break-signal.com
+- Support website: https://www.break-signal.com/
+- Privacy policy: https://www.break-signal.com/privacy.html
+
 ## Required Before Submission
 
-- TODO: add a monitored support email
-- TODO: add the final privacy policy URL
-- TODO: confirm the support website URL
 - TODO: review text against the final release candidate
 - TODO: verify all wording in Google Play Console
 

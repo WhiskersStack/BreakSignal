@@ -74,7 +74,7 @@ cd android
 - [x] Android app launches and core timer flows work on an emulator.
 - [x] Website/PWA smoke test passes at desktop and mobile widths.
 - [x] Privacy, Data Safety, store listing, screenshot, testing, content rating, and deployment drafts exist.
-- [ ] Host the final privacy policy at a stable public URL.
+- [x] Privacy policy page exists at `www/privacy.html` and is intended for `https://www.break-signal.com/privacy.html`.
 - [ ] Capture final screenshots from the release candidate.
 - [ ] Complete closed testing and collect tester feedback.
 - [ ] Create the upload keystore manually and store it outside Git.
