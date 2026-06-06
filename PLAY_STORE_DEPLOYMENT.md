@@ -58,16 +58,17 @@ Complete these items manually in Google Play Console:
 - Ads declaration
 - Content rating questionnaire
 - Data Safety form
-- Privacy policy URL
+- Privacy policy URL: https://www.break-signal.com/privacy.html
 - Target audience
 - Store listing text
 - App icon, feature graphic, and screenshots
 - Support email and website
 - Closed testing track and tester access
 
-Use these repository drafts as references:
+Use these repository documents as references:
 
-- [PRIVACY_POLICY.md](PRIVACY_POLICY.md)
+- Public hosted privacy policy: https://www.break-signal.com/privacy.html
+- [PRIVACY_POLICY.md](PRIVACY_POLICY.md) - repository copy of the hosted privacy policy.
 - [PLAY_STORE_DATA_SAFETY.md](PLAY_STORE_DATA_SAFETY.md)
 - [PLAY_STORE_LISTING_DRAFT.md](PLAY_STORE_LISTING_DRAFT.md)
 - [PLAY_STORE_SCREENSHOT_PLAN.md](PLAY_STORE_SCREENSHOT_PLAN.md)
