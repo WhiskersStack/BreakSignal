@@ -285,7 +285,7 @@ Play Store preparation documents:
 
 - [Preparation instructions and status](PLAY_STORE_PREPARATION_INSTRUCTIONS.md)
 - [Manual deployment process](PLAY_STORE_DEPLOYMENT.md)
-- [Privacy policy draft](PRIVACY_POLICY.md)
+- [Privacy policy](PRIVACY_POLICY.md)
 - [Google Play Data Safety notes](PLAY_STORE_DATA_SAFETY.md)
 - [Store listing draft](PLAY_STORE_LISTING_DRAFT.md)
 - [Screenshot plan](PLAY_STORE_SCREENSHOT_PLAN.md)
