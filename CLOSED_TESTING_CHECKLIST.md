@@ -77,6 +77,17 @@ Date:
 - [ ] Confirm modal content and actions remain accessible.
 - [ ] Confirm text contrast and readability.
 
+## Play Store Visual Capture
+
+- [ ] Confirm the tested build is the release-candidate Android build before capturing screenshots.
+- [ ] Confirm the app icon and splash screen use final BreakSignal branding.
+- [ ] Confirm browser-only install, notification, SEO, and footer UI are hidden before capture.
+- [ ] Capture portrait phone screenshots for the planned store sequence.
+- [ ] Confirm screenshot captions and alt text match [play-store-assets/metadata/screenshot-captions.md](play-store-assets/metadata/screenshot-captions.md).
+- [ ] Confirm screenshots contain no medical claims, Google Play badges, personal data, or unrelated app content.
+- [ ] Confirm screenshot dimensions and quantity requirements in Play Console before upload.
+- [ ] Confirm the 1024 x 500 px feature graphic is created separately from final BreakSignal branding.
+
 ## Stability
 
 - [ ] Check for crashes during all tested flows.

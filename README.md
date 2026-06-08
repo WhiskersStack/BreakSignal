@@ -289,8 +289,11 @@ Play Store preparation documents:
 - [Google Play Data Safety notes](PLAY_STORE_DATA_SAFETY.md)
 - [Store listing draft](PLAY_STORE_LISTING_DRAFT.md)
 - [Screenshot plan](PLAY_STORE_SCREENSHOT_PLAN.md)
+- [Screenshot captions and feature graphic plan](play-store-assets/metadata/screenshot-captions.md)
 - [Closed testing checklist](CLOSED_TESTING_CHECKLIST.md)
 - [Content rating notes](PLAY_STORE_CONTENT_RATING_NOTES.md)
+
+Final Play Store screenshots and the feature graphic should be captured or created from the release-candidate Android build and reviewed before upload. Do not commit placeholder image files.
 
 ## Future AWS Upgrade Path
 

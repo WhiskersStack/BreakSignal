@@ -75,7 +75,9 @@ cd android
 - [x] Website/PWA smoke test passes at desktop and mobile widths.
 - [x] Privacy, Data Safety, store listing, screenshot, testing, content rating, and deployment drafts exist.
 - [x] Privacy policy page exists at `www/privacy.html` and is intended for `https://www.break-signal.com/privacy.html`.
+- [x] Play Store screenshot captions, alt text, capture notes, and feature graphic plan are documented.
 - [ ] Capture final screenshots from the release candidate.
+- [ ] Create the final 1024 x 500 px feature graphic.
 - [ ] Complete closed testing and collect tester feedback.
 - [ ] Create the upload keystore manually and store it outside Git.
 - [ ] Generate the signed AAB manually after closed testing is complete.
@@ -93,7 +95,9 @@ Before a release candidate is approved:
 2. Run `npm run android:sync`.
 3. Build and install the debug app.
 4. Complete [CLOSED_TESTING_CHECKLIST.md](CLOSED_TESTING_CHECKLIST.md).
-5. Confirm no signing secrets or release binaries are tracked by Git.
+5. Capture and review Play Store screenshots from the release-candidate Android build.
+6. Confirm the feature graphic is 1024 x 500 px and contains no medical claims, rankings, badges, or large text blocks.
+7. Confirm no signing secrets or release binaries are tracked by Git.
 
 ## Current Verification
 
