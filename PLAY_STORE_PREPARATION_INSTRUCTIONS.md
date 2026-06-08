@@ -76,8 +76,9 @@ cd android
 - [x] Privacy, Data Safety, store listing, screenshot, testing, content rating, and deployment drafts exist.
 - [x] Privacy policy page exists at `www/privacy.html` and is intended for `https://www.break-signal.com/privacy.html`.
 - [x] Play Store screenshot captions, alt text, capture notes, and feature graphic plan are documented.
-- [ ] Capture final screenshots from the release candidate.
-- [ ] Create the final 1024 x 500 px feature graphic.
+- [x] Phone screenshots are captured at `1080 x 1920` in `play-store-assets/screenshots/`.
+- [x] Feature graphic is created at `1024 x 500` in `play-store-assets/feature-graphic/`.
+- [ ] Re-check visual assets against the exact final release-candidate build and current Play Console requirements before upload.
 - [ ] Complete closed testing and collect tester feedback.
 - [ ] Create the upload keystore manually and store it outside Git.
 - [ ] Generate the signed AAB manually after closed testing is complete.
@@ -95,7 +96,7 @@ Before a release candidate is approved:
 2. Run `npm run android:sync`.
 3. Build and install the debug app.
 4. Complete [CLOSED_TESTING_CHECKLIST.md](CLOSED_TESTING_CHECKLIST.md).
-5. Capture and review Play Store screenshots from the release-candidate Android build.
+5. Re-check the captured Play Store screenshots against the final release-candidate Android build.
 6. Confirm the feature graphic is 1024 x 500 px and contains no medical claims, rankings, badges, or large text blocks.
 7. Confirm no signing secrets or release binaries are tracked by Git.
 

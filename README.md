@@ -295,6 +295,12 @@ Play Store preparation documents:
 
 Final Play Store screenshots and the feature graphic should be captured or created from the release-candidate Android build and reviewed before upload. Do not commit placeholder image files.
 
+Current visual assets:
+
+- Phone screenshots: `play-store-assets/screenshots/`
+- Feature graphic: `play-store-assets/feature-graphic/breaksignal-feature-graphic.png`
+- Captions and alt text: `play-store-assets/metadata/screenshot-captions.md`
+
 ## Future AWS Upgrade Path
 
 This project can later be upgraded with:
