@@ -291,6 +291,7 @@ Play Store preparation documents:
 - [Screenshot plan](PLAY_STORE_SCREENSHOT_PLAN.md)
 - [Screenshot captions and feature graphic plan](play-store-assets/metadata/screenshot-captions.md)
 - [Closed testing checklist](CLOSED_TESTING_CHECKLIST.md)
+- [Closed testing feedback template](CLOSED_TESTING_FEEDBACK_TEMPLATE.md)
 - [Content rating notes](PLAY_STORE_CONTENT_RATING_NOTES.md)
 
 Final Play Store screenshots and the feature graphic should be captured or created from the release-candidate Android build and reviewed before upload. Do not commit placeholder image files.

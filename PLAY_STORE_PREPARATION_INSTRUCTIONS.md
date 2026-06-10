@@ -80,6 +80,7 @@ cd android
 - [x] Feature graphic is created at `1024 x 500` in `play-store-assets/feature-graphic/`.
 - [ ] Re-check visual assets against the exact final release-candidate build and current Play Console requirements before upload.
 - [ ] Complete closed testing and collect tester feedback.
+- [ ] Review [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEEDBACK_TEMPLATE.md) submissions and fix blocker issues.
 - [ ] Create the upload keystore manually and store it outside Git.
 - [ ] Generate the signed AAB manually after closed testing is complete.
 - [ ] Complete the Google Play Console forms manually.
@@ -96,9 +97,11 @@ Before a release candidate is approved:
 2. Run `npm run android:sync`.
 3. Build and install the debug app.
 4. Complete [CLOSED_TESTING_CHECKLIST.md](CLOSED_TESTING_CHECKLIST.md).
-5. Re-check the captured Play Store screenshots against the final release-candidate Android build.
-6. Confirm the feature graphic is 1024 x 500 px and contains no medical claims, rankings, badges, or large text blocks.
-7. Confirm no signing secrets or release binaries are tracked by Git.
+5. Collect tester notes with [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEEDBACK_TEMPLATE.md).
+6. Fix blocker issues before any production release decision.
+7. Re-check the captured Play Store screenshots against the final release-candidate Android build.
+8. Confirm the feature graphic is 1024 x 500 px and contains no medical claims, rankings, badges, or large text blocks.
+9. Confirm no signing secrets or release binaries are tracked by Git.
 
 ## Current Verification
 

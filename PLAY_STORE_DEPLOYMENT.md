@@ -66,6 +66,18 @@ Complete these items manually in Google Play Console:
 - Support website: https://www.break-signal.com/
 - Closed testing track and tester access
 
+## Closed Testing Workflow
+
+Closed testing is a future manual Play Console step. Do not mark it complete until tester feedback has been collected and blocker issues have been resolved.
+
+1. Create a closed testing track in Google Play Console.
+2. Add tester access using a tester email list or Google Group.
+3. Upload the signed AAB later, manually, outside this branch.
+4. Invite testers through Play Console.
+5. Ask testers to complete [CLOSED_TESTING_CHECKLIST.md](CLOSED_TESTING_CHECKLIST.md).
+6. Ask testers to submit [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEEDBACK_TEMPLATE.md).
+7. Review feedback, fix blockers, and retest before any production release decision.
+
 Use these repository documents as references:
 
 - Public hosted privacy policy: https://www.break-signal.com/privacy.html
@@ -75,6 +87,7 @@ Use these repository documents as references:
 - [PLAY_STORE_SCREENSHOT_PLAN.md](PLAY_STORE_SCREENSHOT_PLAN.md)
 - [PLAY_STORE_CONTENT_RATING_NOTES.md](PLAY_STORE_CONTENT_RATING_NOTES.md)
 - [CLOSED_TESTING_CHECKLIST.md](CLOSED_TESTING_CHECKLIST.md)
+- [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEEDBACK_TEMPLATE.md)
 
 ## Release Artifact Hygiene
 

@@ -32,6 +32,8 @@ The current app behavior is:
 - No personal data collection
 - No personal data sharing
 - Local settings and history stay on device
+- Not a medical device
+- No medical advice
 
 The Android app:
 
