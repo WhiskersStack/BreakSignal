@@ -80,6 +80,7 @@ cd android
 - [x] Feature graphic is created at `1024 x 500` in `play-store-assets/feature-graphic/`.
 - [x] Signed AAB preparation guide exists.
 - [x] Play Console form checklist exists.
+- [x] Release-candidate review checklist exists.
 - [ ] Re-check visual assets against the exact final release-candidate build and current Play Console requirements before upload.
 - [ ] Complete closed testing and collect tester feedback.
 - [ ] Review [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEEDBACK_TEMPLATE.md) submissions and fix blocker issues.
@@ -104,7 +105,8 @@ Before a release candidate is approved:
 7. Re-check the captured Play Store screenshots against the final release-candidate Android build.
 8. Confirm the feature graphic is 1024 x 500 px and contains no medical claims, rankings, badges, or large text blocks.
 9. Review [PLAY_STORE_SIGNED_AAB_GUIDE.md](PLAY_STORE_SIGNED_AAB_GUIDE.md) before generating a signed AAB manually.
-10. Confirm no signing secrets or release binaries are tracked by Git.
+10. Complete [RELEASE_CANDIDATE_REVIEW_CHECKLIST.md](RELEASE_CANDIDATE_REVIEW_CHECKLIST.md) before any signed AAB upload to closed testing.
+11. Confirm no signing secrets or release binaries are tracked by Git.
 
 ## Current Verification
 

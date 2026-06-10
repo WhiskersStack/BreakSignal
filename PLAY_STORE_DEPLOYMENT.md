@@ -17,6 +17,7 @@ This is a preparation guide for a future manual Google Play release. It does not
 4. Review the privacy policy and Data Safety answers against the current code.
 5. Complete the closed testing checklist.
 6. Confirm the store listing, screenshots, support contact, and privacy policy URL are ready.
+7. Complete [RELEASE_CANDIDATE_REVIEW_CHECKLIST.md](RELEASE_CANDIDATE_REVIEW_CHECKLIST.md) before any signed AAB upload to closed testing.
 
 ## Safe Local Verification
 
@@ -94,6 +95,7 @@ Use these repository documents as references:
 - [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEEDBACK_TEMPLATE.md)
 - [PLAY_STORE_SIGNED_AAB_GUIDE.md](PLAY_STORE_SIGNED_AAB_GUIDE.md)
 - [PLAY_CONSOLE_FORM_CHECKLIST.md](PLAY_CONSOLE_FORM_CHECKLIST.md)
+- [RELEASE_CANDIDATE_REVIEW_CHECKLIST.md](RELEASE_CANDIDATE_REVIEW_CHECKLIST.md)
 
 ## Release Artifact Hygiene
 
