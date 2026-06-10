@@ -19,6 +19,9 @@ This is a preparation guide for a future manual Google Play release. It does not
 6. Confirm the store listing, screenshots, support contact, and privacy policy URL are ready.
 7. Complete [RELEASE_CANDIDATE_REVIEW_CHECKLIST.md](RELEASE_CANDIDATE_REVIEW_CHECKLIST.md) before any signed AAB upload to closed testing.
 
+Use [RELEASE_CANDIDATE_REVIEW_CHECKLIST.md](RELEASE_CANDIDATE_REVIEW_CHECKLIST.md) before any signed AAB upload to closed testing.
+Use [PLAY_STORE_HANDOFF_SUMMARY.md](PLAY_STORE_HANDOFF_SUMMARY.md) as the final documentation index before manual release actions.
+
 ## Safe Local Verification
 
 Sync the current web app into Android:
@@ -96,6 +99,7 @@ Use these repository documents as references:
 - [PLAY_STORE_SIGNED_AAB_GUIDE.md](PLAY_STORE_SIGNED_AAB_GUIDE.md)
 - [PLAY_CONSOLE_FORM_CHECKLIST.md](PLAY_CONSOLE_FORM_CHECKLIST.md)
 - [RELEASE_CANDIDATE_REVIEW_CHECKLIST.md](RELEASE_CANDIDATE_REVIEW_CHECKLIST.md)
+- [PLAY_STORE_HANDOFF_SUMMARY.md](PLAY_STORE_HANDOFF_SUMMARY.md)
 
 ## Release Artifact Hygiene
 
