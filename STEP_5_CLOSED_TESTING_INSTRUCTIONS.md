@@ -20,4 +20,3 @@ git checkout -b 5_PlayStorePrep_ClosedTesting
 
 Prepare BreakSignal for Google Play closed testing.
 
-This step is about documentation, test
