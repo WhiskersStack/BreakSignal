@@ -37,6 +37,8 @@ The debug build is for local verification only. Do not upload it to Google Play.
 
 ## Future Manual Signed AAB Flow
 
+Use [PLAY_STORE_SIGNED_AAB_GUIDE.md](PLAY_STORE_SIGNED_AAB_GUIDE.md) as the detailed safety guide for future signed AAB preparation. The signed AAB is generated manually later and is never committed to Git.
+
 Perform these steps manually after preparation and closed testing are complete:
 
 1. Open Android Studio.
@@ -88,6 +90,7 @@ Use these repository documents as references:
 - [PLAY_STORE_CONTENT_RATING_NOTES.md](PLAY_STORE_CONTENT_RATING_NOTES.md)
 - [CLOSED_TESTING_CHECKLIST.md](CLOSED_TESTING_CHECKLIST.md)
 - [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEEDBACK_TEMPLATE.md)
+- [PLAY_STORE_SIGNED_AAB_GUIDE.md](PLAY_STORE_SIGNED_AAB_GUIDE.md)
 
 ## Release Artifact Hygiene
 

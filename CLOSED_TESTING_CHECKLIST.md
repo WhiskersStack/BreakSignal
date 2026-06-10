@@ -142,5 +142,6 @@ Collect feedback using [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEED
 - [ ] Privacy policy and Data Safety notes match the tested build.
 - [ ] Store listing and screenshots match the tested build.
 - [ ] No signing secrets or release binaries are tracked by Git.
+- [ ] Confirm the signed AAB used for closed testing was generated locally and not committed to Git.
 - [ ] The next `versionCode` is unique for the planned upload.
 - [ ] Closed testing is complete and the release candidate is ready for the next manual Play Console step.
