@@ -293,6 +293,7 @@ Play Store preparation documents:
 - [Closed testing checklist](CLOSED_TESTING_CHECKLIST.md)
 - [Closed testing feedback template](CLOSED_TESTING_FEEDBACK_TEMPLATE.md)
 - [Signed AAB preparation guide](PLAY_STORE_SIGNED_AAB_GUIDE.md)
+- [Play Console form checklist](PLAY_CONSOLE_FORM_CHECKLIST.md)
 - [Content rating notes](PLAY_STORE_CONTENT_RATING_NOTES.md)
 
 Final Play Store screenshots and the feature graphic should be captured or created from the release-candidate Android build and reviewed before upload. Do not commit placeholder image files.

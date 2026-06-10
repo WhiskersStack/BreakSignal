@@ -79,6 +79,7 @@ cd android
 - [x] Phone screenshots are captured at `1080 x 1920` in `play-store-assets/screenshots/`.
 - [x] Feature graphic is created at `1024 x 500` in `play-store-assets/feature-graphic/`.
 - [x] Signed AAB preparation guide exists.
+- [x] Play Console form checklist exists.
 - [ ] Re-check visual assets against the exact final release-candidate build and current Play Console requirements before upload.
 - [ ] Complete closed testing and collect tester feedback.
 - [ ] Review [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEEDBACK_TEMPLATE.md) submissions and fix blocker issues.
@@ -96,7 +97,7 @@ Before a release candidate is approved:
 
 1. Review every preparation document against the current code.
 2. Run `npm run android:sync`.
-3. Build and install the debug app.
+3. Build and install the debug app locally for verification only; do not upload a debug build to Google Play.
 4. Complete [CLOSED_TESTING_CHECKLIST.md](CLOSED_TESTING_CHECKLIST.md).
 5. Collect tester notes with [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEEDBACK_TEMPLATE.md).
 6. Fix blocker issues before any production release decision.

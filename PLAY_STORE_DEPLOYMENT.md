@@ -68,6 +68,8 @@ Complete these items manually in Google Play Console:
 - Support website: https://www.break-signal.com/
 - Closed testing track and tester access
 
+Use [PLAY_CONSOLE_FORM_CHECKLIST.md](PLAY_CONSOLE_FORM_CHECKLIST.md) before submitting forms. Play Console forms are completed manually after local debug verification and before or while setting up closed testing.
+
 ## Closed Testing Workflow
 
 Closed testing is a future manual Play Console step. Do not mark it complete until tester feedback has been collected and blocker issues have been resolved.
@@ -91,6 +93,7 @@ Use these repository documents as references:
 - [CLOSED_TESTING_CHECKLIST.md](CLOSED_TESTING_CHECKLIST.md)
 - [CLOSED_TESTING_FEEDBACK_TEMPLATE.md](CLOSED_TESTING_FEEDBACK_TEMPLATE.md)
 - [PLAY_STORE_SIGNED_AAB_GUIDE.md](PLAY_STORE_SIGNED_AAB_GUIDE.md)
+- [PLAY_CONSOLE_FORM_CHECKLIST.md](PLAY_CONSOLE_FORM_CHECKLIST.md)
 
 ## Release Artifact Hygiene
 
