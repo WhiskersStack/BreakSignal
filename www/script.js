@@ -6,6 +6,10 @@ const HISTORY_LIMIT = 30;
 const DEFAULT_MOTIVATION = "Start a calm rhythm. Your future self gets the benefit.";
 const PREVIEW_DURATION_MS = 5000;
 const VALID_THEMES = new Set(["dark", "light", "midnight", "amoled", "forest", "sunset", "cyber"]);
+const VALID_SESSION_DURATION_MODES = new Set(["unlimited", "30", "60", "120", "240", "480", "custom"]);
+const DEFAULT_CUSTOM_SESSION_DURATION_MINUTES = 60;
+const MIN_CUSTOM_SESSION_DURATION_MINUTES = 1;
+const MAX_CUSTOM_SESSION_DURATION_MINUTES = 1440;
 const PRESETS = {
   custom: {
     label: "Custom"
@@ -187,7 +191,9 @@ const DEFAULT_SETTINGS = {
   lastSavedDate: getTodayKey(),
   nextBreakIndex: 0,
   activePreset: "custom",
-  compactMode: false
+  compactMode: false,
+  sessionDurationMode: "unlimited",
+  customSessionDurationMinutes: DEFAULT_CUSTOM_SESSION_DURATION_MINUTES
 };
 
 let settings = {
@@ -211,6 +217,9 @@ let previewStopTimer = null;
 let completionFeedbackTimer = null;
 let deferredInstallPrompt = null;
 let previewReturnState = null;
+let sessionElapsedMs = 0;
+let sessionActiveStartedAt = null;
+let sessionLimitTimerId = null;
 
 const elements = {
   timerCard: document.querySelector(".timer-card"),
@@ -232,6 +241,9 @@ const elements = {
   intervalInput: document.getElementById("intervalInput"),
   themeSelect: document.getElementById("themeSelect"),
   snoozeInput: document.getElementById("snoozeInput"),
+  sessionDurationSelect: document.getElementById("sessionDurationSelect"),
+  customSessionDurationWrap: document.getElementById("customSessionDurationWrap"),
+  customSessionDurationInput: document.getElementById("customSessionDurationInput"),
   soundToggle: document.getElementById("soundToggle"),
   soundToneSelect: document.getElementById("soundToneSelect"),
   previewToneBtn: document.getElementById("previewToneBtn"),
@@ -327,6 +339,8 @@ function bindEvents() {
   });
   elements.intervalInput.addEventListener("change", handleIntervalChange);
   elements.snoozeInput.addEventListener("change", handleSnoozeChange);
+  elements.sessionDurationSelect.addEventListener("change", handleSessionDurationChange);
+  elements.customSessionDurationInput.addEventListener("change", handleCustomSessionDurationChange);
   elements.soundToggle.addEventListener("change", handleSoundToggle);
   elements.soundToneSelect.addEventListener("change", handleSoundToneChange);
   elements.previewToneBtn.addEventListener("click", previewSelectedTone);
@@ -390,6 +404,10 @@ function loadSettings() {
       }
 
       settings.compactMode = Boolean(settings.compactMode);
+      if (!VALID_SESSION_DURATION_MODES.has(String(settings.sessionDurationMode))) {
+        settings.sessionDurationMode = DEFAULT_SETTINGS.sessionDurationMode;
+      }
+      settings.customSessionDurationMinutes = normalizeSessionDurationMinutes(settings.customSessionDurationMinutes);
     }
   } catch (error) {
     settings = {
@@ -409,8 +427,13 @@ function startTimer() {
   if (!validateSettings()) return;
   if (timerId) return;
 
+  if (currentStatus === "Stopped" || currentStatus === "Session Complete") {
+    resetSessionElapsed();
+  }
+
   closeModal(false);
   currentStatus = "Running";
+  startSessionActiveClock();
   startIntervalOnly();
   showMessage("Timer running. A reset signal is on the way.", "success");
   updateDisplay();
@@ -423,6 +446,7 @@ function pauseTimer() {
   }
 
   syncRemainingSeconds();
+  pauseSessionActiveClock();
   clearActiveTimer();
   currentStatus = "Paused";
   showMessage("Paused. Resume when you are ready.", "warning");
@@ -431,6 +455,7 @@ function pauseTimer() {
 
 function resetTimer() {
   clearActiveTimer();
+  resetSessionElapsed();
   stopTonePreview();
   currentStatus = "Stopped";
   activeBreak = null;
@@ -447,6 +472,11 @@ function tickTimer() {
   resetDailyCounterIfNeeded();
   syncRemainingSeconds();
 
+  if (hasSessionDurationExpired()) {
+    stopSessionAfterDuration();
+    return;
+  }
+
   if (remainingSeconds <= 0) {
     clearActiveTimer();
     triggerBreak(false);
@@ -457,6 +487,11 @@ function tickTimer() {
 }
 
 function triggerBreak(isTest) {
+  if (!isTest && hasSessionDurationExpired()) {
+    stopSessionAfterDuration();
+    return;
+  }
+
   if (!validateSettings()) {
     if (!isTest && remainingSeconds <= 0 && (currentStatus === "Running" || currentStatus === "Snoozed")) {
       currentStatus = "Stopped";
@@ -504,6 +539,10 @@ function completeBreak() {
   advanceBreakIndex();
   saveSettings();
   closeModal(true);
+  if (hasSessionDurationExpired()) {
+    stopSessionAfterDuration();
+    return;
+  }
   restartNormalInterval("Break completed. Timer restarted.");
   showCompletionFeedback();
 }
@@ -522,6 +561,10 @@ function snoozeBreak() {
   activeBreakMessage = "";
   isPreviewBreak = false;
   setTimerDuration(settings.snoozeMinutes * 60);
+  if (hasSessionDurationExpired()) {
+    stopSessionAfterDuration();
+    return;
+  }
   currentStatus = "Running";
   startIntervalOnly();
   currentStatus = "Snoozed";
@@ -542,6 +585,10 @@ function skipBreak() {
   advanceBreakIndex();
   saveSettings();
   closeModal(true);
+  if (hasSessionDurationExpired()) {
+    stopSessionAfterDuration();
+    return;
+  }
   restartNormalInterval("Break skipped. Normal interval restarted.");
 }
 
@@ -589,6 +636,7 @@ function closePreviewBreak(message) {
     targetEndTime = null;
 
     if (returnState.wasRunning && remainingSeconds > 0) {
+      startSessionActiveClock();
       startIntervalOnly();
     }
   } else {
@@ -928,7 +976,8 @@ function updateStatusBadge() {
     Running: "Running",
     Paused: "Paused",
     "Break Time": "Break active",
-    Snoozed: "Snoozed"
+    Snoozed: "Snoozed",
+    "Session Complete": "Session complete"
   };
 
   elements.statusBadge.textContent = statusLabels[currentStatus] || currentStatus;
@@ -938,6 +987,7 @@ function updateStatusBadge() {
   if (currentStatus === "Paused") elements.statusBadge.classList.add("paused");
   if (currentStatus === "Break Time") elements.statusBadge.classList.add("break");
   if (currentStatus === "Snoozed") elements.statusBadge.classList.add("snoozed");
+  if (currentStatus === "Session Complete") elements.statusBadge.classList.add("completed");
   if (currentStatus === "Stopped") elements.statusBadge.classList.add("stopped");
 }
 
@@ -1138,6 +1188,9 @@ function syncSettingsToInputs() {
 
   elements.intervalInput.value = settings.intervalMinutes;
   elements.snoozeInput.value = settings.snoozeMinutes;
+  elements.sessionDurationSelect.value = settings.sessionDurationMode;
+  elements.customSessionDurationInput.value = settings.customSessionDurationMinutes;
+  updateSessionDurationUI();
   elements.soundToggle.checked = settings.soundEnabled;
   elements.soundToneSelect.value = settings.soundTone;
   elements.volumeInput.value = settings.soundVolume;
@@ -1175,6 +1228,46 @@ function handleSnoozeChange() {
   settings.snoozeMinutes = value;
   saveSettings();
   showMessage("Snooze duration saved.", "success");
+}
+
+function handleSessionDurationChange() {
+  settings.sessionDurationMode = VALID_SESSION_DURATION_MODES.has(elements.sessionDurationSelect.value)
+    ? elements.sessionDurationSelect.value
+    : DEFAULT_SETTINGS.sessionDurationMode;
+  saveSettings();
+  updateSessionDurationUI();
+  scheduleSessionLimitCheck();
+
+  if (hasSessionDurationExpired()) {
+    stopSessionAfterDuration();
+    return;
+  }
+
+  showMessage("Run duration saved.", "success");
+}
+
+function handleCustomSessionDurationChange() {
+  const value = parseSessionDurationMinutes(elements.customSessionDurationInput.value);
+  if (!value) {
+    elements.customSessionDurationInput.value = settings.customSessionDurationMinutes;
+    showMessage("Use a custom run duration from 1 to 1440 minutes.", "error");
+    return;
+  }
+
+  settings.customSessionDurationMinutes = value;
+  saveSettings();
+  scheduleSessionLimitCheck();
+
+  if (settings.sessionDurationMode === "custom" && hasSessionDurationExpired()) {
+    stopSessionAfterDuration();
+    return;
+  }
+
+  showMessage("Custom run duration saved.", "success");
+}
+
+function updateSessionDurationUI() {
+  elements.customSessionDurationWrap.hidden = settings.sessionDurationMode !== "custom";
 }
 
 function toggleCompactMode() {
@@ -1282,6 +1375,7 @@ function savePreviewReturnState() {
   const wasRunning = Boolean(timerId);
   if (wasRunning) {
     syncRemainingSeconds();
+    pauseSessionActiveClock();
   }
 
   previewReturnState = {
@@ -1397,6 +1491,11 @@ function clearHistory() {
 }
 
 function restartNormalInterval(message) {
+  if (hasSessionDurationExpired()) {
+    stopSessionAfterDuration();
+    return;
+  }
+
   activeBreak = null;
   activeBreakMessage = "";
   isPreviewBreak = false;
@@ -1409,6 +1508,7 @@ function restartNormalInterval(message) {
 
 function startIntervalOnly() {
   clearActiveTimer();
+  scheduleSessionLimitCheck();
   targetEndTime = Date.now() + remainingSeconds * 1000;
   timerId = window.setInterval(tickTimer, 1000);
 }
@@ -1419,6 +1519,81 @@ function clearActiveTimer() {
     timerId = null;
   }
   targetEndTime = null;
+}
+
+function clearSessionLimitTimer() {
+  if (sessionLimitTimerId) {
+    window.clearTimeout(sessionLimitTimerId);
+    sessionLimitTimerId = null;
+  }
+}
+
+function startSessionActiveClock() {
+  if (!sessionActiveStartedAt) {
+    sessionActiveStartedAt = Date.now();
+  }
+  scheduleSessionLimitCheck();
+}
+
+function pauseSessionActiveClock() {
+  if (sessionActiveStartedAt) {
+    sessionElapsedMs = getCurrentSessionElapsedMs();
+    sessionActiveStartedAt = null;
+  }
+  clearSessionLimitTimer();
+}
+
+function resetSessionElapsed() {
+  sessionElapsedMs = 0;
+  sessionActiveStartedAt = null;
+  clearSessionLimitTimer();
+}
+
+function getSessionDurationLimitMs() {
+  if (settings.sessionDurationMode === "unlimited") return null;
+
+  const minutes = settings.sessionDurationMode === "custom"
+    ? settings.customSessionDurationMinutes
+    : Number(settings.sessionDurationMode);
+
+  return normalizeSessionDurationMinutes(minutes) * 60 * 1000;
+}
+
+function getCurrentSessionElapsedMs() {
+  if (!sessionActiveStartedAt) return sessionElapsedMs;
+  return sessionElapsedMs + (Date.now() - sessionActiveStartedAt);
+}
+
+function hasSessionDurationExpired() {
+  const limitMs = getSessionDurationLimitMs();
+  return limitMs !== null && getCurrentSessionElapsedMs() >= limitMs;
+}
+
+function scheduleSessionLimitCheck() {
+  clearSessionLimitTimer();
+
+  if (!sessionActiveStartedAt) return;
+
+  const limitMs = getSessionDurationLimitMs();
+  if (limitMs === null) return;
+
+  const remainingMs = Math.max(limitMs - getCurrentSessionElapsedMs(), 0);
+  sessionLimitTimerId = window.setTimeout(stopSessionAfterDuration, remainingMs);
+}
+
+function stopSessionAfterDuration() {
+  pauseSessionActiveClock();
+  clearActiveTimer();
+  stopTonePreview();
+  closeModal(false);
+  activeBreak = null;
+  activeBreakMessage = "";
+  isPreviewBreak = false;
+  previewReturnState = null;
+  currentStatus = "Session Complete";
+  setTimerDuration(settings.intervalMinutes * 60);
+  showMessage("Session complete. Press Start to begin a new run.", "success");
+  updateDisplay();
 }
 
 function syncRemainingSeconds() {
@@ -1438,6 +1613,8 @@ function setTimerDuration(seconds) {
 function validateSettings() {
   const interval = parseWholeMinutes(elements.intervalInput.value);
   const snooze = parseWholeMinutes(elements.snoozeInput.value);
+  const sessionMode = elements.sessionDurationSelect.value;
+  const customSessionDuration = parseSessionDurationMinutes(elements.customSessionDurationInput.value);
 
   if (!interval) {
     showMessage("Reminder interval must be at least 1 minute.", "error");
@@ -1449,8 +1626,20 @@ function validateSettings() {
     return false;
   }
 
+  if (!VALID_SESSION_DURATION_MODES.has(sessionMode)) {
+    showMessage("Choose a valid run duration.", "error");
+    return false;
+  }
+
+  if (!customSessionDuration) {
+    showMessage("Use a custom run duration from 1 to 1440 minutes.", "error");
+    return false;
+  }
+
   settings.intervalMinutes = interval;
   settings.snoozeMinutes = snooze;
+  settings.sessionDurationMode = sessionMode;
+  settings.customSessionDurationMinutes = customSessionDuration;
 
   if (!settings.enabledBreakTypes.length) {
     showMessage("Choose at least one break type before starting.", "warning");
@@ -1493,6 +1682,19 @@ function parseWholeMinutes(value) {
   const number = Number(value);
   if (!Number.isFinite(number) || number < 1) return null;
   return Math.floor(number);
+}
+
+function parseSessionDurationMinutes(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return null;
+
+  const minutes = Math.floor(number);
+  if (minutes < MIN_CUSTOM_SESSION_DURATION_MINUTES || minutes > MAX_CUSTOM_SESSION_DURATION_MINUTES) return null;
+  return minutes;
+}
+
+function normalizeSessionDurationMinutes(value) {
+  return parseSessionDurationMinutes(value) || DEFAULT_CUSTOM_SESSION_DURATION_MINUTES;
 }
 
 function normalizeVolume(value) {

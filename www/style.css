@@ -776,6 +776,10 @@ h2 {
   line-height: 1.45;
 }
 
+.custom-session-field[hidden] {
+  display: none;
+}
+
 .tone-field {
   grid-column: 1 / -1;
 }
@@ -1536,7 +1540,9 @@ body.capacitor-app .app-shell {
 }
 
 .footer-brand {
+  flex: 1 1 420px;
   max-width: 520px;
+  min-width: 0;
 }
 
 .footer-kicker {
@@ -1563,20 +1569,27 @@ body.capacitor-app .app-shell {
 
 .footer-links {
   display: flex;
+  flex: 0 1 460px;
   flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: center;
   justify-content: flex-end;
   gap: 10px;
+  margin-left: auto;
+  min-width: 260px;
 }
 
 .footer-links a {
   display: inline-flex;
   align-items: center;
+  flex: 0 0 auto;
   min-height: 38px;
   padding: 0 0.8rem;
   border: 1px solid var(--border);
   border-radius: 999px;
   color: var(--muted);
   text-decoration: none;
+  white-space: nowrap;
   background: var(--surface-subtle-bg);
   transition: color 160ms ease, border-color 160ms ease, background 160ms ease, transform 160ms ease;
 }
@@ -1619,6 +1632,19 @@ body.capacitor-app .app-shell {
 
   .footer-links {
     justify-content: flex-start;
+    margin-left: 0;
+    min-width: 0;
+  }
+
+  .footer-brand,
+  .footer-links {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .footer-title,
+  .footer-text {
+    overflow-wrap: anywhere;
   }
 }
 
