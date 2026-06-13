@@ -214,26 +214,6 @@
                 <small>Minutes before a snoozed reminder returns.</small>
               </label>
 
-              <label class="field">
-                <span>Run duration</span>
-                <select id="sessionDurationSelect">
-                  <option value="unlimited">Unlimited</option>
-                  <option value="30">30 minutes</option>
-                  <option value="60">1 hour</option>
-                  <option value="120">2 hours</option>
-                  <option value="240">4 hours</option>
-                  <option value="480">8 hours</option>
-                  <option value="custom">Custom</option>
-                </select>
-                <small>Stop reminders automatically after this amount of active timer time.</small>
-              </label>
-
-              <label id="customSessionDurationWrap" class="field custom-session-field" hidden>
-                <span>Custom duration in minutes</span>
-                <input id="customSessionDurationInput" type="number" min="1" max="1440" step="5" value="60" inputmode="numeric">
-                <small>Use 1 to 1440 minutes.</small>
-              </label>
-
               <label class="field tone-field">
                 <span>Alert tone</span>
                 <div class="tone-control">
@@ -273,6 +253,26 @@
                   <output id="volumeValue" for="volumeInput">70%</output>
                 </div>
                 <small>Generated in-browser. No audio files are used.</small>
+              </label>
+
+              <label class="field signal-duration-field">
+                <span>Break signal duration</span>
+                <select id="signalDurationSelect">
+                  <option value="once">Once</option>
+                  <option value="5">5 seconds</option>
+                  <option value="10">10 seconds</option>
+                  <option value="20">20 seconds</option>
+                  <option value="30">30 seconds</option>
+                  <option value="custom">Custom</option>
+                  <option value="until-dismissed">Until dismissed</option>
+                </select>
+                <small>Choose how long the reminder sound plays when a break starts.</small>
+              </label>
+
+              <label id="customSignalDurationWrap" class="field custom-signal-field" hidden>
+                <span>Custom signal duration</span>
+                <input id="customSignalDurationInput" type="number" min="1" max="300" step="1" value="15" inputmode="numeric">
+                <small>Enter how many seconds the break signal should play.</small>
               </label>
             </div>
 
@@ -556,7 +556,6 @@
         <nav class="footer-links" aria-label="Footer navigation">
           <a href="#timer">Timer</a>
           <a href="#settings">Settings</a>
-          <a href="#privacy">Privacy</a>
           <a href="./privacy.html">Privacy Policy</a>
           <a href="#faq">FAQ</a>
           <a href="https://github.com/WhiskersStack/breaksignal" target="_blank" rel="noopener noreferrer">GitHub</a>

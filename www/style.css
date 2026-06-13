@@ -776,11 +776,12 @@ h2 {
   line-height: 1.45;
 }
 
-.custom-session-field[hidden] {
+.custom-signal-field[hidden] {
   display: none;
 }
 
-.tone-field {
+.tone-field,
+.signal-duration-field {
   grid-column: 1 / -1;
 }
 
@@ -1536,12 +1537,12 @@ body.capacitor-app .app-shell {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 24px;
+  gap: 28px;
 }
 
 .footer-brand {
-  flex: 1 1 420px;
-  max-width: 520px;
+  flex: 1 1 auto;
+  max-width: 500px;
   min-width: 0;
 }
 
@@ -1569,14 +1570,12 @@ body.capacitor-app .app-shell {
 
 .footer-links {
   display: flex;
-  flex: 0 1 460px;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px;
   margin-left: auto;
-  min-width: 260px;
 }
 
 .footer-links a {
@@ -1584,7 +1583,7 @@ body.capacitor-app .app-shell {
   align-items: center;
   flex: 0 0 auto;
   min-height: 38px;
-  padding: 0 0.8rem;
+  padding: 0 0.72rem;
   border: 1px solid var(--border);
   border-radius: 999px;
   color: var(--muted);
@@ -1631,6 +1630,7 @@ body.capacitor-app .app-shell {
   }
 
   .footer-links {
+    flex-wrap: wrap;
     justify-content: flex-start;
     margin-left: 0;
     min-width: 0;
@@ -1650,6 +1650,9 @@ body.capacitor-app .app-shell {
 
 @media (max-width: 480px) {
   .site-footer {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
     padding: 20px;
   }
 
@@ -1659,6 +1662,15 @@ body.capacitor-app .app-shell {
 
   .footer-links a {
     width: 100%;
+    max-width: 100%;
     justify-content: center;
+  }
+
+  .footer-brand,
+  .footer-bottom,
+  .footer-bottom p {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 }
