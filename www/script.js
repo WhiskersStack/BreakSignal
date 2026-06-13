@@ -1299,7 +1299,9 @@ function handleCustomSignalDurationChange() {
 }
 
 function updateSignalDurationUI() {
-  elements.customSignalDurationWrap.hidden = settings.signalDurationMode !== "custom";
+  const customActive = settings.signalDurationMode === "custom";
+  elements.customSignalDurationWrap.hidden = !customActive;
+  elements.customSignalDurationInput.disabled = !customActive;
 }
 
 function toggleCompactMode() {
@@ -1564,7 +1566,7 @@ function validateSettings() {
   const interval = parseWholeMinutes(elements.intervalInput.value);
   const snooze = parseWholeMinutes(elements.snoozeInput.value);
   const signalMode = elements.signalDurationSelect.value;
-  const customSignalDuration = parseSignalDurationSeconds(elements.customSignalDurationInput.value);
+  let customSignalDuration = settings.customSignalDurationSeconds;
 
   if (!interval) {
     showMessage("Reminder interval must be at least 1 minute.", "error");
@@ -1581,9 +1583,12 @@ function validateSettings() {
     return false;
   }
 
-  if (!customSignalDuration) {
-    showMessage("Use a custom break signal duration from 1 to 300 seconds.", "error");
-    return false;
+  if (signalMode === "custom") {
+    customSignalDuration = parseSignalDurationSeconds(elements.customSignalDurationInput.value);
+    if (!customSignalDuration) {
+      showMessage("Use a custom break signal duration from 1 to 300 seconds.", "error");
+      return false;
+    }
   }
 
   settings.intervalMinutes = interval;
