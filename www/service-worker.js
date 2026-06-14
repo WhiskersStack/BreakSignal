@@ -4,6 +4,7 @@ const CACHE_NAME = "breaksignal-v1.0.6";
 const APP_SHELL = [
   "/",
   "/index.html",
+  "/about.html",
   "/privacy.html",
   "/style.css",
   "/script.js",

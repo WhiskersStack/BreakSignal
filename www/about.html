@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About BreakSignal, a calm break reminder for eye breaks, posture resets, stretching, walking, and focus.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="BreakSignal">
+  <meta name="theme-color" content="#070B14">
+  <meta name="application-name" content="BreakSignal">
+  <link rel="canonical" href="https://www.break-signal.com/about.html">
+  <title>About BreakSignal</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BreakSignal">
+  <meta property="og:title" content="About BreakSignal">
+  <meta property="og:description" content="A calm productivity command center for eye breaks, posture resets, stretching, walking, and focus recovery.">
+  <meta property="og:url" content="https://www.break-signal.com/about.html">
+  <meta property="og:image" content="https://www.break-signal.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About BreakSignal">
+  <meta name="twitter:description" content="A calm productivity command center for eye breaks, posture resets, stretching, walking, and focus recovery.">
+  <meta name="twitter:image" content="https://www.break-signal.com/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      var validThemes = ["dark", "light", "midnight", "amoled", "forest", "sunset", "cyber"];
+      var fallbackTheme = "dark";
+
+      try {
+        var savedTheme = localStorage.getItem("breakSignalTheme");
+        var theme = validThemes.indexOf(savedTheme) !== -1 ? savedTheme : fallbackTheme;
+        document.documentElement.dataset.theme = theme;
+      } catch (error) {
+        document.documentElement.dataset.theme = fallbackTheme;
+      }
+    })();
+  </script>
+</head>
+<body class="about-page">
+  <div class="app-shell about-shell">
+    <header class="site-header" aria-label="BreakSignal header">
+      <a class="brand-mark" href="./index.html" aria-label="Open BreakSignal">
+        <img class="logo-image" src="logo.svg" alt="">
+      </a>
+      <div>
+        <p class="eyebrow">About BreakSignal</p>
+        <h1>Small breaks. Cleaner focus. Better working rhythm.</h1>
+      </div>
+    </header>
+
+    <main>
+      <section class="about-hero glass-card" aria-labelledby="about-heading">
+        <div>
+          <p class="section-kicker">Calm productivity command center</p>
+          <h2 id="about-heading">A simple reminder system for screen-heavy work.</h2>
+          <p>
+            BreakSignal is a calm break reminder for people who spend long periods working at a computer.
+            It helps you create a steady rhythm of eye breaks, posture resets, stretching, and short movement
+            breaks without adding noise to your workflow.
+          </p>
+        </div>
+
+        <div class="about-actions" aria-label="About page navigation">
+          <a class="primary-link" href="./index.html">Open BreakSignal</a>
+          <a class="secondary-link" href="./privacy.html">Privacy Policy</a>
+          <a class="secondary-link" href="https://github.com/WhiskersStack/breaksignal" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </section>
+
+      <section class="about-grid" aria-label="About BreakSignal details">
+        <article class="about-card">
+          <p class="section-kicker">What it is</p>
+          <h2>Static web app. Android shell. Local rhythm.</h2>
+          <p>
+            BreakSignal is a simple static web app and Android app for healthy break reminders. It supports eye
+            breaks, stretch breaks, walking breaks, posture reminders, custom timing, and local settings with no
+            account required.
+          </p>
+        </article>
+
+        <article class="about-card">
+          <p class="section-kicker">Why breaks matter</p>
+          <h2>Interrupt long static sessions.</h2>
+          <p>
+            Regular pauses can help you notice eye strain, posture tension, stiffness, and mental fatigue before
+            they build up. BreakSignal keeps those pauses quiet, steady, and easy to act on.
+          </p>
+        </article>
+
+        <article class="about-card">
+          <p class="section-kicker">Eye breaks</p>
+          <h2>Shift away from constant near focus.</h2>
+          <p>
+            Screens keep attention locked at a close distance. Looking away gives your eyes a chance to relax from
+            constant near focus. BreakSignal reminds you to look away, blink, and soften your focus.
+          </p>
+        </article>
+
+        <article class="about-card">
+          <p class="section-kicker">Posture resets</p>
+          <h2>Notice the small desk-work drifts.</h2>
+          <p>
+            Long desk sessions can make it easy to drift into tense shoulders, forward neck posture, or uneven
+            sitting. BreakSignal gives small prompts to relax your shoulders, align your neck, and return both feet
+            to the floor.
+          </p>
+        </article>
+
+        <article class="about-card">
+          <p class="section-kicker">Stretching and movement</p>
+          <h2>Change position before stillness settles in.</h2>
+          <p>
+            Short standing, stretching, and walking breaks can help interrupt long periods of stillness. BreakSignal
+            supports stretch and walking reminders so movement stays part of the work rhythm.
+          </p>
+        </article>
+
+        <article class="about-card">
+          <p class="section-kicker">Focus recovery</p>
+          <h2>Give focus blocks a clean boundary.</h2>
+          <p>
+            Breaks are not only physical. A short pause can help mark the end of one focus block and prepare the
+            mind for the next, without turning the timer into another noisy task.
+          </p>
+        </article>
+      </section>
+
+      <section class="about-note" aria-labelledby="privacy-first-heading">
+        <div>
+          <p class="section-kicker">Privacy-first design</p>
+          <h2 id="privacy-first-heading">Built to run locally.</h2>
+          <p>
+            BreakSignal requires no account, no backend database, no analytics, and no external API for core timer
+            behavior. Settings and history are stored locally on the device or browser.
+          </p>
+          <p>
+            Read the <a href="./privacy.html">Privacy Policy</a> for the full local-storage and Android app details.
+          </p>
+        </div>
+      </section>
+
+      <section class="about-note important-note" aria-labelledby="important-note-heading">
+        <div>
+          <p class="section-kicker">Important note</p>
+          <h2 id="important-note-heading">Productivity reminder, not medical advice.</h2>
+          <p>
+            BreakSignal is a productivity and wellness reminder tool. It is not medical advice, diagnosis, or
+            treatment. If you have pain, vision problems, or health concerns, consider speaking with a qualified
+            professional.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Site footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <p class="footer-kicker">BreakSignal</p>
+          <p class="footer-title">Protect your eyes, posture, and focus.</p>
+          <p class="footer-text">
+            A calm browser-based break reminder for eye breaks, movement, stretching, and posture resets.
+          </p>
+        </div>
+
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="./index.html">Open BreakSignal</a>
+          <a href="./privacy.html">Privacy Policy</a>
+          <a href="https://github.com/WhiskersStack/breaksignal" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <p>Built with HTML, CSS, and JavaScript. Designed for AWS S3 static hosting.</p>
+        <p>Version 1.0.0 | (c) 2026 BreakSignal.</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

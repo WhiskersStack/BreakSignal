@@ -657,6 +657,10 @@ h2 {
 }
 
 .policy-link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
   margin: 14px 0 0;
   text-align: center;
 }
@@ -1291,6 +1295,139 @@ body.capacitor-app .app-shell {
   padding-bottom: max(28px, env(safe-area-inset-bottom));
 }
 
+.about-page .app-shell {
+  width: min(1060px, calc(100% - 32px));
+}
+
+.about-page .site-header {
+  align-items: flex-start;
+}
+
+.about-page .brand-mark {
+  color: inherit;
+  text-decoration: none;
+}
+
+.about-page main {
+  display: grid;
+  gap: 18px;
+}
+
+.about-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: end;
+  padding: clamp(24px, 4vw, 42px);
+}
+
+.about-hero h2,
+.about-card h2,
+.about-note h2 {
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+  line-height: 1.12;
+}
+
+.about-hero p,
+.about-card p,
+.about-note p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.about-hero p:last-child,
+.about-card p:last-child,
+.about-note p:last-child {
+  margin-bottom: 0;
+}
+
+.about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.primary-link,
+.secondary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, color 160ms ease;
+}
+
+.primary-link {
+  color: var(--accent-contrast);
+  background: linear-gradient(135deg, var(--cyan), var(--accent-hover-color));
+  box-shadow: 0 14px 36px rgb(var(--accent-rgb) / 0.2);
+}
+
+.secondary-link {
+  color: var(--muted);
+  border: 1px solid var(--border);
+  background: var(--surface-subtle-bg);
+}
+
+.primary-link:hover,
+.secondary-link:hover {
+  transform: translateY(-2px);
+}
+
+.primary-link:hover {
+  color: var(--accent-contrast);
+  background: linear-gradient(135deg, var(--accent-hover-color), var(--cyan));
+}
+
+.secondary-link:hover {
+  color: var(--text);
+  border-color: rgb(var(--accent-rgb) / 0.36);
+  background: var(--accent-softer);
+}
+
+.primary-link:focus-visible,
+.secondary-link:focus-visible {
+  outline: none;
+  border-color: rgb(var(--accent-rgb) / 0.72);
+  box-shadow: 0 0 0 4px var(--accent-ring);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.about-card,
+.about-note {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel-soft-bg);
+}
+
+.about-card {
+  min-height: 230px;
+}
+
+.about-note {
+  background:
+    linear-gradient(135deg, rgb(var(--accent-rgb) / 0.08), rgb(var(--secondary-accent-rgb) / 0.06)),
+    var(--surface-subtle-bg);
+}
+
+.about-note a {
+  color: var(--accent-color);
+}
+
+.important-note {
+  border-color: rgb(var(--warning-rgb) / 0.28);
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1363,8 +1500,14 @@ body.capacitor-app .app-shell {
   .break-type-list,
   .seo-grid,
   .rule-section,
-  .seo-split {
+  .seo-split,
+  .about-hero,
+  .about-grid {
     grid-template-columns: 1fr;
+  }
+
+  .about-actions {
+    justify-content: flex-start;
   }
 
   .rule-steps {
@@ -1432,7 +1575,10 @@ body.capacitor-app .app-shell {
 
   .timer-card,
   .panel,
-  .break-modal {
+  .break-modal,
+  .about-hero,
+  .about-card,
+  .about-note {
     width: 100%;
     max-width: 100%;
   }
@@ -1519,8 +1665,15 @@ body.capacitor-app .app-shell {
 
   .timer-card,
   .panel,
-  .break-modal {
+  .break-modal,
+  .about-hero,
+  .about-card,
+  .about-note {
     padding: 18px;
+  }
+
+  .about-actions a {
+    width: 100%;
   }
 }
 

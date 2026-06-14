@@ -58,6 +58,8 @@ https://www.break-signal.com/
 
 BreakSignal is a fully static browser app.
 
+The app includes a timer dashboard, About page, privacy policy page, web manifest, and service worker.
+
 The app uses:
 
 - HTML for structure
@@ -110,6 +112,8 @@ BreakSignal includes a web manifest, install icons, and a service worker. Suppor
 BreakSignal/
 |-- www/
 |   |-- index.html
+|   |-- about.html
+|   |-- privacy.html
 |   |-- style.css
 |   |-- script.js
 |   |-- manifest.json
