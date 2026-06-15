@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BreakSignal FAQ for the web app and Android app.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="BreakSignal">
+  <meta name="theme-color" content="#070B14">
+  <meta name="application-name" content="BreakSignal">
+  <link rel="canonical" href="https://www.break-signal.com/faq.html">
+  <title>FAQ | BreakSignal</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BreakSignal">
+  <meta property="og:title" content="FAQ | BreakSignal">
+  <meta property="og:description" content="Answers about BreakSignal timers, local storage, privacy, sounds, mobile use, and keyboard navigation.">
+  <meta property="og:url" content="https://www.break-signal.com/faq.html">
+  <meta property="og:image" content="https://www.break-signal.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FAQ | BreakSignal">
+  <meta name="twitter:description" content="Answers about BreakSignal timers, local storage, privacy, sounds, mobile use, and keyboard navigation.">
+  <meta name="twitter:image" content="https://www.break-signal.com/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      var validThemes = ["dark", "light", "midnight", "amoled", "forest", "sunset", "cyber"];
+      var fallbackTheme = "dark";
+
+      try {
+        var savedTheme = localStorage.getItem("breakSignalTheme");
+        var theme = validThemes.indexOf(savedTheme) !== -1 ? savedTheme : fallbackTheme;
+        document.documentElement.dataset.theme = theme;
+      } catch (error) {
+        document.documentElement.dataset.theme = fallbackTheme;
+      }
+    })();
+  </script>
+</head>
+<body class="about-page faq-page">
+  <div class="app-shell about-shell">
+    <header class="site-header" aria-label="BreakSignal FAQ header">
+      <a class="brand-mark" href="./index.html" aria-label="Open BreakSignal">
+        <img class="logo-image" src="logo.svg" alt="">
+      </a>
+      <div>
+        <p class="eyebrow">BreakSignal FAQ</p>
+        <h1>Simple answers for a calmer break rhythm.</h1>
+      </div>
+    </header>
+
+    <main>
+      <section class="about-hero glass-card" aria-labelledby="faq-page-heading">
+        <div>
+          <p class="section-kicker">Frequently asked questions</p>
+          <h2 id="faq-page-heading">How BreakSignal works across web and Android.</h2>
+          <p>
+            BreakSignal is designed to stay simple: local settings, no account, no backend, and a timer that works
+            while the page or Android app is open.
+          </p>
+        </div>
+
+        <div class="about-actions" aria-label="FAQ page navigation">
+          <a class="primary-link" href="./index.html">Open BreakSignal</a>
+          <a class="secondary-link" href="./about.html">About</a>
+          <a class="secondary-link" href="./privacy.html">Privacy Policy</a>
+        </div>
+      </section>
+
+      <section class="faq-page-card glass-card" aria-labelledby="faq-heading">
+        <p class="section-kicker">FAQ</p>
+        <h2 id="faq-heading">BreakSignal questions</h2>
+
+        <div class="faq-list">
+          <details>
+            <summary>What is BreakSignal?</summary>
+            <p>BreakSignal is a calm break reminder for eye breaks, stretch breaks, walking breaks, posture checks, and focus resets while working at a computer.</p>
+          </details>
+
+          <details>
+            <summary>Does BreakSignal keep working after I close the tab?</summary>
+            <p>No. The countdown runs while the browser tab or Android app is open. Your settings and history can stay saved locally, but the timer does not continue after the app or tab is closed.</p>
+          </details>
+
+          <details>
+            <summary>Where are settings saved?</summary>
+            <p>Your reminder interval, break types, theme, sound preferences, daily count, and recent history are stored locally with localStorage on your browser or Android WebView.</p>
+          </details>
+
+          <details>
+            <summary>Does BreakSignal collect data?</summary>
+            <p>No account is required, and BreakSignal does not include a backend database, analytics, advertising SDKs, or external APIs for core timer behavior.</p>
+          </details>
+
+          <details>
+            <summary>Can I use it for the 20-20-20 eye break rule?</summary>
+            <p>Yes. You can use the 20-20-20 preset or set a reminder interval that fits your workflow, then keep Eye Break enabled for regular prompts to look away and soften your focus.</p>
+          </details>
+
+          <details>
+            <summary>Does BreakSignal play sounds?</summary>
+            <p>Yes. BreakSignal can generate optional reminder tones in the browser with the Web Audio API. It does not load external audio files or use the microphone.</p>
+          </details>
+
+          <details>
+            <summary>Does BreakSignal work on mobile?</summary>
+            <p>The layout is responsive and the Android app wraps the same static web app with Capacitor. Core timer behavior does not require internet access after the app is loaded.</p>
+          </details>
+
+          <details>
+            <summary>Does BreakSignal support keyboard navigation?</summary>
+            <p>Yes. Use Tab to move through controls and Enter or Space to activate buttons, links, and form controls.</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Site footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <p class="footer-kicker">BreakSignal</p>
+          <p class="footer-title">Protect your eyes, posture, and focus.</p>
+          <p class="footer-text">
+            A calm browser-based break reminder for eye breaks, movement, stretching, and posture resets.
+          </p>
+        </div>
+
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="./index.html">Open BreakSignal</a>
+          <a href="./about.html">About</a>
+          <a href="./privacy.html">Privacy Policy</a>
+          <a href="https://github.com/WhiskersStack/breaksignal" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <p>Built with HTML, CSS, and JavaScript. Designed for AWS S3 static hosting.</p>
+        <p>Version 1.0.0 | (c) 2026 BreakSignal.</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

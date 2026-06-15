@@ -179,11 +179,17 @@
       padding: 42px 0;
     }
 
+    .page-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
     .back-link {
       display: inline-flex;
       align-items: center;
       min-height: 42px;
-      margin-bottom: 20px;
       padding: 0 0.95rem;
       border: 1px solid var(--border);
       border-radius: 999px;
@@ -384,12 +390,21 @@
       .brand-row {
         align-items: flex-start;
       }
+
+      .back-link {
+        flex: 1 1 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
   <div class="shell">
-    <a class="back-link" href="./index.html">Back to BreakSignal</a>
+    <nav class="page-actions" aria-label="Privacy page navigation">
+      <a class="back-link" href="./index.html">Open BreakSignal</a>
+      <a class="back-link" href="./about.html">About</a>
+      <a class="back-link" href="./faq.html">FAQ</a>
+    </nav>
 
     <header class="hero">
       <div class="brand-row">
