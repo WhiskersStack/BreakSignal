@@ -8,6 +8,22 @@
   <meta name="author" content="BreakSignal">
   <meta name="theme-color" content="#070B14">
   <meta name="application-name" content="BreakSignal">
+  <script>
+    (function () {
+      var validThemes = ["dark", "light", "midnight", "amoled", "forest", "sunset", "cyber"];
+      var fallbackTheme = "dark";
+
+      try {
+        var savedTheme = localStorage.getItem("breakSignalTheme");
+        var theme = validThemes.indexOf(savedTheme) !== -1 ? savedTheme : fallbackTheme;
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme === "light" ? "light" : "dark";
+      } catch (error) {
+        document.documentElement.dataset.theme = fallbackTheme;
+        document.documentElement.style.colorScheme = "dark";
+      }
+    })();
+  </script>
   <link rel="canonical" href="https://www.break-signal.com/">
   <title>BreakSignal - Free Break Reminder & 20-20-20 Eye Break Timer</title>
   <meta property="og:type" content="website">

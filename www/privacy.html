@@ -19,8 +19,10 @@
         var savedTheme = localStorage.getItem("breakSignalTheme");
         var theme = validThemes.indexOf(savedTheme) !== -1 ? savedTheme : fallbackTheme;
         document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme === "light" ? "light" : "dark";
       } catch (error) {
         document.documentElement.dataset.theme = fallbackTheme;
+        document.documentElement.style.colorScheme = "dark";
       }
     })();
   </script>
