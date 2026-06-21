@@ -243,6 +243,14 @@ Before changing files:
 
 1. Inspect the current file structure.
 2. Read the relevant HTML, CSS, and JavaScript files.
+
+   The core web app files are inside the `www/` folder:
+
+   - `www/index.html`
+   - `www/style.css`
+   - `www/script.js`
+
+   Treat these as the main web app files unless the repository structure clearly shows otherwise.
 3. Understand the current behavior.
 4. Check whether Capacitor and android/ already exist before touching Android-related work.
 5. Identify bugs, missing release-readiness items, weak UX, or mobile issues.
