@@ -306,6 +306,7 @@ body,
 .seo-split > div,
 .faq-list details,
 .faq-page-card,
+.privacy-page-card,
 .history-item,
 .empty-state,
 .mode-panel,
@@ -1385,13 +1386,106 @@ body.capacitor-app .app-shell {
     var(--surface-subtle-bg);
 }
 
-.faq-page-card {
+.faq-page-card,
+.privacy-page-card {
   padding: clamp(22px, 4vw, 34px);
 }
 
-.faq-page-card h2 {
+.faq-page-card h2,
+.privacy-page-card h2 {
   font-size: clamp(1.45rem, 3vw, 2.2rem);
   line-height: 1.12;
+
+}
+.privacy-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.privacy-meta-item {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-subtle-bg);
+}
+
+.privacy-meta-label {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.privacy-meta-value {
+  color: var(--text);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+a.privacy-meta-value:hover {
+  color: var(--accent-hover-color);
+}
+
+.privacy-page-card {
+  display: grid;
+  gap: 0;
+}
+
+.privacy-section {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.privacy-section:first-child {
+  padding-top: 0;
+}
+
+.privacy-section:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.privacy-section p,
+.privacy-section li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.privacy-section p:last-child {
+  margin-bottom: 0;
+}
+
+.privacy-section strong {
+  color: var(--text);
+}
+
+.privacy-section ul {
+  margin: 14px 0 0;
+  padding-left: 1.25rem;
+}
+
+.privacy-section li + li {
+  margin-top: 8px;
+}
+
+.privacy-section a {
+  color: var(--accent-color);
+}
+
+.privacy-note {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgb(var(--accent-rgb) / 0.26);
+  border-radius: 10px;
+  color: var(--text) !important;
+  background: var(--accent-soft);
 }
 
 .about-note a {
@@ -1476,7 +1570,8 @@ body.capacitor-app .app-shell {
   .rule-section,
   .seo-split,
   .about-hero,
-  .about-grid {
+  .about-grid,
+  .privacy-meta {
     grid-template-columns: 1fr;
   }
 
@@ -1553,7 +1648,8 @@ body.capacitor-app .app-shell {
   .about-hero,
   .about-card,
   .about-note,
-  .faq-page-card {
+  .faq-page-card,
+  .privacy-page-card {
     width: 100%;
     max-width: 100%;
   }
@@ -1644,7 +1740,8 @@ body.capacitor-app .app-shell {
   .about-hero,
   .about-card,
   .about-note,
-  .faq-page-card {
+  .faq-page-card,
+  .privacy-page-card {
     padding: 18px;
   }
 
@@ -1738,7 +1835,7 @@ body.capacitor-app .app-shell {
 .footer-bottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 18px;
   margin-top: 22px;
   padding-top: 18px;
